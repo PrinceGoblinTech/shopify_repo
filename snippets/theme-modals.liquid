@@ -1,0 +1,80 @@
+{% if settings.collections_quickview %}
+  <div id="quick-view" class="modal fade">
+    <div class="modal-content">
+      <div class="modal-body">
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if settings.atc_cart_style == "popup_modal" or settings.atc_cart_style == "slide"%}
+  <div id="cartAddItemNotification" class="addCart-notification-popup modal fade">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="addCart-popup-message">{{ 'cart.general.title' | t  }}</h4>
+        <a href="javascript:void(0);" class="addCart-popup-close close"><i class="fa fa-times"></i></a>
+      </div>
+      <div class="modal-body">
+        <table class="addCart-product-info">
+          <tbody id="popup-cart-body">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer related_popup_footer">
+        <table class="addCart-footer">
+          <tbody>
+            <tr>
+              <td style="text-align: center;"><span class="addCart-subtotal-text">{{ "cart.general.total" | t }}:&nbsp;</span><span class="addCart-subtotal"></span></td>
+            </tr>
+          </tbody>
+        </table>
+        <span class="btn btn--secondary btn--full close">{{ 'cart.general.continue_browsing_html' | t }}</span>
+        <a href="/cart" class="btn btn--secondary btn--full">{{ 'cart.general.button' | t }}</a>
+        <a href="/checkout" class="btn btn--full cart__checkout Checkout">
+          <img src="{{ 'checkout-button-icon.png' | asset_url }}" alt="" class="addIcon" />
+          <span id="CheckoutText">{{ 'cart.general.checkout' | t }}</span>
+        </a>
+        {% if settings.enable_cartstrip_text %}
+          <div class="popup_model_shipping_text" id="popup_model_shipping_text">{{ settings.cart_popup_text }}{% if settings.cart_display_user_country %}&nbsp;<span class="countryName"></span>{% endif %}{% if settings.cart_display_user_country_flag %}&nbsp;<span class="flagImg f32"></span>{% endif %}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% if template == 'index' %}
+{% if settings.newsletter_popuppp %}
+
+  <script type="text/javascript">
+    $(function() {
+      var popup = $.cookie('popup');
+      var cookie_enabled = {% if settings.newsletter_popup_days != blank and settings.newsletter_popup_days != "0" %}true{% else %}false{% endif %};
+      if (cookie_enabled && popup == 'open') {
+        return false;
+      } else {
+        setTimeout( function() {
+          timber.modalBox();
+          {% if settings.newsletter_popup_max_width != blank %}
+            $("#newsletter-popup").find('.modal-content').css('max-width', "{{ settings.newsletter_popup_max_width }}px");
+          {% else %}
+            $("#newsletter-popup").find('.modal-content').css('max-width', "600px");
+          {% endif %}
+          $("#newsletter-popup").addClass('in');
+        }, {% if settings.newsletter_popup_seconds != blank %}{{ settings.newsletter_popup_seconds }}{% else %}2{% endif %}*1000);
+      }
+      if (cookie_enabled) {
+        $.cookie('popup', 'open', { expires: {{ settings.newsletter_popup_days }} });
+      }
+      $('#newsletter-popup').click(function(){
+        $('#newsletter-popup').removeClass("in");
+      });
+      $('.modal-content').click(function(e){
+        e.stopPropagation();
+      });
+      $('.close-button').click(function(e){
+        $('#newsletter-popup').removeClass("in");
+      });
+    });
+  </script>
+{% endif %}
+{% endif%}

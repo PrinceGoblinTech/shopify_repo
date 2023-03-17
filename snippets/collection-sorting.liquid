@@ -1,0 +1,120 @@
+<!-- /snippets/collection-sorting.liquid -->
+ <div class="text-right">
+    {{ 'collections.sorting.showing' | t }} {{paginate.current_offset | plus:1}}-{%- if paginate.next -%}{{paginate.current_offset | plus:paginate.page_size}}{%- else -%}{{paginate.items}}{%- endif -%}{{' '}} {{ 'collections.sorting.of' | t }} {{' '}}{{paginate.items}} {{ 'collections.sorting.results' | t }}
+  </div>
+<div class="collection-view" >
+  <button type="button" title="{{ 'collections.general.grid_view' | t }}" class="change-view{% unless template contains 'list' %} change-view--active{% endunless %}" data-view="grid">
+   <i class="fa fa-th" aria-hidden="true"></i>
+  </button>
+  <button type="button" title="{{ 'collections.general.list_view' | t }}" class="change-view{% if template contains 'list' %} change-view--active{% endif %}" data-view="list">
+  <i class="fa fa-list" aria-hidden="true"></i>
+  </button>
+</div>
+<div class="form-horizontal">
+   
+  {% if settings.collection_sort %}
+  
+    <select name="SortBy" id="SortBy">
+      <option value="manual">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.featured' | t }}</option>
+      <option value="best-selling">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.best_selling' | t }}</option>
+      <option value="title-ascending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.az' | t }}</option>
+      <option value="title-descending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.za' | t }}</option>
+      <option value="price-ascending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.price_ascending' | t }}</option>
+      <option value="price-descending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.price_descending' | t }}</option>
+      <option value="created-descending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.date_descending' | t }}</option>
+      <option value="created-ascending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.date_ascending' | t }}</option>
+    </select>
+  {% endif %}
+  {% assign excludeTags = "view-size-chart||display-countdown||display-limited||custom-tabs||upsell-enable" | split: '||' %}
+  {% if settings.collection_tags %}
+    {% for tag in collection.all_tags %}
+      {% if forloop.first %}
+  		<label for="CollectionTags">{{ 'collections.sorting.browse' | t }}:</label>
+        <select name="CollectionTags" id="CollectionTags">
+          <option {% unless current_tags %}selected="selected"{% endunless %} value="{% if collection.handle == "all" %}/collections/all{% else %}{{ collection.url }}{% endif %}">{{ 'collections.sorting.all_items' | t }}</option>
+      {% endif %}          
+
+      {% unless excludeTags contains tag %}
+        {% unless tag contains "estimateend-" or tag contains "estimatestart-"  or tag contains "quantity-" or tag contains "quantitysold-" or tag contains "limited-default-" or tag contains "expire-" or tag contains "checklist-" or tag contains "personalisation-" or tag contains "personalization-" or tag contains "sizechart-" or tag contains "badge-" or tag contains "badgestyle-" or tag contains "displayquantity-" or tag contains "surfing_cross-" or tag contains "rr_track_"  %}
+      	  <option {% if current_tags contains tag %}selected="selected"{% endif %} value="/collections/{% if collection.handle != blank %}{{ collection.handle }}{% else %}all{% endif %}/{{ tag | handleize }}">{{ tag | capitalize }}</option>
+        {% endunless %}
+      {% endunless %}
+
+      {% if forloop.last %}
+    	</select>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>
+
+
+
+<script>
+  Shopify.queryParams = {};
+  if (location.search.length) {
+    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+
+  $(function() {
+    $('#SortBy')
+      .val('{{ collection.sort_by | default: collection.default_sort_by }}')
+      .bind('change', function() {
+        //debugger;
+        Shopify.queryParams.sort_by = jQuery(this).val();
+        location.search = jQuery.param(Shopify.queryParams);
+      }
+    );
+    $('.mobile-sort li')
+      .val('{{ collection.sort_by | default: collection.default_sort_by }}')
+      .bind('click', function() {
+        Shopify.queryParams.sort_by = jQuery(this).attr('data-value');
+        location.search = jQuery.param(Shopify.queryParams);
+      }
+    );
+    var collFilters = jQuery('#CollectionTags');
+    collFilters.change(function() {
+      window.location = $('#CollectionTags option:selected').val();
+    });
+  });
+   $(document).ready(function () {
+  var string1= window.location.href;
+  string1 = string1.split('=')[1];
+     if (string1 == 'title-descending')
+     {
+      $("#fourm").addClass("active"); 
+     }
+     if (string1 == 'manual')
+     {
+      $("#onem").addClass("active"); 
+     }
+     if (string1 == 'best-selling')
+     {
+      $("#twom").addClass("active"); 
+     }
+      if (string1 == 'title-ascending')
+     {
+      $("#threem").addClass("active"); 
+     }
+      if (string1 == 'price-ascending')
+     {
+      $("#fivem").addClass("active"); 
+     }
+       if (string1 == 'price-descending')
+     {
+      $("#sixm").addClass("active"); 
+     }
+       if (string1 == 'created-descending')
+     {
+      $("#sevenm").addClass("active"); 
+     }
+        if (string1 == 'created-ascending')
+     {
+      $("#eightm").addClass("active"); 
+     }
+   });
+</script>

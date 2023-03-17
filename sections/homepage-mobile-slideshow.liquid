@@ -1,0 +1,352 @@
+{% if section.blocks.size > 0 %}
+<div class="container-fluid  ">
+    <div class="row">
+      <div class="containerc">
+        <div class="mobile-banner-slider">
+          {% assign mTotalSlides = 0 %}
+         {% for block in section.blocks %}
+          	{% assign mTotalSlides = mTotalSlides | plus: 1 %}
+                       <div class="item">
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}" >
+                  {% endif %}
+                            {% if block.settings.image == blank %}
+        {{ 'lifestyle-1'  | placeholder_svg_tag: 'placeholder-svg' }}
+        {%else%}
+                 <img src="{{ block.settings.image | img_url: '100x', format: 'pjpg'}}"
+                      
+                      data-src="{{ block.settings.image | img_url: '1048x', format: 'pjpg' }}" class="img-responsive lazyload"  data-original="{{ product-block.featured_image | product_img_url: image_size }}" alt="{{ product-block.featured_image.alt }}" height="562" width="1410"> 
+                
+                  <div class='banner-text id-{{block.id}} v-{{ block.settings.heading_vertical_pos }}--h-{{ block.settings.horizontal_vertical_pos }}'>
+               
+                 {% if block.settings.heading != blank %}
+                    <h2>{{ block.settings.heading }}</h2>
+                      {% endif %} 
+                     {% if block.settings.subheading != blank %}
+                    <p>{{ block.settings.subheading }}</p>
+                      {% endif %} 
+                     {% if block.settings.buttontext != blank %}
+                    <a href="{{ block.settings.link }}" class="btn btn-default">{{ block.settings.buttontext }}</a>
+                  {% endif %} 
+                  </div>
+                  {% endif %} 
+                  {% if block.settings.link != blank %}
+                </a>	
+              {% endif %}
+            </div>
+         {% endfor %}
+
+    
+        </div>
+        {% if mTotalSlides < 2 %}
+          <style>
+            .mobile-banner-slider .owl-dots {
+              display: none !important;
+            }
+			.banner-slider .owl-controls .owl-nav .owl-prev, .banner-slider .owl-controls .owl-nav .owl-next{
+					    display: none !important;
+			}
+          </style>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<style>
+ .mobile-banner-slider .banner-text h2{color:{{section.settings.headingcolor}};font-size:{{section.settings.headingfontsize}};font-weight:{{section.settings.headingfontweight}};}
+  .mobile-banner-slider .banner-text p{color:{{section.settings.subheadingcolor}};font-size:{{section.settings.subheadingfontsize}};font-weight:{{section.settings.subheadingfontweight}};}
+  .mobile-banner-slider .banner-text .btn-default{color:{{section.settings.buttontextcolor}}!important;background:{{section.settings.buttonbgcolor}}!important;border:none;font-size:{{section.settings.buttonfontsize}};font-weight:{{section.settings.buttonfontweight}};width:auto;}
+
+  {% if section.settings.bottompadding %}
+ 
+  .mobile-banner-slider.owl-carousel.owl-theme.owl-loaded {
+    margin-bottom: 0;
+}
+  {% endif %}
+</style>
+{% schema %}
+{
+"name": "Mobile Slideshow",
+"class": "index-section index-section--flush",
+"max_blocks": 10,
+
+
+
+
+"settings": [
+{
+"type": "paragraph",
+"content": "This section displays a banner/slideshow on mobile with text/button overlays. Warning: Rotating sliders are conversion killers. They will also slow your page down."
+},
+
+
+{
+"type": "checkbox",
+"id": "fullwidth",
+"label": "Make Slider Full Width" 
+},
+{
+"type": "checkbox",
+"id": "bottompadding",
+"label": "Disable Bottom Padding" 
+},
+ {
+"type": "color",
+"id": "headingcolor",
+"label": "Slide Heading Color" ,
+"default":"#FFFFFF"
+},
+{
+        "type": "select",
+        "id": "headingfontsize",
+        "label": "Slide Heading Font Size",
+        "options": [
+          {
+            "value": "10px",
+            "label": "10px"
+          },
+          {
+            "value": "12px",
+            "label": "12px"
+          },
+          {
+            "value": "14px",
+            "label": "14px"
+          },
+          {
+            "value": "16px",
+            "label": "16px"
+          },
+          {
+            "value": "18px",
+            "label": "18px"
+          },
+          {
+            "value": "20px",
+            "label": "20px"
+          },
+          {
+            "value": "22px",
+            "label": "22px"
+          },
+{
+            "value": "24px",
+            "label": "24px"
+          },
+{
+            "value": "26px",
+            "label": "26px"
+          },
+          {
+            "value": "28px",
+            "label": "28px"
+          },
+          {
+            "value": "30px",
+            "label": "30px"
+          }
+        ],
+        "default": "30px"
+      },
+{
+"type": "color",
+"id": "subheadingcolor",
+"label": "Slide Sub-Heading Color",
+"default":"#FFFFFF"
+},
+{
+        "type": "select",
+        "id": "subheadingfontsize",
+        "label": "Slide Sub-Heading Font Size",
+        "options": [
+          {
+            "value": "10px",
+            "label": "10px"
+          },
+          {
+            "value": "12px",
+            "label": "12px"
+          },
+          {
+            "value": "14px",
+            "label": "14px"
+          },
+          {
+            "value": "16px",
+            "label": "16px"
+          },
+          {
+            "value": "18px",
+            "label": "18px"
+          },
+          {
+            "value": "20px",
+            "label": "20px"
+          },
+          {
+            "value": "22px",
+            "label": "22px"
+          },
+{
+            "value": "24px",
+            "label": "24px"
+          }
+        ],
+        "default": "18px"
+      },
+{
+        "type": "select",
+        "id": "buttonfontsize",
+        "label": "Slide Button Font Size",
+        "options": [
+          {
+            "value": "10px",
+            "label": "10px"
+          },
+          {
+            "value": "12px",
+            "label": "12px"
+          },
+          {
+            "value": "14px",
+            "label": "14px"
+          },
+          {
+            "value": "16px",
+            "label": "16px"
+          },
+          {
+            "value": "18px",
+            "label": "18px"
+          },
+          {
+            "value": "20px",
+            "label": "20px"
+          },
+          {
+            "value": "22px",
+            "label": "22px"
+          },
+{
+            "value": "24px",
+            "label": "24px"
+          }
+        ],
+        "default": "18px"
+      },
+
+
+{
+"type": "color",
+"id": "buttonbgcolor",
+"label": "Slide Button Background Color",
+"default":"#000000"
+},
+{
+"type": "color",
+"id": "buttontextcolor",
+"label": "Slide Button Text Color",
+"default":"#FFFFFF"
+}
+ 
+
+],
+
+"blocks": [
+{
+"type": "image",
+"name": "Image slide",
+"settings": [
+{
+"type": "image_picker",
+"id": "image",
+"label": "Image"
+},
+
+{
+"type": "text",
+"id": "heading",
+"label": "Slide Heading"
+}
+
+,
+
+{
+"type": "text",
+"id": "subheading",
+"label": "Slide Sub-Heading"
+},
+
+
+{
+"type": "text",
+"id": "buttontext",
+"label": "Slide Button Text"
+},
+
+{
+"type": "url",
+"id": "link",
+"label": "Slide link"
+},
+
+{
+"type": "select",
+"id": "heading_vertical_pos",
+"label": "Vertical Position",
+"options": [
+{
+"value": "top",
+"label": "Top"
+},
+{
+"value": "center",
+"label": "Center"
+},
+{
+"value": "bottom",
+"label": "Bottom"
+}
+],
+"default": "center"
+},
+{
+"type": "select",
+"id": "horizontal_vertical_pos",
+"label": "Horizontal Position",
+"options": [
+{
+"value": "left",
+"label": "Left"
+},
+{
+"value": "center",
+"label": "Center"
+},
+{
+"value": "right",
+"label": "Right"
+}
+],
+"default": "center"
+}
+]
+}
+
+],
+"presets": [{
+"name": "Homepage Mobile Slideshow",
+"category": "Image",
+
+"blocks": [
+{
+"type": "image"
+},
+{
+"type": "image"
+}
+]
+}]
+}
+{% endschema %}

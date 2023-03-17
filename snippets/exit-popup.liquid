@@ -1,0 +1,25 @@
+ <div id="exit-popup" class="clock-popup exit-one mfp-hide">
+  <button title="Close (Esc)" type="button" class="mfp-close" id="mfp-closeid-exit"><span class="fa fa-times"></span></button>
+  <div class="clock-popup-inner">
+    <h2><span>{{settings.exitpopup_heading}}</span></h2>
+    <p class="ptag">{{settings.exitpopup_text}}</p>
+       <div id="rC_B" class="redCountdownDemo"></div>
+    {% if cart.item_count > 0 %}
+    <form action="/cart" method="post" novalidate  >
+      <input type="hidden" name="discount" value="{{settings.discountcode}}">    
+      <div class="popup_newsletter">
+        <button class="btn btncookie" type="submit"  name="checkout">{{ 'general.exitpopup.apply' | t }}</button>
+      </div></form>
+    {% else%}
+    <a class="btn btncookie" type="submit"  href="/collections/all" name="checkout">{{ 'general.exitpopup.shop' | t }}</a>
+    {% endif %}
+   <p style="
+    margin-top: 14px;
+">{{ 'general.exitpopup.or' | t }}</p>
+    <p>{{ 'general.exitpopup.enter' | t }} <span style="
+      color: #42c54f ;
+      font-weight: bold;
+      border-bottom: 2px dotted;
+      ">{{settings.discountcode}}</span> {{ 'general.exitpopup.checkout' | t }}</p>
+  </div>
+</div>

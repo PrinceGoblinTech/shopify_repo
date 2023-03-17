@@ -1,0 +1,121 @@
+<div data-section-id="{{ section.id }}" data-section-type="product-information">
+    {%- if section.settings.enable -%}
+        <input hidden type="checkbox" id="product-information-popup">
+        <div class="product-information">
+            <label class="product-information__btn" for="product-information-popup">
+                <i class="product-information__btn_icon"></i>
+            </label>
+            <div class="product-information__content">
+                {%- if settings.visitors_counter_enable -%}
+                    <div class="product-information__section">
+                        <p>
+                            {%- if settings.visitors_counter_enable_demo_data -%}
+                                <span class="js-generate-visitors-counter">..</span>
+                            {%- else -%}
+                                <span class="js-statsapp-visitors-counter">..</span>
+                            {%- endif -%}
+                            <span> {{ settings.visitors_counter_text }}</span>
+                        </p>
+                    </div>
+                {%- endif -%}
+                {%- if settings.addedtocart_counter_enable -%}
+                    <div class="product-information__section">
+                        <p>
+                            {%- if settings.addedtocart_counter_enable_demo_data -%}
+                                <span class="js-generate-addedtocart-counter">..</span>
+                            {%- else -%}
+                                <span class="js-statsapp-addedtocart-counter">..</span>
+                            {%- endif -%}
+                            {%- if section.settings.addedtocart_counter_text != blank -%}
+                            <span> {{ section.settings.addedtocart_counter_text }}</span>
+                            {%- endif -%}
+                        </p>
+                    </div>
+                {%- endif -%}
+                {%- if settings.orders_counter_enable -%}
+                    <div class="product-information__section">
+                        <p>
+                            {%- if settings.orders_counter_enable_demo_data -%}
+                                <span class="js-generate-orders-counter">..</span>
+                            {%- else -%}
+                                <span class="js-statsapp-orders-counter">..</span>
+                            {%- endif -%}
+                            <span> {{ section.settings.orders_counter_text }}</span>
+                        </p>
+                    </div>
+                {%- endif -%}
+                {%- if section.settings.multibuy_counter_enable -%}
+                    <div class="product-information__section">
+                        <p>
+                            {%- if settings.multibuy_counter_enable_demo_data -%}
+                                <span class="js-generate-multibuy-counter">..</span>
+                            {%- else -%}
+                                <span class="js-statsapp-multibuy-counter">..</span>
+                            {%- endif -%}
+                            <span>{{ section.settings.multibuy_counter_text }}</span>
+                        </p>
+                    </div>
+                {%- endif -%}
+            </div>
+        </div>
+    {%- endif -%}
+</div>
+
+{% schema %}
+{
+    "name": "Product information",
+    "settings": [{
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable",
+            "label": "Enable",
+            "default": false
+        },
+        {
+            "type": "header",
+            "content": "Added to cart"
+        },
+        {
+            "type": "text",
+            "id": "addedtocart_counter_text",
+            "label": "'Added to cart' text",
+            "default": "visitors have this item in their cart right now"
+        },
+        {
+            "type": "header",
+            "content": "Orders"
+        },
+        {
+            "type": "checkbox",
+            "id": "orders_counter_enable",
+            "label": "Enable orders",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "orders_counter_text",
+            "label": "Orders text",
+            "default": "people have bought this item"
+        },
+        {
+            "type": "header",
+            "content": "Percent of people who buy 2 or more"
+        },
+        {
+            "type": "checkbox",
+            "id": "multibuy_counter_enable",
+            "label": "Enable percent",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "multibuy_counter_text",
+            "label": "Percent text",
+            "default": "% of people buy 2 or more"
+        }
+    ]
+}
+{% endschema %}

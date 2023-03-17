@@ -1,0 +1,54 @@
+{%- if section.blocks.size > 0 -%}
+    <style type="text/css">
+        {%- for block in section.blocks -%}
+            {%- if block.type == 'product_option_setting' and block.settings.property != blank and block.settings.value != blank -%}
+                .product-options__property[data-property="{{ block.settings.property | handleize }}"] [data-value="{{ block.settings.value | handleize }}"] {
+                    {%- if block.settings.color != blank -%}
+                        background-color: {{ block.settings.color }} !important;
+                    {%- endif -%}
+                    {%- if block.settings.image != blank -%}
+                        background-image: url({{ block.settings.image | img_url: '50x' }}) !important;
+                    {%- endif -%}
+                }
+            {%- endif -%}
+        {%- endfor -%}
+    </style>
+{%- endif -%}
+
+
+{% schema %}
+{
+"name": "Global settings",
+"settings": [
+
+],
+"blocks": [
+{
+"type": "product_option_setting",
+"name": "Product option setting",
+"settings": [
+{
+"type": "text",
+"id": "property",
+"label": "Property"
+},
+{
+"type": "text",
+"id": "value",
+"label": "Value"
+},
+{
+"type": "color",
+"id": "color",
+"label": "Color"
+},
+{
+"type": "image_picker",
+"id": "image",
+"label": "Image"
+}
+]
+}
+]
+}
+{% endschema %}

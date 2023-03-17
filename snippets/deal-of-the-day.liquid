@@ -1,0 +1,23 @@
+{% if settings.deal_of_the_day_enabled %}
+  {% if settings.deal_of_the_day_start_date != "" %}
+    <span class="dealofthedayproductsbefore"></span>
+    <style>
+      @media screen and (max-width:992px) {
+        .itm.col-lg-12 {
+          padding: 0 15px !important;
+          max-width: 100%;
+          margin: 0px 0 0 9%;
+          float: none;
+        }
+        .itm.deal_wrap {
+          width: 79%;
+          margin: 12px auto 0;
+        }
+
+      }
+      .progresss.progress-stripedd {
+        background-color: {{settings.totalprogress}};
+      }
+    </style>
+  {% endif %}
+{% endif %}

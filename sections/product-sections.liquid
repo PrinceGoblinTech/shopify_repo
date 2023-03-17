@@ -1,0 +1,250 @@
+
+ {% for block in section.blocks %}
+ {%- assign productselection = block.settings.productselect -%}
+{% if productselection == product.handle %} 
+ {% if block.type == 'Left_image' %}
+<div class="container-fluid shoptimized_wrap " style="background: {{block.settings.bgcolor}};">
+  <div class="row">
+    <div class="container ">
+      <div class="row d-flex">
+        <div class="col-sm-6">
+        <div class="shoptimized-image-container">
+          <img src="{{ block.settings.image | img_url: '2048x' }}" class="img-responsive">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="shg-theme-text-content" style="color: {{block.settings.textcolor}};">
+         <h3>{{block.settings.heading}}</h3>
+          <p>{{block.settings.subheading}}</p>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+ {% elsif block.type == 'Right_image' %}
+<div class="container-fluid shoptimized_wrap  " style="background: {{block.settings.bgcolor}};">
+  <div class="row">
+    <div class="container ">
+      <div class="row d-flex d-flex-reverse">
+        <div class="col-sm-6">
+        <div class="shoptimized-image-container">
+          <img src="{{ block.settings.image | img_url: '2048x' }}" class="img-responsive">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="shg-theme-text-content" style="color: {{block.settings.textcolor}};">
+        <h3>{{block.settings.heading}}</h3>
+          <p>{{block.settings.subheading}}</p>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+ {% elsif block.type == 'Image_overlay' %}
+<div class="container-fluid bg_product" style="background:url({{ block.settings.image | img_url: '2048x' }});">
+  <div class="row">
+    <div class="container">
+      <div class="bg_text" style="color: {{block.settings.textcolor}};">
+       <h3>{{block.settings.heading}}</h3>
+          <p>{{block.settings.subheading}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+ {% elsif block.type == 'page' %}
+<div class="container-fluid"  style="background: {{block.settings.bgcolor}};">
+  <div class="row">
+    <div class="container">
+     
+                
+      <div class="bg_text" style="color: {{block.settings.textcolor}};">
+       <h3>{{ pages[block.settings.page].title }}</h3>
+           {{ pages[block.settings.page].content }}
+      </div>
+              
+     
+    </div>
+  </div>
+</div>
+ {% else %}
+<div class="img-full">
+ <img src="{{ block.settings.image | img_url: '2048x' }}" class="img-responsive">
+</div>
+{% endif %}
+{% endif %}
+{% endfor %}
+{% schema %}
+
+{
+  "name": "Product Sections",
+  "class": "Product-section",
+  "max_blocks": 100,
+   
+  "blocks": [
+ 
+    {
+      "type": "Left_image",
+      "name": "Left_image",
+      "settings": [
+ 
+ {
+            "type": "product",
+            "id": "productselect",
+            "label": "Select Product"
+          } ,
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+{
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+{
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Sub heading "
+    },{
+      "type": "color",
+      "id": "bgcolor",
+      "label": "Background color"
+    },
+{
+      "type": "color",
+      "id": "textcolor",
+      "label": "Text color"
+    }
+        
+         
+      ]
+    },
+    {
+      "type": "Right_image",
+      "name": "Right_image",
+      "settings": [
+ {
+            "type": "product",
+            "id": "productselect",
+            "label": "Select Product"
+          } ,
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+{
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Sub heading "
+    }
+,{
+      "type": "color",
+      "id": "bgcolor",
+      "label": "Background color"
+    },
+{
+      "type": "color",
+      "id": "textcolor",
+      "label": "Text color"
+    }
+      ]
+    },
+ {
+      "type": "Image_overlay",
+      "name": "Image_overlay",
+      "settings": [
+ {
+            "type": "product",
+            "id": "productselect",
+            "label": "Select Product"
+          } ,
+         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+{
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Sub heading "
+    },
+ 
+{
+      "type": "color",
+      "id": "textcolor",
+      "label": "Text color"
+    }
+      ]
+    },
+{
+      "type": "page",
+      "name": "Page",
+      
+      "settings": [
+ {
+            "type": "product",
+            "id": "productselect",
+            "label": "Select Product"
+          } ,
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Content page"
+        } ,{
+      "type": "color",
+      "id": "bgcolor",
+      "label": "Background color"
+    } 
+      ]
+    },
+
+ {
+      "type": "Image",
+      "name": "Image",
+      "settings": [
+ {
+            "type": "product",
+            "id": "productselect",
+            "label": "Select Product"
+          } ,
+          {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        } 
+      ]
+    }
+    
+     
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "Left_image"
+      },
+      {
+        "type": "Right_image"
+      },
+      {
+        "type": "Image_overlay"
+      } 
+    ]
+  }
+}
+
+{% endschema %}

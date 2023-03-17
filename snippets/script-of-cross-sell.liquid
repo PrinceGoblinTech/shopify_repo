@@ -1,0 +1,79 @@
+  console.log('product');                  
+    if(window.x != 'sachin') {
+   
+    function related_poup(){
+       
+      hide_goods_in_cart();
+      var test = $("#check_collection_emty").val();
+      if(test==1) {
+        ShopifyAPI.getCart();
+        $("#related_popup_upsell").addClass('in');
+        $("#comment_child_like").html('<img src="https://cdn.shopify.com/s/files/1/1291/3935/files/Spinner__black.svg?18171298341656827193" class="loder_black"  >');
+        $('.modal-backdrop-outer').html('<div class="modal-backdrop in"></div>');
+
+        $("#comment_child_like").load(location.href + " #comment_parent_like" , function(){
+          jQuery('.related_pupup_rendome_parent  > .related_pupup_rendome').pick(3);
+            {% if settings.show_multiple_currencies %}
+          var cookieCurrency = Currency.cookie.read();
+          if (window.money_default !== cookieCurrency && cookieCurrency != "" && cookieCurrency != null) {
+            Currency.convertAll(window.money_default, cookieCurrency);
+          }
+        {% endif %}
+        });
+
+        setTimeout(function(){ 
+          $('body').addClass('modal-open');
+        }, 1500);
+
+      }else{
+        where_to_go();
+      }
+      
+    }
+
+    $(document).on('click','.modal-header .close', function () {
+      $('.modal-backdrop-outer').html(' ');
+      $("#related_popup_upsell").removeClass('in');
+      $('body').removeClass('modal-open');
+    });
+
+
+    $(document).on('hide.bs.modal','#related_popup_upsell', function () {
+      where_to_go();
+    });
+
+  
+    $(document).on('click','#AddToCart', function (e){
+      e.preventDefault();
+      var test = $("#check_collection_emty").val();
+      if(test==1) {
+        var form = $(this).parents('form');
+        $.ajax({
+          type: 'POST',
+          url: '/cart/add.js',
+          async: true,
+          data: form.serialize(),
+          dataType: 'json',
+          cache: false
+        });
+      }
+      {% if settings.atc_to_cart_button %}
+        jQuery('.AddToCart_hide_button').hide();
+        jQuery('.AddToCart_show_button').show();
+      {% endif %}
+      related_poup();
+    });  
+
+    function  where_to_go(){
+      {% if section.settings.ajax_cart_method == 'page' %}
+      {% if section.settings.enable_product_cart_skip %}
+      $(".custome_checkout").trigger("click");
+      {%else%}
+      window.location.href='/cart';
+      {% endif %}
+
+      {% endif %}
+    }
+    }
+              
+                 

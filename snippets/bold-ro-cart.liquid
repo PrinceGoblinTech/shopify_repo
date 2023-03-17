@@ -1,0 +1,7 @@
+{% if shop.metafields.bold_rp.recurring_type == 0 or shop.metafields.bold_rp.recurring_type == 2 %}
+<div class='product_rp_cart_div'></div>
+<div style="clear:both"></div>
+<script>
+$('.product_rp_cart_div').append('<script async class="generate_rp_cart" src="https://ro.boldapps.net/recurring_settings/generate_rp_cart?&shop_url={{ shop.permanent_domain }}&customer_id={{ customer.id }}&subtotal={{ cart.total_price }}"></'+''+'script>');                      
+</script>
+{% endif %}

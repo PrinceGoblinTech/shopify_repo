@@ -1,0 +1,463 @@
+{% if section.settings.footer_first_row_display == true %}
+
+    <style>
+        {% if section.settings.footer_first_row_bg_color != blank %}
+            .first-footer{ background-color: {{ section.settings.footer_first_row_bg_color }} !important;}
+        {% endif %}
+
+        {% if section.settings.footer_first_row_font_color != blank %}
+            .f-footer-text__title,
+            .f-footer-text__description{
+                color: {{ section.settings.footer_first_row_font_color }} !important;
+            }
+        {% endif %}
+
+        {% if section.settings.footer_first_row_font_size_heading != blank or section.settings.footer_first_row_font_style_heading != blank %}
+            .f-footer-text__title{
+            {% if section.settings.footer_first_row_font_size_heading != blank %}
+                font-size: {{ section.settings.footer_first_row_font_size_heading }} !important;
+            {% endif %}
+            {% if section.settings.footer_first_row_font_style_heading != blank%}
+                font-weight: {{ section.settings.footer_first_row_font_style_heading }} !important;
+            {% endif %}
+            }
+        {% endif %}
+
+        {% if section.settings.footer_first_row_title_font_size != blank or section.settings.footer_first_row_title_font_style != blank %}
+            .f-footer-text__description{
+                {% if section.settings.footer_first_row_title_font_size != blank %}
+                    font-size: {{ section.settings.footer_first_row_title_font_size }} !important;
+                {% endif %}
+                {% if section.settings.footer_first_row_title_font_style != blank %}
+                    font-weight: {{ section.settings.footer_first_row_title_font_style }} !important;
+                {% endif %}
+            }
+        {% endif %}
+
+        {% if section.settings.footer_first_row_link_font_size != blank or section.settings.footer_first_row_link_font_style != blank or section.settings.footer_first_row_link_font_color != blank  %}
+            .f-footer-text__link{
+            {% if section.settings.footer_first_row_link_font_size != blank %}
+                font-size: {{ section.settings.footer_first_row_link_font_size }} !important;
+            {% endif %}
+            {% if  section.settings.footer_first_row_link_font_style != blank %}
+                font-weight: {{ section.settings.footer_first_row_link_font_style }} !important;
+            {% endif %}
+            {% if section.settings.footer_first_row_link_font_color != blank  %}
+                color: {{ section.settings.footer_first_row_link_font_color }} !important;
+            {% endif %}
+            }
+        {% endif %}
+
+        {% if section.settings.footer_first_row_link_font_color_hover != blank %}
+            .f-footer-text__link:hover,
+            .f-footer-text__link:focus{
+                color: {{ section.settings.footer_first_row_link_font_color_hover }} !important;
+            }
+
+            .f-footer-text__link--text:hover,
+            .f-footer-text__link--text:focus{
+                color: {{ section.settings.footer_first_row_link_font_color }} !important;
+            }
+        {% endif %}
+    </style>
+
+    <div class="first-footer">
+        <div class="container">
+           {% if section.blocks.size > 0 %}
+            {% comment %}
+                Column grid for content
+            {% endcomment %}
+            {% if section.blocks.size == 2 %}
+                {% assign column_grid = 'col-lg-6 col-sm-6 col-xs-6' %}
+            {% elsif section.blocks.size == 3%}
+                {% assign column_grid = 'col-lg-4 col-sm-4 col-xs-12' %}
+            {% elsif section.blocks.size == 4%}
+                {% assign column_grid = 'col-lg-3 col-sm-3 col-xs-6' %}
+            {% else %}
+                {% assign column_grid = 'col-lg-12 col-sm-12 col-xs-12' %}
+            {% endif %}
+
+            {% for block in section.blocks %}
+                <div class="{{ column_grid }} centr">
+                  <div class="f-footer-border">
+                    <img src="{{'transparent.png' | asset_url }}"
+                         data-src="{{ block.settings.image | img_url: 'master' }}"
+                         data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+                         data-aspectratio="{{ block.settings.image | img_url: 'master' }}"
+                         data-sizes="auto"
+                         data-parent-fit="contain"
+                         alt="Image of footer-image" class="lazyload footer-image no-border ratina-img" />
+
+                    <div class="f-footer-text">
+                        {% if block.settings.heading != blank%}
+                            <h3 class="f-footer-text__title">{{ block.settings.heading }}</h3>
+                        {% endif %}
+                        {% if block.settings.subheading != blank%}
+                            <p class="f-footer-text__description">{{ block.settings.subheading }}</p>
+                        {% endif %}
+                        {% if block.settings.linktext != blank%}
+                            <p>
+                                {% if block.settings.linkurl != blank%}
+                                    <a class="f-footer-text__link" href="{{ block.settings.linkurl }}" >{{ block.settings.linktext }}</a>
+                                {% else %}
+                                    <span class="f-footer-text__link f-footer-text__link--text">
+                                        {{ block.settings.linktext }}
+                                    </span>
+                                {% endif %}
+                            </p>
+                        {% endif %}
+                    </div><!-- f-footer-text -->
+                  </div>
+                </div><!-- col -->
+            {% endfor %}
+{%else%}
+  {% if section.blocks.size == 0 %}
+  
+          
+          
+          <div class="col-lg-3 col-sm-3 col-xs-6 centr">
+                  <div class="f-footer-border">
+                     
+                   {{ 'lifestyle-2'  | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                </div>
+          
+          
+          <div class="col-lg-3 col-sm-3 col-xs-6 centr">
+                  <div class="f-footer-border">
+                     
+                   {{ 'lifestyle-2'  | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                </div>
+          
+          
+          <div class="col-lg-3 col-sm-3 col-xs-6 centr">
+                  <div class="f-footer-border">
+                     
+                   {{ 'lifestyle-2'  | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                </div>
+          
+          
+          <div class="col-lg-3 col-sm-3 col-xs-6 centr">
+                  <div class="f-footer-border">
+                     
+                   {{ 'lifestyle-2'  | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                </div>
+          
+          <!-- col -->
+  {% endif %}
+  {% endif %}
+        </div><!-- container -->
+
+    </div><!-- first-footer -->
+{% else %}
+<style>
+  div#shopify-section-footer {
+    margin-top: 30px;
+}
+</style>
+{% endif %}
+
+
+
+
+{% schema %}
+  {
+    "name": "First Footer",
+    "class": "index-section",
+"max_blocks": 4,
+    "settings": [
+         {
+            "type": "checkbox",
+            "id": "footer_first_row_display",
+            "label": "Display Footer First Row?",
+            "default": true
+         },
+        {
+        "type": "header",
+        "content": "Look And Feel"
+      },
+      {
+        "type": "color",
+        "id": "footer_first_row_bg_color",
+        "label": "Background Color",
+        "default": "#f1f4f5"
+      },
+      {
+        "type": "color",
+        "id": "footer_first_row_font_color",
+        "label": "Font Color",
+        "default": "#6e797a"
+      },
+      {
+        "type": "select",
+        "id": "footer_first_row_font_size_heading",
+        "label": "Heading Font Size",
+        "options": [
+          {
+            "value": "10px",
+            "label": "10px"
+          },
+          {
+            "value": "12px",
+            "label": "12px"
+          },
+          {
+            "value": "14px",
+            "label": "14px"
+          },
+          {
+            "value": "16px",
+            "label": "16px"
+          },
+          {
+            "value": "18px",
+            "label": "18px"
+          },
+          {
+            "value": "20px",
+            "label": "20px"
+          },
+          {
+            "value": "22px",
+            "label": "22px"
+          },
+{
+            "value": "24px",
+            "label": "24px"
+          },
+          {
+            "value": "26px",
+            "label": "26px"
+          },
+          {
+            "value": "28px",
+            "label": "28px"
+          }
+        ],
+        "default": "22px"
+      },
+      {
+        "type": "select",
+        "id": "footer_first_row_font_style_heading",
+        "label": "Hading Font Style",
+        "options": [
+          {
+            "value": "300",
+            "label": "Lighter",
+            "group": "Font Style"
+          },
+          {
+            "value": "400",
+            "label": "Normal",
+            "group": "Font Style"
+          },
+          {
+            "value": "600",
+            "label": "Bold",
+            "group": "Font Style"
+          },
+          {
+            "value": "700",
+            "label": "Bolder",
+            "group": "Font Style"
+          }
+        ],
+        "default": "600"
+      },
+
+      {
+        "type": "select",
+        "id": "footer_first_row_title_font_size",
+        "label": "Subheading Font Size",
+        "options": [
+ {
+            "value": "10px",
+            "label": "10px"
+          },
+          {
+            "value": "12px",
+            "label": "12px"
+          },
+          {
+            "value": "14px",
+            "label": "14px"
+          },
+          {
+            "value": "16px",
+            "label": "16px"
+          },
+          {
+            "value": "18px",
+            "label": "18px"
+          },
+          {
+            "value": "20px",
+            "label": "20px"
+          },
+          {
+            "value": "22px",
+            "label": "22px"
+          }
+          
+        ],
+        "default": "16px"
+      },
+      {
+        "type": "select",
+        "id": "footer_first_row_title_font_style",
+        "label": "Subheading Font Style",
+        "options": [
+          {
+            "value": "300",
+            "label": "Lighter",
+            "group": "Font Style"
+          },
+          {
+            "value": "400",
+            "label": "Normal",
+            "group": "Font Style"
+          },
+          {
+            "value": "600",
+            "label": "Bold",
+            "group": "Font Style"
+          },
+          {
+            "value": "700",
+            "label": "Bolder",
+            "group": "Font Style"
+          }
+        ],
+        "default": "400"
+      },
+  {
+        "type": "select",
+        "id": "footer_first_row_link_font_size",
+        "label": "Link Font Size",
+        "options": [
+          {
+            "value": "10px",
+            "label": "10px"
+          },
+          {
+            "value": "12px",
+            "label": "12px"
+          },
+          {
+            "value": "14px",
+            "label": "14px"
+          },
+          {
+            "value": "16px",
+            "label": "16px"
+          },
+          {
+            "value": "18px",
+            "label": "18px"
+          },
+          {
+            "value": "20px",
+            "label": "20px"
+          },
+          {
+            "value": "22px",
+            "label": "22px"
+          },
+          {
+            "value": "24px",
+            "label": "24px"
+          },
+          {
+            "value": "26px",
+            "label": "26px"
+          },
+          {
+            "value": "28px",
+            "label": "28px"
+          }
+        ],
+        "default": "16px"
+      },
+      {
+        "type": "select",
+        "id": "footer_first_row_link_font_style",
+        "label": "link Font Style",
+        "options": [
+          {
+            "value": "300",
+            "label": "Lighter",
+            "group": "Font Style"
+          },
+          {
+            "value": "400",
+            "label": "Normal",
+            "group": "Font Style"
+          },
+          {
+            "value": "600",
+            "label": "Bold",
+            "group": "Font Style"
+          },
+          {
+            "value": "700",
+            "label": "Bolder",
+            "group": "Font Style"
+          }
+        ],
+        "default": "400"
+      },
+        {
+        "type": "color",
+        "id": "footer_first_row_link_font_color",
+        "label": "Link Color",
+        "default": "#000"
+        },
+        {
+        "type": "color",
+        "id": "footer_first_row_link_font_color_hover",
+        "label": "Link Hover Color",
+        "default": "#cde480"
+        }
+    ],
+ "blocks": [
+      {
+        "type": "image",
+        "name": "footer columns",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+ {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading"
+          },
+ {
+            "type": "text",
+            "id": "subheading",
+            "label": "Sub Heading"
+          }
+,
+ {
+            "type": "text",
+            "id": "linktext",
+            "label": "Link Text"
+          }
+,
+ {
+            "type": "url",
+            "id": "linkurl",
+            "label": "Link Url"
+          }
+        ]
+      }
+
+    ]
+
+  }
+{% endschema %}

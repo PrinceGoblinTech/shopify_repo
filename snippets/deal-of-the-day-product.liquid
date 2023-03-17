@@ -1,0 +1,40 @@
+{% if settings.deal_of_the_day_enabled %}
+   <style>
+        .deal-of-the-day-product > .progress-bar > .bar{
+            background-color: {{ settings.deal_of_the_day_progressbar_color }};
+        }
+    </style>
+    <div class="deal-of-the-day-product {{ tag }}" product-id="{{ product.id }}" style="display: none;">
+        <p><i class="fa fa-clock-o fa-1x"></i> {{ settings.deal_of_the_day_product_text }} <span class="countdown"></span></p>
+        
+      <div class="progress-bar">
+            <span class="bar"></span>
+      </div>
+    </div>
+{{ 'deal-of-the-day.js' | asset_url | script_tag }}
+
+<style>
+.deal-of-the-day-product{
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+.progress-bar {
+    width: 100%;
+    position: relative;
+    display: block;
+    height: 4px;
+    background: #e6e6e6;
+}
+.bar {
+    height: 100%;
+    width: 10px;
+    position: absolute;
+    left: 0;
+}
+.deal-of-the-day-product{ width:60%; }
+.deal-of-the-day-product i {top:0px;}
+.deal-of-the-day-product p { font-size:16px;}  
+h1{ clear:both }  
+</style>
+{% endif %}
+

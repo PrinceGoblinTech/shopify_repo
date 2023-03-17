@@ -1,0 +1,105 @@
+{% assign file_extension = 'png' %}
+{% if swatch == blank %}
+  <div class="swatch error">
+    <p>You must include the snippet swatch.liquid with the name of a product option.</p> 
+    <p>Use: <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+    <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+  </div>
+{% else %}
+  {% assign found_option = false %}
+  {% assign is_color = false %}
+  {% assign is_size = false %}
+  {% assign option_index = 0 %}
+  {% for option in product.options %}
+    {% if option == swatch %}
+      {% assign found_option = true %}
+      {% assign option_index = forloop.index0 %}
+      <style>
+        label[for="product-select-option-{{ option_index }}"] { display: none; }
+        #product-select-option-{{ option_index }} { display: none; }
+        #product-select-option-{{ option_index }} + .custom-style-select-box { display: none !important; }
+      </style>
+      {% assign downcased_option = swatch | downcase %}
+      {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+        {% assign is_color = true %}
+      {% endif %}
+	  {% if downcased_option contains 'size' %}
+        {% assign is_size = true %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% unless found_option %}
+    <div class="swatch error">
+      <p>You included the snippet swatch.liquid with the name of a product option — <code>'{{ swatch }}'</code> — that does not belong to your product.</p>
+      <p>Use <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+      <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+      <p><strong>This is case-sensitive!</strong> Do not put in <code>'color'</code> if your product option name is <code>'Color'</code>.</p>
+    </div>
+  {% else %}
+    <div class="product--option swatch clearfix" data-option-index="{{ option_index }}">
+      <div class="header">{{ swatch }}</div>
+      {% assign values = '' %}
+      {% for variant in product.variants %}
+        {% assign value = variant.options[option_index] %}
+        {% unless values contains value %}
+          {% assign values = values | join: ',' %}
+          {% assign values = values | append: ',' | append: value %} 
+          {% assign values = values | split: ',' %}
+          <div data-value="{{ value | escape }}" class="swatch-element {% if is_color %}color {% endif %}{{ value | handle }} {% if variant.available %}available{% else %}soldout{% endif %}">
+            <div class="sold-out-tooltip">Currently out of stock</div>
+
+            {% comment %}
+              {% if is_color %}
+                {% if variant.available %}
+                  <div class="tooltip">{{ value }}</div>
+                {% else %}
+                  <div class="tooltip">Currently out of stock</div>
+                {% endif %}
+              {% else %}
+                {% unless variant.available %}
+                  <div class="tooltip">Currently out of stock</div>
+                {% endunless %}
+              {% endif %}
+            {% endcomment %}
+            <input id="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}" type="radio" name="option-{{ option_index }}-{{ product.id }}" value="{{ value | escape }}"{% if forloop.first %} checked{% endif %} {% unless variant.available %}{% endunless %} />
+            {% if is_color %}
+            {% if settings.swatchestype == 'Color'%}
+              <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}">
+                <div style="background-color: {{ value | split: ' ' | last | handle }}; background-image: url({{ value | handle | append: '.' | append: file_extension | asset_url }})">
+                  <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" />
+                </div>
+              </label>
+            {% elsif settings.swatchestype == 'Variant Image' %}
+              <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}">
+                <div style=" background-image: url({{ variant.image.src | product_img_url: '35x'  }});background-size:100%;">
+                  <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" />
+                </div>
+              </label>
+               {% else %}
+             <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}">
+                {{ value }}
+                <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" />
+              </label>
+            {% endif %}
+            {% else %}
+              <label for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}">
+                {{ value }}
+                <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" />
+              </label>
+            {% endif %}
+          </div>
+        {% endunless %}
+      {% endfor %}
+      {% if is_size %}
+        {% if settings.display_sizing_chart %}
+          {% if view_size_chart %}
+            <span class="sizing-div">
+              <a href="#" class="sizing" data-toggle="modal_size" data-target="#size-chart">{{ 'products.general.sizing' | t }}</a>
+            </span>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    </div>
+  {% endunless %}
+{% endif %}

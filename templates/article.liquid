@@ -1,0 +1,290 @@
+<div class="container-fluid header-space">
+</div>
+
+<div class="container">
+{% assign number_of_comments = article.comments_count %}
+
+{% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+ {% if settings.blog_breadcrumb %}
+{% include 'breadcrumb' %}
+{% endif %}
+<div class="row">
+  
+  <article class="{% if settings.sidebar_enabled %}col-sm-9 col-lg-9{% else %}col-sm-12 col-lg-12{% endif %}" itemscope itemtype="http://schema.org/Article">
+
+    <header class="section-header">
+      <div class="section-header__left blog-sides ">
+       <h2 class="h3 bl-tittle">{{ article.title }}</h2>
+         <p class="blog_meta">
+          {% if settings.blog_author %}
+            <span>By {{article.author }}</span>
+          {% endif %}
+
+          {% if settings.blog_date %}
+             <span> <i class="fa fa-calendar"></i> {{ article.published_at | date: format: "month_day_year" }}</span>
+         
+          {% endif %}
+          
+          {% if settings.blog_comment_count %}
+            {% if settings.disqus_enabled %}
+              <span>
+                <a href="{{ article.url }}#disqus_thread" data-disqus-identifier="{{ article.id }}" class="disqus-comment-count"> {{ 'blogs.comments.with_count' | t: count: 0 }}</a>
+              </span>
+            {% elsif article.comments_enabled? and article.comments_count > 0 %}
+              <span>
+                <a href="{{ article.url }}#comments">{{ 'blogs.counts.comments_with_count' | t: count: article.comments_count }}</a>
+              </span>
+            {% endif %}
+          {% endif %}
+        </p>
+       </div>
+    </header>
+ {% if article.image and settings.slideshow_article_enabled == false %}
+    <a class="article__featured-image" href="{{ article.url }}">
+      {{ article | img_url: '1024x1024' | img_tag: article.title }}
+    </a>
+    {% endif %}
+    <div class="rte" itemprop="articleBody">
+      {{ article.content }}
+    </div>
+
+    {% comment %}
+      Show off meta information like comments and tags.
+    {% endcomment %}
+    <ul class="inline-list">
+      {% include 'tags-article' %}
+    </ul>
+
+    {% comment %}
+      Create links to the next and previous articles, if available.
+    {% endcomment %}
+    {% if blog.next_article or blog.previous_article %}
+      <hr>
+      <p class="clearfix">
+        {% if blog.previous_article %}
+          <span class="left">
+            &larr; {{ 'blogs.article.older_post' | t | link_to: blog.previous_article }}
+          </span>
+        {% endif %}
+        {% if blog.next_article %}
+          <span class="right">
+            {{ 'blogs.article.newer_post' | t | link_to: blog.next_article }} &rarr;
+          </span>
+        {% endif %}
+      </p>
+    {% endif %}
+
+  {% if settings.disqus_enabled %}
+          <div id="disqus_thread"></div>
+          <script>
+              var disqus_config = function () {
+                  this.page.url = "{{ canonical_url }}";
+                  this.page.identifier = "{{ article.id }}";
+              };
+              (function() { 
+                  var d = document, s = d.createElement('script');
+                  s.src = '//{{ settings.disqus_shortname }}.disqus.com/embed.js';
+                  s.setAttribute('data-timestamp', +new Date());
+                  (d.head || d.body).appendChild(s);
+              })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        {% elsif blog.comments_enabled? %}
+      <hr>
+
+      <h2 class="h3">{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h2>
+
+      <hr>
+
+      {% comment %}
+        Just like blog.liquid page, define how many comments should be on each page.
+      {% endcomment %}
+      {% paginate article.comments by 5 %}
+        {% comment %}
+          #comments is required, it is used as an anchor link by Shopify.
+        {% endcomment %}
+        <div id="comments">
+
+          {% if comment and comment.created_at %}
+            <p class="note form-success">
+              {% if blog.moderated? %}
+                {{ 'blogs.comments.success_moderated' | t }}
+              {% else %}
+                {{ 'blogs.comments.success' | t }}
+              {% endif %}
+            </p>
+          {% endif %}
+
+          {% if number_of_comments > 0 %}
+            <ul class="no-bullets">
+              {% comment %}
+                If a comment was just submitted with no blank field, show it.
+              {% endcomment %}
+              {% if comment and comment.created_at %}
+                <li id="{{ comment.id }}" class="comment first{% if article.comments_count == 0 %} last{% endif %}">
+                  {% include 'comment' %}
+                </li>
+              {% endif %}
+
+              {% comment %}
+                Showing the rest of the comments.
+              {% endcomment %}
+              {% for comment in article.comments %}
+                <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
+                  {% include 'comment' %}
+                </li>
+
+                {% unless forloop.last %}
+                  <li><hr></li>
+                {% endunless %}
+              {% endfor %}
+            </ul>
+
+            {% if paginate.pages > 1 %}
+              <hr>
+              <div class="pagination">
+                {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+              </div>
+            {% endif %}
+
+            <hr>
+
+          {% endif %}
+
+          <div class="form-vertical">
+            {% form 'new_comment', article %}
+              <h2 class="h3">{{ 'blogs.comments.title' | t }}</h2>
+
+              {{ form.errors | default_errors }}
+
+              <div class="grid">
+
+                <div class="grid__item large--one-half">
+                  <label for="CommentAuthor" class="hidden-label">{{ 'blogs.comments.name' | t }}</label>
+                  <input type="text" name="comment[author]" id="CommentAuthor" class="input-full{% if form.errors contains 'author' %} error{% endif %}" placeholder="{{ 'blogs.comments.name' | t }}" value="{{ form.author }}" autocapitalize="words">
+
+                  <label for="CommentEmail" class="hidden-label">{{ 'blogs.comments.email' | t }}</label>
+                  <input type="email" name="comment[email]" id="CommentEmail" class="input-full{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'blogs.comments.email' | t }}" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
+                </div>
+
+                <div class="grid__item large--one-half">
+                  <label for="CommentBody" class="hidden-label">{{ 'blogs.comments.message' | t }}</label>
+                  <textarea name="comment[body]" id="CommentBody" class="input-full{% if form.errors contains 'body' %} error{% endif %}" placeholder="{{ 'blogs.comments.message' | t }}">{{ form.body }}</textarea>
+                </div>
+
+              </div>
+
+              {% if blog.moderated? %}
+                <p>{{ 'blogs.comments.moderated' | t }}</p>
+              {% endif %}
+
+              <input type="submit" class="btn" value="{{ 'blogs.comments.post' | t }}">
+            {% endform %}
+          </div>
+
+        </div>
+      {% endpaginate %}
+    {% endif %}
+
+  </article>
+ {% if settings.sidebar_enabled %}
+    <div class="col-sm-3 col-lg-3 ccv">
+      {% include 'blog-sidebar' %}
+    </div>
+     {% endif %}
+  
+</div>
+</div>
+
+ 
+<style>
+  .blog_meta span:after {
+    content: '';
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    margin: -1px 5px 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #ced3d3;
+    box-sizing: border-box;
+}
+  .blog-widget-wrapper div#autocomplete-results {
+    display: none;
+}
+.blog-row{
+	background: #f7f9fb;
+	padding-bottom: 7px;
+}
+.blog_div .blog_meta span:after {
+	display: none;
+}
+.blog_div .blog_meta span {
+	margin-right: 5px;
+}
+.blog_div .blog-read-more-btn {
+	text-align: center;
+	text-transform: uppercase;
+	display: block;
+	float: none;
+	margin-top: 19px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 8px;
+  color: {{settings.blogbuttoncolortext}} !important;
+	border: 1px solid {{settings.blogbuttoncolortext}};
+	border-radius: 60px;
+	width: 100%;
+    max-width:225px;
+  background: {{settings.blogbuttoncolor}} !important;
+}
+  .blog_div .blog-read-more-btn:hover {
+  
+  color: {{settings.blogbuttoncolortexthover}} !important;
+    border: 1px solid {{settings.blogbuttoncolortexthover}};
+     background: {{settings.blogbuttoncolorhover}} !important;
+  }
+  
+  .blog-text {
+    padding: 0 20px;
+}
+.blog_meta span , .blog_meta a , .blog-excerpt span{
+	color : #666;
+}
+  .blog_div{max-width:1140px; width:100%;}
+  .blog-sides .col-sm-6:nth-child(odd) .blog-row{float:right;}
+  .blog-sides .bl-tittle{ font-size:{{settings.blogtitlesize}}; margin-bottom:39px; margin-top:17px; }
+  @media only screen and (max-width: 767px) {
+  .blog-sides .col-sm-6:nth-child(odd) .blog-row{float:none;}
+    #news .blog-row{margin:0 auto 35px;}
+  }
+  
+ .ccv input#search_query {
+    font-size: 17px;
+}
+  .template-article .main-content .blog-newslatter .list-unstyled>li .stitle {
+    margin-left: 0!important;
+    max-width: 143px;
+    padding-left:25px;
+}
+  .template-article .main-content .blog-newslatter .list-unstyled>li .stitle>h3{font-weight:400;}
+   .blog-widget-wrapper button.btn.btn-success {
+    border-color: transparent;
+}
+  .blog-widget-wrapper input#contact_email {
+    padding-left: 12px!important;
+}
+   .template-article .main-content .blog-newslatter .list-unstyled>li .blog-sidebar-img{width:100px}
+  input.btn.btn-default.subscribe-button {
+    width: 100%;
+}
+  
+  a.btn.blog-read-more-btn {
+    background: {{settings.readmorebuttonbg}}!important;
+    color: {{settings.readmorebuttonTextcolor}}!important;
+    font-size:{{settings.readmorebuttonTextfont}}!important;
+}
+</style>

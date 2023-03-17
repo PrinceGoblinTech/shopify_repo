@@ -1,0 +1,319 @@
+ 
+
+<div class="container social-feeds-wrap">
+  <div class="section clearfix homepage_content">
+
+        <div class="block__{{ section.id }} columns equal-columns--outside-trim" {{ section.shopify_attributes }}>
+         <h2  class="section_title xza">
+            {% if section.settings.instagram_link %}
+              <a href="{{ section.settings.instagram_link }}" target="_blank">
+            {% endif %}
+            {{ section.settings.instagram_title }}
+            {% if section.settings.instagram_link %}
+              </a>
+            {% endif %}
+          </h2>
+
+            <div id="instafeed" class="js-instafeed   category_wrap  {% if section.settings.usecarousel%} instacarousel {% endif %}" data-client-id="{{ section.settings.instagram_client_id | strip }}" data-count="{{ section.settings.instagram_count }}" data-column="{% if blockLength > 1 %}eight{% else %}col-sm-3 {% endif %}"></div>
+
+
+        </div>
+
+
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Instagram",
+  "class": "social-feeds-section shopify-section-instaggg cole",
+
+  "settings": [
+
+
+        {
+          "type": "text",
+          "id": "instagram_client_id",
+          "label": "Instagram Access Token"
+        },
+        {
+          "type": "text",
+          "id": "instagram_title",
+          "label": "Heading",
+          "default": "Instagram"
+        },
+    {
+          "type": "text",
+          "id": "instagram_link",
+          "label": "Link to your Instagram",
+          "default": "https://www.instagram.com/"
+        },
+        {
+          "type": "checkbox",
+          "id": "usecarousel",
+          "label": "Use Carousel"
+        },
+        {
+          "type": "range",
+          "id": "instagram_count",
+          "label": "Number of images",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "default": 5
+        }
+
+  ],
+  "presets": [{
+    "name": "Instagram feeds",
+    "category": "Social"
+
+    }]
+
+}
+{% endschema %}
+
+ <script>
+   var instagram = {
+    loadContent: function(s){
+
+      if(s.clientID) {
+        var url = 'https://api.instagram.com/v1/users/self/media/recent/?access_token='+s.clientID;
+
+        $.ajax({
+          type: 'GET',
+          url: url,
+          dataType: 'jsonp',
+          success: function(data) {
+
+            {% if section.settings.usecarousel%}
+
+            if(data.meta.code === 200 && data.data.length) {
+
+              var data = data.data;
+              var count = 0;
+              s.el.empty();
+
+              for(var i = 0; i < data.length; i++) {
+                var thisMedia = data[i], item;
+
+                var url = thisMedia.images.low_resolution.url;
+
+                if(!thisMedia.images.low_resolution.url.indexOf("null") > -1) {
+
+                  item = '<div><img src="'+url+'"></div>';
+                  item = '<a href="'+thisMedia.link+'" target="_blank" class="instagram__link">'+item+'</a>';
+                }
+
+                 
+                  if(thisMedia.videos) {
+                  var src;
+
+                  if(thisMedia.videos.standard_resolution) {
+                    src = thisMedia.videos.standard_resolution.url;
+                  } else if(thisMedia.videos.low_resolution) {
+                    src = thisMedia.videos.low_resolution.url;
+                  } else if(thisMedia.videos.low_bandwidth) {
+                    src = thisMedia.videos.low_bandwidth.url;
+                  }
+
+                  item = '<video poster="'+thisMedia.images.low_resolution.url+'" controls>';
+                  item += '<source src="'+src+'" type="video/mp4;"></source>';
+                  item += '</video>';
+                }
+
+                if(item) {
+
+                  item = '<div class="item">'+item+'</div>';
+
+                 }
+                if(item !== '') {
+                  s.el.append(item);
+                  count++;
+                }
+                if(count == s.limit) {
+                  break;
+                }
+              }
+
+
+            }
+            {% else %}
+
+            if(data.meta.code === 200 && data.data.length) {
+
+              var data = data.data;
+              var count = 0;
+              s.el.empty();
+
+              for(var i = 0; i < data.length; i++) {
+                var thisMedia = data[i], item;
+
+                var url = thisMedia.images.standard_resolution.url;
+
+                if(!thisMedia.images.standard_resolution.url.indexOf("null") > -1) {
+
+                  item = '<div class="il-photo__img instagram__bg"   data-filter="'+thisMedia.filter+'" /><img src="'+url+'"></div>';
+                  item = '<a href="'+thisMedia.link+'" target="_blank" class="instagram__link">'+item+'</a>';
+                }
+
+                if(thisMedia.videos) {
+                  item = '<div class="instagram__video instagram__bg" style="background-image:url('+url+')" data-filter="'+thisMedia.filter+'" /></div>';
+                  item = '<a href="'+thisMedia.link+'" target="_blank" class="instagram__link instagram__video-link">'+item+'</a>';
+                }
+
+                if(item) {
+                  if (i == 0)
+                  {
+                      item = '<div class="col-sm-6 instagram__item small-down--one-whole">'+item+'</div>';
+
+                  }
+                 else
+                 {
+                  item = '<div class="'+s.column+ ' columns instagram__item small-down--one-whole">'+item+'</div>';
+                 }
+                 }
+                if(item !== '') {
+                  s.el.append(item);
+                  count++;
+                }
+                if(count == s.limit) {
+                  break;
+                }
+              }
+
+
+            }
+            {% endif %}
+          },
+          error: function() {
+          }
+        });
+      }
+    }
+  }
+  $(window).load(function(){
+
+
+      $(".instacarousel").owlCarousel({
+
+
+     nav:true,
+        dots:false,
+        loop:true,
+        margin:5,
+     navText:["<i class='shoptimized-064 margin_right-2'></i>", "<i class='shoptimized-074 margin_left-3'></i>"],
+      responsive: {
+        0: {
+          items: 2,
+           slideBy: 2,
+        {% if settings.use_two_and_half_layout %}stagePadding: 30 {% endif %}
+          },{% if settings.use_two_and_half_layout %}
+          300:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 35
+          },
+          350:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 40
+          },
+          400:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 45
+          },
+          450:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 50
+          },
+          500:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 55
+          },
+          550:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 60
+          },
+          600:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 65
+          },
+          650:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 70
+          },
+          700:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 75
+          },
+          750:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 80
+          },
+          800:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 85
+          },
+          850:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 90
+          },
+          900:{
+              items:2,
+              slideBy: 2,
+              stagePadding: 95
+          },{% endif %}
+        1000: {
+          items: 6,
+           slideBy: 6
+        }
+      }
+    });
+       });
+
+         $(document).ready(function(){
+
+
+
+    var $parentSection = $('.shopify-section-instaggg');
+
+
+
+    if ($parentSection.hasClass('social-feeds-section')){
+
+      $('.social-feeds-wrap').each(function (index, value) {
+
+
+
+        var $target = $(this).find(".js-instafeed");
+
+        instagram.loadContent({
+
+          el: $target,
+          clientID: $target.data('client-id'),
+          limit: $target.data('count'),
+          column: $target.data('column')
+        });
+      });
+    }
+
+     });
+ </script>
+<style>
+
+      div#instafeed {
+    padding-bottom: 20px;
+}
+</style>

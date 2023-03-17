@@ -1,0 +1,156 @@
+<div class="container-fluid" id="sec{{ section.id }}">
+    <div class="row">
+        <div class="container">
+            {% if section.settings.title != blank %}
+                {%- assign collection = collections[section.settings.collection] -%}
+                {%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+
+                {% if section.settings.use_tag == 'h1' %}
+                    <h1 class="section_title xza">
+                        <a href="{{ collection.url }}">{{ section.settings.title | escape }}</a>
+                    </h1>
+                {% elsif section.settings.use_tag == 'h2' %}
+                    <h2 class="section_title xza">
+                        <a href="{{ collection.url }}">{{ section.settings.title | escape }}</a>
+                    </h2>
+                {% elsif section.settings.use_tag == 'h3' %}
+                    <h3 class="section_title xza">
+                        <a href="{{ collection.url }}">{{ section.settings.title | escape }}</a>
+                    </h3>
+                {% elsif section.settings.use_tag == 'h4' %}
+                    <h4 class="section_title xza">
+                        <a href="{{ collection.url }}">{{ section.settings.title | escape }}</a>
+                    </h4>
+                {% elsif section.settings.use_tag == 'h5' %}
+                    <h5 class="section_title xza">
+                        <a href="{{ collection.url }}">{{ section.settings.title | escape }}</a>
+                    </h5>
+                {% else %}
+                    <h6 class="section_title xza">
+                        <a href="{{ collection.url }}">{{ section.settings.title | escape }}</a>
+                    </h6>
+                {% endif %}
+            {% endif %}
+            {%- assign collection = collections[section.settings.collection] -%}
+            {%- assign product_limit = section.settings.grid -%}
+            <div id="control{{ section.id }}" class="category_wrap homaa">
+                {% assign dTotalnumber = 0 %}
+                {% for product in collection.products limit: product_limit %}
+                    {% assign dTotalnumber = dTotalnumber | plus: 1 %}
+                    {% include 'product-grid-item' %}
+                {% else %}
+                    {% for i in (1..product_limit) %}
+                        <div class="category_inner">
+                            <div class="category_img">
+                                <a href="javascript:;">
+                                    {{ 'product-1'  | placeholder_svg_tag: 'placeholder-svg' }}
+                                </a>
+                            </div>
+
+                            <div class="category_detail">
+                                <h4>
+                                    <a href="javascript:;">
+                                        Never Underestimate An Old Dude With a Surfboard Hoodie
+                                    </a>
+                                </h4>
+
+                                <h5>$14.00</h5>
+
+                                <div class="star-rating">
+                                    <span class="fa fa-star rating"></span>
+                                    <span class="fa fa-star rating"></span>
+                                    <span class="fa fa-star rating"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="rating-review">( 3 reviews )</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if dTotalnumber <= 5 %}
+    <style>
+        @media screen and (min-width: 992px) {
+            #sec{{ section.id }} .owl-nav {
+                display: none !important;
+            }
+        }
+    </style>
+{% endif %}
+
+{% if dTotalnumber <= 2 %}
+    <style>
+        @media screen and (max-width: 992px) {
+            #sec{{ section.id }} .owl-nav {
+                display: none !important;
+            }
+        }
+    </style>
+{% endif %}
+
+<style>
+    .owl-item .large--one-quarter {
+        width: auto;
+    }
+</style>
+
+{% schema %}
+  {
+    "name": "Product Rows on Homepage",
+    "class": "index-section cole",
+    "settings": [
+    {
+        "type": "paragraph",
+        "content": "This section displays a row of products from a collection."
+    },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+    },
+
+    {
+        "type": "select",
+        "id": "use_tag",
+        "label": "Select Heading tag for title",
+        "default": "h1",
+        "options": [
+            { "value": "h1", "label": "h1" },
+            { "value": "h2", "label": "h2" },
+            { "value": "h3", "label": "h3" },
+            { "value": "h4", "label": "h4" },
+            { "value": "h5", "label": "h5" },
+            { "value": "h6", "label": "h6" }
+        ]
+    },
+      {
+        "id": "collection",
+        "type": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Products to Show",
+        "min": 1,
+        "max": 40,
+        "step": 1,
+        "default": 3
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product Rows on Homepage",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

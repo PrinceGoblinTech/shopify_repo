@@ -1,0 +1,51 @@
+<div class="checkout-images">
+  {% if settings.ff-checkout-visa-enable %}
+    <img   src="{{ 'transparent.png' | asset_url }}"
+           data-src="{{ 'ff-checkout-visa.png' | asset_url }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ff-checkout-visa.png' | asset_url }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             alt="Image of ff-checkout-visa" class="lazyload checkout-image no-border ratina-img" />
+  {% endif %}
+  {% if settings.ff-checkout-mastercard-enable %}
+    <img  src="{{ 'transparent.png' | asset_url }}"
+           data-src="{{ 'ff-checkout-mastercard.png' | asset_url }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ff-checkout-mastercard.png' | asset_url }}"
+ data-sizes="auto"
+ data-parent-fit="contain"  alt="Image of ff-checkout-mastercard" class="lazyload checkout-image no-border ratina-img" />
+  {% endif %}
+  {% if settings.ff-checkout-americanexp-enable %}
+    <img  src="{{ 'transparent.png' | asset_url }}"
+           data-src="{{ 'ff-checkout-americanexp.png' | asset_url }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ff-checkout-americanexp.png' | asset_url }}"
+ data-sizes="auto"
+ data-parent-fit="contain" alt="Image of ff-checkout-americanexp" class="lazyload checkout-image no-border ratina-img" />
+  {% endif %}
+  {% if settings.ff-checkout-paypal-enable %}
+    <img  src="{{ 'transparent.png' | asset_url }}"
+           data-src="{{ 'ff-checkout-paypal.png' | asset_url }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ff-checkout-paypal.png' | asset_url }}"
+ data-sizes="auto"
+ data-parent-fit="contain" alt="Image of ff-checkout-paypal" class="lazyload checkout-image no-border ratina-img" />
+  {% endif %}
+  {% if settings.ff-checkout-discover-enable %}
+    <img  src="{{ 'transparent.png' | asset_url }}"
+           data-src="{{ 'ff-checkout-discover.png' | asset_url }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ff-checkout-discover.png' | asset_url }}"
+ data-sizes="auto"
+ data-parent-fit="contain"   alt="Image of ff-checkout-discover" class="lazyload checkout-image no-border ratina-img" />
+  {% endif %}
+  {% if settings.ff-checkout-shopify-enable %}
+    <img  src="{{ 'transparent.png' | asset_url }}"
+           data-src="{{ 'ff-checkout-shopify.png' | asset_url }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ff-checkout-shopify.png' | asset_url }}"
+ data-sizes="auto"
+ data-parent-fit="contain"  alt="Image of ff-checkout-shopify" class="lazyload checkout-image no-border ratina-img" />
+  {% endif %}
+</div>

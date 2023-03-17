@@ -1,0 +1,75 @@
+{%- assign collection = collections[section.settings.collection] -%}
+{%- assign product_limit = section.settings.grid  -%}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="container">
+      {% if section.settings.title != blank %}
+      <h2 class="section_title"><a href="{{collection.url}}">{{ section.settings.title | escape }}</a></h2>
+
+      {% endif %}
+
+
+      {% if section.settings.showallproducthome %}
+
+
+      {% for product in collections['all'].products limit: product_limit  %}
+
+      {% include 'product-grid-item' %}
+      {%cycle '','','','<div style="clear:both"></div>'%}
+      {% endfor %}
+      {% else %}
+      {% for product in collection.products limit: product_limit %}
+      {% include 'product-grid-item' %}
+      {%cycle '','','','<div style="clear:both"></div>'%}
+      {% endfor %}
+
+
+
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Show all products",
+  "class": "index-section",
+  "settings": [{
+      "type": "paragraph",
+      "content": "This section displays either all products, or products from a collection in rows."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collection"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "showallproducthome",
+      "label": "Show All products on Homepage"
+    },
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "Collection"
+    },
+
+    {
+      "type": "range",
+      "id": "grid",
+      "label": "number of products to show",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "default": 8
+    }
+  ],
+  "presets": [{
+    "name": "Show products on homepage",
+    "category": "Collection"
+  }]
+}
+{% endschema %}

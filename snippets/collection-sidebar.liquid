@@ -1,0 +1,16 @@
+<h4 class="product-side-collection-title toggle">{{ 'collections.sidebar.title' | t }}</h4>
+<ul class="collection-list-side toggle_list">
+  {% assign select = "" %}
+  {% if collection.handle == 'all' %}
+  	{% assign select = "collection-selected" %}
+  {% endif %}
+  <li class="{{ select }}"><a href="/collections/all">{{ 'collections.sidebar.all' | t }}</a></li>
+  {% assign currentcol = collection.title %}
+  {% for collection in collections %}    
+    {% assign select = "" %}
+    {% if collection.title == currentcol %}
+  	  {% assign select = "collection-selected" %}
+    {% endif %}
+    <li class="{{ select }}"><a href="/collections/{{ collection.handle }}">{{ collection.title }}</a></li>
+  {% endfor %}
+</ul>

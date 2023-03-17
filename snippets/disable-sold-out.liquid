@@ -1,0 +1,28 @@
+{% comment %}
+  Disable sold-out variants.
+  Only works for products that have one option.
+  It won't work with products that have two or three options, like Size and Color.
+  See: https://docs.myshopify.io/themes/customization/products/hide-variants-that-are-sold-out
+{% endcomment %}
+
+{% if product.options.size == 1 %}
+  <script>
+  var $addToCartForm = $('form[action="/cart/add"]');
+  if (window.MutationObserver && $addToCartForm.length) {
+    if (typeof observer === 'object' && typeof observer.disconnect === 'function') {
+      observer.disconnect();
+    }
+    var config = { childList: true, subtree: true };
+    var observer = new MutationObserver(function() { 
+      {% for variant in product.variants %}
+        {% unless variant.available %}
+          jQuery('.single-option-selector option:eq({{ forloop.index0 }})').prop('disabled', true);
+        {% endunless %}
+      {% endfor %}
+      jQuery('.single-option-selector').trigger('change');
+      observer.disconnect();
+    });  
+    observer.observe($addToCartForm[0], config);
+  }
+  </script>
+{% endif %}

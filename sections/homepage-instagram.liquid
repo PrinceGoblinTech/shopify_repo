@@ -1,0 +1,304 @@
+<div class="container-fluid instagram_wrap">
+  <div class="row">
+    <div class="container morpas">
+      {% if section.settings.title != blank %}
+        <h2 class="section_title">{{ section.settings.title | escape }}</h2>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <h3 class="Subtit">{{section.settings.subtitle | escape }}</h3>
+      {% endif %}
+      <div data-is data-is-access-token="{{ section.settings.accesstoken  }}" 
+           data-is-rows="{{ section.settings.grid  }}"
+           data-is-columns="{{ section.settings.columns  }}" 
+           data-is-gutter="8" 
+           data-is-responsive="%7B%22480%22%3A%7B%22columns%22%3A%222%22%2C%22rows%22%3A%224%22%2C%22gutter%22%3A%228%22%7D%2C%22768%22%3A%7B%22columns%22%3A%223%22%2C%22rows%22%3A%223%22%2C%22gutter%22%3A%224%22%7D%7D" 
+           data-is-arrows-control="{% if section.settings.arrows %}true {% endif %}"
+           data-is-direction="{{section.settings.data_direction}}" 
+           data-is-scrollbar="false" 
+           data-is-loop="{% if section.settings.data_loop%} true {% else %}false {%endif %}" 
+           data-is-info="likesCounter, commentsCounter" 
+           data-is-color-gallery-overlay="rgba({{ gallery_overlay_color  }},.8)" 
+           data-is-color-gallery-arrows="rgb(0, 0, 0)"
+           data-is-color-gallery-arrows-hover="rgb(48, 48, 48)" 
+           data-is-color-popup-overlay="rgba(49,49,49,.8)"
+           data-is-color-popup-bg="rgb(255, 252, 235)" 
+           data-is-color-popup-username="rgb(239, 129, 0)"
+           data-is-color-popup-username-hover="rgb(241, 173, 11)" 
+           data-is-color-popup-instagram-link="rgb(239, 129, 0)" 
+           data-is-color-popup-instagram-link-hover="rgb(241, 173, 11)" 
+           data-is-color-popup-counters="rgb(44, 24, 0)"
+           data-is-color-popup-anchor="rgb(239, 129, 0)" 
+           data-is-color-popup-anchor-hover="rgb(241, 173, 11)"
+           data-is-color-popup-text="rgb(44, 24, 0)" 
+           data-is-color-popup-controls="rgb(49, 49, 49)"
+           data-is-color-popup-mobile-controls="rgb(49, 49, 67)">
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  #instaShowGallery_1 .instashow-gallery-media-cover {
+    background:black ;
+    opacity:0.4;
+
+  }
+  .instashow-gallery {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+  .instashow-gallery-vertical .instashow-gallery-control-arrow-previous {
+    top: 40px !important;
+    left: 50% !important;
+  }
+  .instashow-gallery-vertical .instashow-gallery-control-arrow-next {
+    bottom: 40px !important;
+  }
+  #instaShowPopup_1 .instashow-popup-media {
+    background: {{section.settings.popup_background_color  }};
+  }
+  #instaShowPopup_1 .instashow-popup-media-info-content a {
+    color: {{section.settings.links_colors  }};
+  }
+  #instaShowPopup_1 a.instashow-popup-media-info-original, #instaShowPopup_1 a.instashow-popup-media-info-original:hover {
+    border-color: {{section.settings.links_colors  }};
+    color: {{section.settings.links_colors  }};
+  }
+  #instaShowPopup_1 .instashow-popup-media-info-author {
+    color: {{section.settings.links_colors  }};
+  }
+  #instaShowPopup_1 .instashow-popup-media-info-author:hover {
+    color: {{section.settings.links_colors  }};
+  }
+  .Subtit{text-align:center;color:{{section.settings.subtitlecolor}}}
+  
+   @media screen and (max-width: 640px){ 
+  .instashow-gallery {
+    padding-top: 22px !important;
+    
+  }
+  }
+</style>
+{% schema %}
+  {
+    "name": "Instagram section",
+    "class": "index-section",
+    "settings": [
+
+       {
+"type": "paragraph",
+"content": "This section displays content from your Instagram account."
+},
+     
+
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Instagram"
+      },
+  {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Sub-Heading",
+        "default": "tag us on #instagram to be entered into monthly competition"
+      },
+  {
+        "type": "color",
+        "id": "subtitlecolor",
+        "label": "Sub-Heading Color",
+        "default": "#000"
+      },
+       
+ {
+        "type": "text",
+        "id": "accesstoken",
+        "label": "Access Token"
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Number of Rows",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 1
+      } 
+,
+      {
+        "type": "range",
+        "id": "columns",
+        "label": "Number of images each row",
+        "min": 4,
+        "max": 10,
+        "step": 1,
+        "default": 6
+      } 
+,
+       
+ {
+        "type": "checkbox",
+        "id": "arrows",
+        "label": "Show Arrows"
+      },
+{
+   "type":      "radio",
+   "id":        "data_direction",
+   "label":     "Data Direction",
+   "options": [
+     { "value": "horizontal", "label": "Horizontal" },
+     { "value": "vertical", "label": "Vertical" }
+   ],
+   "default":   "horizontal" 
+},
+
+ {
+        "type": "checkbox",
+        "id": "data_loop",
+        "label": "Show data in loop"
+      },
+ 
+{
+      "type": "color",
+      "id": "popup_background_color",
+      "label": "Popup Background Color",
+      "default": "#ffffff"
+    },
+
+  {
+      "type": "color",
+      "id": "links_colors",
+      "label": "Links Color",
+      "default": "#000000"
+    }
+
+    ],
+    "presets": [
+      {
+        "name": "Instagram Section",
+        "category": "image"
+      }
+    ]
+  }
+{% endschema %}
+<style>
+  .owl-item .large--one-quarter{width:auto}
+  .container.morpas {
+    padding: 0 40px;
+}
+  {% assign bottom = false %}
+  {% comment %}
+  {% if section.settings.arrow_position == 'left_and_right' or settings.arrow_style == 'Left-Right' %}
+    {% assign bottom = false %}
+  {% else if section.settings.arrow_position == 'bottom' or settings.arrow_style == 'Bottom-Centered' %}
+    {% assign bottom = true %}
+  {% else if section.settings.arrow_position == 'default' %}
+          {% if settings.arrow_style == 'Bottom-Centered' %}
+            {% assign bottom = true %}
+          {% else if settings.arrow_style == 'Left-Right' %}
+            {% assign bottom = false %}
+          {% endif %}
+  {% endif %}
+  {% endcomment %}
+  {% if settings.arrow_style == 'Bottom-Centered' %}
+    {% assign bottom = true %}
+  {% else if settings.arrow_style == 'Left-Right' %}
+    {% assign bottom = false %}
+  {% endif %}
+
+  {% if bottom == false %}
+      @media screen and (min-width: 992px) {
+          .instashow-gallery-control-arrow-previous {
+              left: -2% !important;
+          }
+
+          .instashow-gallery-control-arrow-next {
+              right: -2% !important;
+          }
+      }
+
+      @media screen and (min-width: 1288px) {
+          .instashow-gallery-control-arrow-previous {
+              left: -3% !important;
+          }
+
+          .instashow-gallery-control-arrow-next {
+              right: -3% !important;
+          }
+      }
+
+      @media screen and (min-width: 1600px) {
+          .instashow-gallery-control-arrow-previous {
+              left: -4% !important;
+          }
+
+          .instashow-gallery-control-arrow-next {
+              right: -4% !important;
+          }
+      }
+  {% endif %}
+
+  {% if bottom == true and section.settings.data_direction == 'horizontal' %}
+  .instashow-gallery-control-arrow-previous {
+      top: auto;
+      bottom: -69px;
+      left: 48% !important;
+  }
+
+  .instashow-gallery-control-arrow-next {
+      top: auto;
+      bottom: -69px;
+      right: 48% !important;
+  }
+
+  @media screen and (max-width: 1268px) {
+      .instashow-gallery-control-arrow-previous {
+          left: 47% !important;
+      }
+
+      .instashow-gallery-control-arrow-next {
+          right: 47% !important;
+      }
+  }
+
+  @media screen and (max-width: 900px) {
+      .instashow-gallery-control-arrow-previous {
+          left: 46% !important;
+      }
+
+      .instashow-gallery-control-arrow-next {
+          right: 46% !important;
+      }
+  }
+  @media screen and (max-width: 620px) {
+      .instashow-gallery-control-arrow-previous {
+          left: 45% !important;
+      }
+
+      .instashow-gallery-control-arrow-next {
+          right: 45% !important;
+      }
+  }
+  @media screen and (max-width: 480px) {
+      .instashow-gallery-control-arrow-previous {
+          left: 43% !important;
+      }
+
+      .instashow-gallery-control-arrow-next {
+          right: 43% !important;
+      }
+  }
+
+  @media screen and (max-width: 360px) {
+      .instashow-gallery-control-arrow-previous {
+          left: 41% !important;
+      }
+
+      .instashow-gallery-control-arrow-next {
+          right: 41% !important;
+      }
+  }
+  {% endif %}
+  div#instafeed {
+    padding-bottom: 20px;
+}
+</style>

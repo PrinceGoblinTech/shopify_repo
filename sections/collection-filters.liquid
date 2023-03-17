@@ -1,0 +1,101 @@
+	<div class="col-md-2 col-sm-3">
+					<div class="sidebar_wrap">
+                        
+                       {% for block in section.blocks %}
+                      {% if block.settings.sort-dropdown-a-check %}
+   	  				<div class="single-cat colorone">
+                      {% assign tags = block.settings.sort_a  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+ 
+{% assign other_tags = '' %}
+{% for tag in current_tags %}
+{% unless tags contains tag %}
+{% assign temp_tag = tag | handle %}
+ 
+{% assign temp_tag = temp_tag | append: '+' %}
+ 
+{% assign other_tags = other_tags | append: temp_tag %}
+{% endunless %}
+{% endfor %}
+                      
+					  <h4 class="category-head">
+					  	<a role="button" data-toggle="collapse" class="collapsed" href="#collapse1" aria-expanded="false" aria-controls="collapse1">{{block.settings.filter1heading}}</a>
+					  </h4>
+				   	<div class="collapse" id="collapse1">
+				   		        <ul>  
+                          
+                          
+                            
+                            {% assign clear_url = collection.url | append: '/' | append: other_tags %} 
+  
+ 
+                                  {% for tag in tags %}
+  {% if current_tags contains tag %}
+ <li class="color-filters">
+    
+                                
+                               
+     
+    {{ tag   | link_to_remove_tag: tag | replace: 'title=', 'selected class="main_Label active" title=' }} 
+                          
+                          </li>
+  {% elsif collection.all_tags contains tag %}
+  {% assign temp_tag = tag | handle %}
+  {% unless other_tags == '' %}
+                           
+  {% assign temp_tag = temp_tag | prepend: '' %}
+                           
+  {% endunless %}
+  {% assign add_tag_url = clear_url | append: temp_tag %}
+                                  
+   <li class="color-filters">
+                         
+                               {{ tag | link_to: add_tag_url | replace: 'title=', ' class="main_Label" title='  }}</li>
+  {% endif %}
+  {% endfor %}
+                          
+    
+                        </ul>
+				    </div>
+                  </div>
+                    {% endif %}
+                    {% endfor %}    
+                 
+   	  			</div>
+				</div>
+
+ 
+
+
+
+{% schema %}
+  {
+    "name": "Collection Filters",
+    "class": "aaqh",
+    "max_blocks": 10,
+     
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Collection filter",
+        "settings": [
+          {
+        "type": "checkbox",
+        "id": "sort-dropdown-a-check",
+        "label": "enable"
+      }, {
+        "type": "text",
+        "id": "filter1heading",
+        "label": "Filter heading"
+      },
+      {
+        "type": "textarea",
+        "id": "sort_a",
+        "label": "tags"
+      }
+          
+        ]
+      }
+      
+    ] 
+  }
+{% endschema %}

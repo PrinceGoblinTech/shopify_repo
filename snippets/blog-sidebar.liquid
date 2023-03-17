@@ -1,0 +1,76 @@
+  {% if settings.blog_search %}
+<div class="blog-widget-wrapper blog-newslatter blog-top-space">
+<!--   <h3>Search</h3> -->
+{% include 'search-bar' %}
+</div>
+{% endif %}
+    {% if settings.blog_newsletter %}
+<div class="blog-widget-wrapper blog-newslatter new-blog-newsletter">
+  <h3>{{ 'blogs.sidebar.newsletter' | t }}</h3>
+  {% form 'customer', id: null %}
+  <input type="hidden" id="contact_tags" name="contact[tags]" value="prospect,newsletter,164"/>
+  <div>
+        <input required class="form-control" type="text" id="contact_email" name="contact[email]" placeholder="Your email address"/>
+  </div>
+                 {% if settings.termscheck %}
+  <p class="checktext"><input type="checkbox" id="footerchecka"><a href="{{ settings.termstextlink }}"> {{ settings.termstext }}</a></p>
+                        <script>
+$('body').on('click', '[name="fta"]', function() {
+  if ($('#footerchecka').is(':checked')) {
+    $(this).submit();
+  }
+  else {
+    alert("{{ settings.termstext_warning }}");
+    return false;
+  }
+});
+</script>
+  {% endif %}
+  <div class="subscribe-div">
+    <input type='submit' name="fta" class="btn btn-default subscribe-button" value="{{ settings.newslatter_btn_text }}" />
+  </div>
+  {% endform %}
+</div>
+
+{% endif %}
+
+  {% if settings.display_recent_articles %}
+<div class="blog-widget-wrapper blog-newslatter blog-recent">
+<h3 class="h4">{{ 'blogs.sidebar.recent_articles' | t }}</h3>
+  <ul class="list-unstyled list-styled">
+    {% for article in blog.articles limit:10 %}
+      <li>
+        <img class="blog-sidebar-img" src="{{ article.image.src | img_url: 'small' }}" alt="{{ article.title | escape }}" />
+        <div class="stitle">
+          <h3>{{ article.title | link_to: article.url }}</h3>
+          <span class="date blog-data-inline"><i class="fa fa-calendar"></i> {{ article.published_at | date: "%b %d, %Y" }}</span>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+    {% if settings.blog_sidebar_tags %}
+<div class="blog-widget-wrapper blog-newslatter">
+{% if blog.all_tags.size > 0 %}
+  <h3 class="h4">{{ 'blogs.sidebar.categories' | t }}</h3>
+  <ul class="no-bullets">
+    {% for tag in blog.all_tags %}
+      {% if current_tags contains tag %}
+      <li>{{ tag }}</li>
+      {% else %}
+      <li>{{ tag | link_to_tag: tag }}</li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}
+</div>
+{% endif %}
+
+ {% if settings.blog_content_page != blank %}
+<div class="blog-widget-wrapper blog-newslatter">
+  <h3 class="h4">{{ pages[settings.blog_content_page].title }}</h3>
+      <h4></h4>
+      {{ pages[settings.blog_content_page].content }}
+</div>
+    {% endif %}

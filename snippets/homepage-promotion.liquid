@@ -1,0 +1,62 @@
+<hr>
+<div class="home--promotion">
+  <div class="wrapper">
+    <div class="one-third left">
+      <img src="{{ 'promotion_main.png' | asset_url  }}" alt="Image of Promotion" class="promotion-main no-border"/>
+    </div>  
+    <div class="two-thirds left">
+      <div class="promotion-text">
+        <h2>{{ settings.promotion_title }}</h2>
+        <h3>{{ settings.promotion_hashtag }}</h3>
+        <h4>{{ settings.promotion_moretext }}</h4>
+      </div>
+      <div class="promotion-slider owl-carousel">
+        {% if settings.promotion_image1_display %}
+        <img src="{{ 'promotion_sub1.png' | asset_url }}" alt="Image of Promotion 1" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image2_display %}
+        <img src="{{ 'promotion_sub2.png' | asset_url }}" alt="Image of Promotion 2" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image3_display %}
+        <img src="{{ 'promotion_sub3.png' | asset_url }}" alt="Image of Promotion 3" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image4_display %}
+        <img src="{{ 'promotion_sub4.png' | asset_url }}" alt="Image of Promotion 4" class="promotion-small  lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image5_display %}
+        <img src="{{ 'promotion_sub5.png' | asset_url  }}" alt="Image of Promotion 5" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image6_display %}
+        <img src="{{ 'promotion_sub6.png' | asset_url  }}" alt="Image of Promotion 6" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image7_display %}
+        <img src="{{ 'promotion_sub7.png' | asset_url  }}" alt="Image of Promotion 7" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image8_display %}
+        <img src="{{ 'promotion_sub8.png' | asset_url }}" alt="Image of Promotion 8" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image9_display %}
+        <img src="{{ 'promotion_sub9.png' | asset_url }}" alt="Image of Promotion 9" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image10_display %}
+        <img src="{{ 'promotion_sub10.png' | asset_url }}" alt="Image of Promotion 10" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image11_display %}
+        <img src="{{ 'promotion_sub11.png' | asset_url }}" alt="Image of Promotion 11" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image12_display %}
+        <img src="{{ 'promotion_sub12.png' | asset_url }}" alt="Image of Promotion 12" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image13_display %}
+        <img src="{{ 'promotion_sub13.png' | asset_url }}" alt="Image of Promotion 13" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image14_display %}
+        <img src="{{ 'promotion_sub14.png' | asset_url  }}" alt="Image of Promotion 14" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+        {% if settings.promotion_image15_display %}
+        <img src="{{ 'promotion_sub15.png' | asset_url }}" alt="Image of Promotion 15" class="promotion-small lazy no-border" data-original="{{ product-block.featured_image | product_img_url: image_size }}"/>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<hr>
+<div class="home--carousel">
+  <div class="wrapper">
+    {% assign type = "c" %}
+    {% if settings.productscarousel_title != "" %}
+      <h2 class="title">{{ settings.productscarousel_title }}</h2>
+    {% endif %}
+    {% if collections[settings.productscarousel_collection].all_products_count != 0 and collections[settings.productscarousel_collection].all_products_count != "" %}
+    <div class="carousel-product owl-carousel">
+        {% if settings.productscarousel_product_to_display != "" and settings.productscarousel_product_to_display != "0" %}
+          {% assign limit = settings.productscarousel_product_to_display %}
+        {% else %}
+          {% assign limit = 6 %}
+        {% endif %}
+        {% for product in collections[settings.productscarousel_collection].products limit:limit %}
+          {% include 'product-grid-item' with type %}
+       {% endfor %}
+      </div>
+     {% else %}
+      {% unless emptyState %}
+      {{ 'theme-onboarding.css' | global_asset_url | stylesheet_tag }}
+      {% assign emptyState = true %}
+      {% endunless %}
+      {% include 'onboarding-featured-products' %}
+    {% endif %}
+    </div>
+  </div>

@@ -1,0 +1,23 @@
+{{ 'privacy.css' | asset_url | stylesheet_tag }}
+<div class="container header-space et_pb_gutters3" id="et-main-area">
+  <div class="grid">
+    <div class="grid__item large--one-whole page--item">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+<script>
+  jQuery(function($) {
+    jQuery('.et_pb_toggle_title').click(function(e){
+      e.preventDefault();
+      if($(this).parent('div').hasClass('et_pb_toggle_close')){
+        $(this).parent('div').addClass('et_pb_toggle_open');
+        $(this).parent('div').removeClass('et_pb_toggle_close');
+      } else {
+        $(this).parent('div').addClass('et_pb_toggle_close');
+        $(this).parent('div').removeClass('et_pb_toggle_open');
+      }
+      jQuery(this).parent('div').find('.et_pb_toggle_content').slideToggle("slow");
+    });
+  });
+</script>

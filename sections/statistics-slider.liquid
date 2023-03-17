@@ -1,0 +1,380 @@
+{%- if section.settings.enable and product.available -%}
+    <div data-section-id="{{ section.id }}" data-section-type="statistics-slider">
+        <div class="footbar__section footbar__section--offset-off footbar__section--invisible-desktop show" data-js-footbar-section>
+            <div class="statistics-slider">
+                <div class="statistics-slider js-statistics-slider">
+                    <div class="statistics-slider__slider" data-shipping="{{section.settings.shipping}}" data-js-slider data-dur="{{ section.settings.slider_dur | times: 1000 }}">
+                        {%- assign has_quantity_progress = false -%}
+                        {% if section.settings.enable_quantity and product.available %}
+                            {% assign display_limited = false %}
+                            {% assign display_tag = false %}
+                            {% assign show_quantity_bar = false %}
+                            {% assign quantity = 100 %}
+                            {% assign qty_sold = 0 %}
+                            {% assign displayquantity = 0 %}
+                            {% for tag in product.tags %}
+                                {% assign tag = tag | downcase %}
+                                {% if tag == "display-limited" %}{% assign display_limited = true %}{% endif %}
+                                {% if tag == "custom-tabs" %}{% assign custom_tabs = true %}{% endif %}
+                                {% if tag == "show_quantity_bar" %}{% assign show_quantity_bar = true %}{% endif %}
+
+                                {% if tag contains "quantity-" %}{% capture quantity %}{{ tag | replace: "quantity-","" }}{% endcapture %}{% endif %}
+                                {% if tag contains "quantitysold-" %}{% capture qty_sold %}{{ tag | replace: "quantitysold-","" }}{% endcapture %}{% endif %}
+                                {% if tag contains "limited-default-" %}{% capture limited_default %}{{ tag | replace: "limited-default-","" }}{% endcapture %}{% endif %}
+                                {% if tag contains "displayquantity-" %}{% capture displayquantity %}{{ tag | replace: "displayquantity-","" }}{% endcapture %}{% endif %}
+                                {% if tag contains "bar-" %}{% capture display_tag %}{{ tag | replace: "bar-","" }}{% endcapture %}{% endif %}
+                            {% endfor %}
+                            {% if settings.use_tags_to_display_quanitity != true or show_quantity_bar %}
+                                <div class="statistics-slider__content">
+                                    {% include 'product-quantity-progress' %}
+                                </div>
+                                {%- assign has_quantity_progress = true -%}
+                            {% endif %}
+                        {% endif %}
+                        {% if section.settings.enable_visitors %}
+                            <div class="statistics-slider__content">
+                               <p class="visitor_counter">
+    <span class="visitor_counter_v">
+        {%- if settings.visitors_counter_enable_demo_data -%}
+            <b class="js-generate-visitors-counter">..</b>
+        {%- else -%}
+            <b class="js-statsapp-visitors-counter">..</b>
+        {%- endif -%}
+    </span>
+    <span class="visitor_counter_a"> {{ section.settings.visitors_counter_text }}</span>
+</p>
+                            </div>
+                        {% endif %}
+                        {% if display_tag %}
+                            <div class="statistics-slider__content">
+                                {{ display_tag }}
+                            </div>
+                        {% endif %}
+                        {% if section.settings.enable_orders %}
+                            <div class="statistics-slider__content">
+                                {% include 'product-orders' %}
+                            </div>
+                        {% endif %}
+                        {%- if section.settings.enable_added_to_cart_counter -%}
+                            <div class="statistics-slider__content">
+                                <p>
+                                    {%- if settings.addedtocart_counter_enable_demo_data -%}
+                                        <span class="js-generate-addedtocart-counter">..</span>
+                                    {%- else -%}
+                                        <span class="js-statsapp-addedtocart-counter">..</span>
+                                    {%- endif -%}
+                                    {%- if section.settings.addedtocart_counter_text != blank -%}
+                                    <span> {{ section.settings.addedtocart_counter_text }}</span>
+                                    {%- endif -%}
+                                </p>
+                            </div>
+                        {%- endif -%}
+                        {% if section.settings.informations_alert_enable %}
+                            <div class="statistics-slider__content statistics-slider__content--ha-center">
+                                {%- assign display_quantity_count_demo_data = section.settings.display_quantity_count_demo_data -%}
+                                {%- assign visitors_counter_enable_demo_data = section.settings.visitors_counter_enable_demo_data -%}
+                                {%- assign orders_counter_enable_demo_data = section.settings.orders_counter_enable_demo_data -%}
+                                {%- assign informations_alert_text = section.settings.informations_alert_text -%}
+                                {% include 'product-informations-alert' %}
+                            </div>
+                        {% endif %}
+                        {% assign product_flash_sold_enable = false %}
+                        {% for tag in product.tags %}
+                            {% assign tag = tag | downcase %}
+                            {% if tag == "product-flash-sold" %}{% assign product_flash_sold_enable = true %}{% endif %}
+                        {% endfor %}
+                        {%- if section.settings.flash_sold_enable and product_flash_sold_enable -%}
+                            <div class="statistics-slider__content product-single">
+                                <div class="flash--total-sold">
+                                    <div class="flash--total-soldflash">
+                                        <span><span class="flash-fire"></span> </span>
+                                        {%- if settings.product_flash_sold_enable_demo_data -%}
+                                            <span id="TotalSold" class="TotalSoldd"></span> sold in last <span
+                                                id="InHours" class="InHourss"></span> hours
+                                        {%- else -%}
+                                            <span class="js-statsapp-orders-counter">..</span> sold in last {{ settings.orders_counter_period | abs }} hours
+                                        {%- endif -%}
+                                    </div>
+                                </div>
+                            </div>
+                        {%- endif -%}
+                        {%- if section.orders_counter_enable -%}
+                            <div class="statistics-slider__content">
+                                <p>
+                                    {%- if settings.orders_counter_enable_demo_data -%}
+                                        <span class="js-generate-orders-counter">..</span>
+                                    {%- else -%}
+                                        <span class="js-statsapp-orders-counter">..</span>
+                                    {%- endif -%}
+                                    <span class="orders_counter_text"> {{ section.settings.orders_counter_text }}</span>
+                                </p>
+                            </div>
+                        {%- endif -%}
+                        {% assign multibuy_prompt = false %}
+                        {% for tag in product.tags %}
+                            {% assign tag = tag | downcase %}
+                            {% if tag == "multi-buy-prompt" %}{% assign multibuy_prompt = true %}{% endif %}
+                        {% endfor %}
+                        {%- if section.settings.multibuy_counter_enable and multibuy_prompt -%}
+                            <div class="statistics-slider__content">
+                                <div class="p-tag--buy">
+                                    <div class="p-tag--buy-div">
+                                        <span class="p-tag-emoji"></span>
+                                        {%- if settings.multibuy_counter_enable_demo_data -%}
+                                            <span class="js-generate-multibuy-counter">..</span>
+                                        {%- else -%}
+                                            <span class="js-statsapp-multibuy-counter">..</span>
+                                        {%- endif -%}
+                                        <span> {{ settings.multibuy_tag_text }}</span>
+                                        <span class="p-tag-emoji"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        {%- endif -%}
+                        {% if section.settings.shipping != blank %}
+                            <div class="statistics-slider__content">
+                                <span class="stats_shipping_text"></span> {% if section.settings.showcountryandflag %}&nbsp;
+                                    <span class="countryName"></span>&nbsp;<span class="flagImg f32"></span> {% endif %}
+                            </div>
+                        {% endif %}
+                        {% if section.settings.global1 != blank %}
+                            <div class="statistics-slider__content">
+                                {{ section.settings.global1 }}
+                            </div>
+                        {% endif %}
+                        {% if section.settings.global2 != blank %}
+                            <div class="statistics-slider__content">
+                                {{ section.settings.global2 }}
+                            </div>
+                        {% endif %}
+                        {% if section.settings.global3 != blank %}
+                            <div class="statistics-slider__content">
+                                {{ section.settings.global3 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if section.settings.informations_alert_enable %}
+        <script>
+            $(window).on('load, resize', function () {
+                if ($(document).width() < 480) {
+                    $('.js-product_section [data-js-product-informations-alert]').hide();
+                }
+            });
+        </script>
+    {% endif %}
+    {% if section.settings.enable_visitors %}
+        <script>
+            $(window).on('load, resize', function () {
+                if ($(document).width() < 480) {
+                    $('.main-prod-desc').find('.visitor_counter').hide();
+                }
+            });
+        </script>
+    {% endif %}
+    {% if section.settings.enable_orders %}
+        <script>
+            $(window).on('load, resize', function () {
+                if ($(document).width() < 480) {
+                    $('.main-prod-desc').find('.orders').hide();
+                }
+            });
+        </script>
+    {% endif %}
+    {% if has_quantity_progress %}
+        <script>
+            $(window).on('load, resize', function () {
+                if ($(document).width() < 480) {
+                    $('.js-product_section .grid__item.progress--bar').hide();
+                }
+            });
+        </script>
+    {% endif %}
+{%- endif -%}
+<span style="display:none" id="stats_shipping_msg">{{ section.settings.free_shipping_text }}</span>
+<span style="display:none" id="stats_free_shipping_msg">{{ section.settings.free_shipping_text_free }}</span>
+<style>
+    @media screen and (max-width: 992px) {
+    {%- if section.settings.flash_sold_enable -%}
+        .main-prod-desc .flash--total-sold {
+            display: none
+        }
+    {%- endif -%}
+    {%- if section.settings.multibuy_counter_enable -%}
+        .product-detail .p-tag--buy {
+            display: none
+        }
+    {%- endif -%}
+    }
+</style>
+
+
+{% schema %}
+{
+"name": "Mobile Statistics Bar",
+"settings": [
+{
+"type": "checkbox",
+"id": "enable",
+"label": "Enable Product Statistics Bar",
+"info": "Enabling these options will remove them from the product page.",
+"default": true
+},
+{
+"type": "range",
+"id": "slider_dur",
+"min": 1,
+"max": 10,
+"step": 1,
+"unit": "sec",
+"label": "Slider autoplay duration",
+"default": 5
+},
+{
+"type": "header",
+"content": "Quantity remaining bar"
+},
+{
+"type": "checkbox",
+"id": "enable_quantity",
+"label": "Enable quantity remaining bar",
+"default": true
+},
+{
+"type": "header",
+"content": "visitor counter"
+},
+{
+"type": "checkbox",
+"id": "enable_visitors",
+"label": "Enable visitor counter",
+"default": true
+},
+{
+"type": "text",
+"id": "visitors_counter_text",
+"label": "Visitors text",
+"default": "people are viewing this item"
+},
+{
+"type": "header",
+"content": "orders counter"
+},
+{
+"type": "checkbox",
+"id": "enable_orders",
+"label": "Enable orders counter",
+"default": true
+},
+{
+"type": "header",
+"content": "Added to cart counter"
+},
+{
+"type": "checkbox",
+"id": "enable_added_to_cart_counter",
+"label": "Enable Added to cart counter",
+"default": true
+},
+{
+"type": "text",
+"id": "addedtocart_counter_text",
+"label": "'Added to cart' text",
+"default": "visitors have this item in their cart right now"
+},
+{
+"type": "header",
+"content": "Informations Alert"
+},
+{
+"type": "checkbox",
+"id": "informations_alert_enable",
+"label": "Enable Informations Alert",
+"default": true
+},
+{
+"type": "textarea",
+"id": "informations_alert_text",
+"label": "Informations Alert Text",
+"info": "variables: [quantity_counter], [visitors_counter], [orders_counter, [fire_icon], [cart_counter], [multi_counter]",
+"default": "<span>Only [quantity_counter] left!</span> [fire_icon] [visitors_counter] people are viewing this, and [orders_counter] recently purchased it"
+},
+{
+"type": "header",
+"content": "Total Sold Flash"
+},
+{
+"type": "checkbox",
+"id": "flash_sold_enable",
+"label": "Enable",
+"default": true
+},
+
+{
+"type": "header",
+"content": "Multibuy prompt"
+},
+{
+"type": "checkbox",
+"id": "multibuy_counter_enable",
+"label": "Enable Multibuy prompt",
+"default": true
+},
+
+{
+"type": "header",
+"content": "Shipping text"
+},
+{
+"type": "checkbox",
+"id": "shipping",
+"label": "Enable Shipping",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "showcountryandflag",
+"label": "Enable Country and Flag in shipping text",
+"default": true
+},
+
+{
+"type": "text",
+"id": "free_shipping_text",
+"label": "Text",
+"default": "Spend SYMBOL$x to qualify Free shipping",
+"info": "Use the code 'SYMBOL$x' to insert the dynamnic shipping threshhold number"
+},
+{
+"type": "text",
+"id": "free_shipping_text_free",
+"label": "Free Shipping Achieved Text",
+"default": "You have free Shipping"
+},
+{
+"type": "text",
+"id": "global1",
+"label": "Mobile ATC Bar Message 1"
+},
+{
+"type": "text",
+"id": "global2",
+"label": "Mobile ATC Bar Message 2"
+},
+{
+"type": "text",
+"id": "global3",
+"label": "Mobile ATC Bar Message 3"
+},
+{
+"type": "paragraph",
+"content": "Use tag 'bar-Your Message Here' to display any message for any product on per-product basis"
+}
+]
+}
+{% endschema %}
+
+ 

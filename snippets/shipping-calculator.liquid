@@ -1,0 +1,72 @@
+{% if settings.cart_shipping %}
+<tr class="pricecolumn-bottom">
+  <td colspan="5">
+  {% if cart.item_count > 0 %}
+    <div id="shipping-calculator">
+      <h5>{{ settings.shipping_calculator_heading | default: 'Get Shipping Estimates' }}</h5>
+      <div class="form-group">
+        <select id="address_country"  class="form-control" name="address[country]" data-default="{% if shop.customer_accounts_enabled and customer %}{{ customer.default_address.country }}{% elsif settings.shipping_calculator_default_country != '' %}{{ settings.shipping_calculator_default_country }}{% endif %}">
+          {{ country_option_tags }}
+        </select>
+      </div>
+      <div class="form-group" id="address_province_container" style="display:none;">
+        <select id="address_province"  class="form-control" name="address[province]" data-default="{% if shop.customer_accounts_enabled and customer and customer.default_address.province != '' %}{{ customer.default_address.province }}{% endif %}"></select>
+      </div>
+      <div class="form-group">
+        <input type="text" placeholder="Enter Zipcode" class="form-control" id="address_zip" name="address[zip]"{% if shop.customer_accounts_enabled and customer %} value="{{ customer.default_address.zip }}"{% endif %} />
+      </div>
+      <div class="form-group">
+        <input type="button" class="get-rates btn btn--secondary" value="{{ settings.shipping_calculator_submit_button_label | default: 'Calculate Shipping' }}" />
+      </div>
+      <div id="wrapper-response"></div>
+    </div>
+
+    <script id="shipping-calculator-response-template" type="text/template">
+      <p id="shipping-rates-feedback" <% if (success) { %> class="success" <% } else { %> class="error" <% } %>>
+      <% if (success) { %>
+        <% if (rates.length > 1) { %> 
+        There are <%= rates.length %> shipping rates available for <%= address %>, starting at <%= rates[0].price %>.
+        <% } else if (rates.length == 1) { %>
+        There is one shipping rate available for <%= address %>.
+        <% } else { %>
+        We do not ship to this destination.
+        <% } %>
+      <% } else { %>
+        <%= errorFeedback %>
+      <% } %>
+      <input type="button" id="changeShipping" onclick='hideResponse();' class="btn-large btn btn-secondary" value="Change" />
+      </p>
+      <ul id="shipping-rates">
+        <% for (var i=0; i<rates.length; i++) { %>
+        <li><%= rates[i].name %> at <%= rates[i].price %></li>
+        <% } %>
+      </ul> 
+    </script>
+
+    <!--[if lte IE 8]> 
+    <style> #shipping-calculator { display: none; } </style> 
+    <![endif]--> 
+
+ <script>
+      $(function(){
+      $.getJSON("https://members.shoptimized.net/api/geo-ip/info.json", function(data){
+          $("#address_country").val(data.result.data.country.names.en);
+          $("#address_country").attr("data-default", data.result.data.country.names.en);
+          Shopify.Cart.ShippingCalculator.show({
+            submitButton: {{ settings.shipping_calculator_submit_button_label | default: 'Calculate Shipping' | json }}, 
+            submitButtonDisabled: {{ settings.shipping_calculator_submit_button_label_disabled | default: 'Wait...' | json }}{% if customer %},
+            customerIsLoggedIn: true{% endif %},
+            moneyFormat: {{ shop.money_with_currency_format | json }}
+          });
+          function hideResponse(){
+            $('#wrapper-response').hide();
+          }
+        });
+      });
+    </script>
+  {% endif %}
+  </td>
+</tr>
+{% endif %}
+
+

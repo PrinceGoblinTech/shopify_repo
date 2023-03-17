@@ -1,0 +1,269 @@
+<nav id="menu" style="display:none">
+
+  <button id="mmmenu-close-button" type="button" class="ger icon-fallback-text">
+    <span class="fa fa-times" aria-hidden="true"></span>
+    <span class="fallback-text">Close Menu</span>
+  </button>
+
+  <ul>
+
+      {% for link in linklists[settings.header_linklist_1].links %}
+    {% assign child_list_handle = link.title | handle %}
+    {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+    <li>
+    <span> 
+        {{ link.title }}
+    </span>
+        
+      <ul>
+        {% for child_link in linklists[child_list_handle].links %}
+        {% assign grand_child_list_handle = child_link.title | handle %}
+        {% if linklists[grand_child_list_handle] and linklists[grand_child_list_handle].links.size > 0 %}
+         <li >
+             <span> 
+           
+          {{ child_link.title  }}
+           </span>
+          <ul>
+            {% for grand_child_link in linklists[grand_child_list_handle].links %}
+            <li>
+              <a href="{{ grand_child_link.url }}">
+              {{ grand_child_link.title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% else %}
+        <li>
+           <a href="{{child_link.url}}" >
+          {{ child_link.title  }}
+          </a>
+        </li>
+        {% endif %}
+        {% endfor %}        
+      </ul>
+    </li>
+    {% else %}
+ <li {% if link.active %}class="site-nav--active"{% endif %}>
+      <a href="{{ link.url }}" class="site-nav__linkk">{{ link.title }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+    {% if settings.megamenu_custom_link_enable %}
+    {% assign customLinkHTML = "" %}
+    {% for i in (1..6) %}
+    {% assign custom_link_heading = 'megamenu_custom_link_' | append:i | append:"_text"  %}
+    {% assign custom_link_collection = 'megamenu_custom_link_' | append:i | append:"_collection"  %}
+    {% if settings[custom_link_heading] != "" %}
+    {% if settings[custom_link_collection] != "" %}
+    {% capture customLinkHTML %}
+    {{ customLinkHTML }}
+    <div class="section-wrapper-custom-links">
+      <p><a href="{{ settings[custom_link_collection] }}">{{ settings[custom_link_heading] }}<span class="separator"> » </span></a></p>
+    </div>
+    {% endcapture %}
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    {% if settings.enable_megamenu %}
+    {% for i in (1..8) %}
+    {% assign enable = 'megamenu_' | append:i  | append:"_enable" %}
+    {% if settings[enable] %}
+    {% assign text = 'megamenu_' | append:i  | append:"_text" %}
+    {% assign default_collection = 'megamenu_' | append:i  | append:"_default_collection" %}
+    {% assign enable_icon = 'megamenu_' | append:i  | append:"_icon_enable" %}
+    {% assign totalEnable = 0 %}
+    {% assign totalEnableValidate = 0 %}
+    {% for j in (1..9) %}
+    {% assign submenu_heading = 'megamenu_' | append:i | append:"_submenu_" | append:j | append:"_heading"  %}
+    {% assign submenu_menu = 'megamenu_' | append:i | append:"_submenu_" | append:j %}
+    {% if settings[submenu_menu] != "" %}
+    {% assign totalEnableValidate = totalEnableValidate | plus: 1 %}	
+    {% endif %}
+    {% endfor %}	
+
+    {% assign megamenuwidthclass = 'widthfull' %}
+    {% assign menuwrapperwidthclass = 'wraperwidthfull' %}
+    {% assign menuprodlimit = 0 %}
+    {% if totalEnableValidate == 1 %}
+    {% assign menuprodlimit = 3 %}
+    {% elsif totalEnableValidate == 2 %}
+    {% assign menuprodlimit = 2 %}
+    {% elsif totalEnableValidate == 3 %}
+    {% assign menuprodlimit = 1 %}
+    {% elsif totalEnableValidate == 5 %}
+    {% assign menuprodlimit = 3 %}
+    {% elsif totalEnableValidate == 6 %}
+    {% assign menuprodlimit = 2 %}
+    {% elsif totalEnableValidate == 7 %}
+    {% assign menuprodlimit = 1 %}
+    {% else %}
+    {% assign menuprodlimit = 0 %}
+    {% endif %}
+    <li>
+      <span>{{ settings[text] }}</span>
+      <ul>
+        {% for j in (1..9) %}
+          {% assign submenu_heading = 'megamenu_' | append:i | append:"_submenu_" | append:j | append:"_heading"  %}
+          {% assign submenu_link = 'megamenu_' | append:i | append:"_submenu_" | append:j | append:""  %}  
+          {% assign submenu_menu = 'megamenu_' | append:i | append:"_submenu_" | append:j %}
+          {% if settings[submenu_menu] != "" %}
+            {% assign totalEnable = totalEnable | plus: 1 %}
+            {% if settings[submenu_heading] != "" %}
+            <li>
+              <span>{{ settings[submenu_heading] }}</span>
+              <ul>
+                {% for link in linklists[settings[submenu_menu]].links %}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>    
+                {% endfor %}
+
+              </ul>
+            </li>
+        	{% else %}
+              {% for link in linklists[settings[submenu_menu]].links %}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>    
+              {% endfor %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </li>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+
+ 
+  
+      {% for link in linklists[settings.header_linklist_2].links %}
+    {% assign child_list_handle = link.title | handle %}
+    {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+    <li>
+    <span> 
+        {{ link.title }}
+    </span>
+        
+      <ul>
+        {% for child_link in linklists[child_list_handle].links %}
+        {% assign grand_child_list_handle = child_link.title | handle %}
+        {% if linklists[grand_child_list_handle] and linklists[grand_child_list_handle].links.size > 0 %}
+         <li >
+             <span> 
+           
+          {{ child_link.title  }}
+           </span>
+          <ul>
+            {% for grand_child_link in linklists[grand_child_list_handle].links %}
+            <li>
+              <a href="{{ grand_child_link.url }}">
+              {{ grand_child_link.title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% else %}
+        <li>
+           <a href="{{child_link.url}}" >
+          {{ child_link.title  }}
+          </a>
+        </li>
+        {% endif %}
+        {% endfor %}        
+      </ul>
+    </li>
+    {% else %}
+ <li {% if link.active %}class="site-nav--active"{% endif %}>
+      <a href="{{ link.url }}" class="site-nav__linkk">{{ link.title }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+
+
+    {% if settings.enabletopnavonmobile%}
+    {% for link in linklists[settings.strip_linklist].links %}
+    <li {% if link.active %}class="site-nav--active"{% endif %}><a  class="site-nav__linkk" href="{{link.url}}">{{link.title}}</a></li>
+    {% endfor %}
+    {% endif %}
+    {% if shop.customer_accounts_enabled %}
+    <li><a href="/account" class="site-nav__linkk">{{ 'customer.account.title' | t }}</a></li>
+   {% if customer %}
+          <li><a href="/account/logout">{{ 'customer.login.logout' | t }}</a></li>
+          {% endif %}
+    {% endif %}
+        {% if settings.showinmobilemenu %}
+     {% capture codes %},USD,EUR,GBP,CAD,ARS,AUD,ILS,BBD,BDT,BSD,BHD,BRL,BOB,BND,BGN,MMK,KYD,CLP,CNY,COP,CRC,HRK,CZK,DKK,DOP,XCD,EGP,XPF,FJD,GHS,GTQ,GYD,GEL,HKD,HUF,ISK,INR,IDR,NIS,JMD,JPY,JOD,KZT,KES,KWD,LVL,LTL,MXN,MYR,MUR,MDL,MAD,MNT,MZN,ANG,NZD,NGN,NOK,OMR,PKR,PYG,PEN,PHP,PLN,QAR,RON,RUB,SAR,RSD,SCR,SGD,SYP,ZAR,KRW,LKR,SEK,CHF,TWD,THB,TZS,TTD,TRY,UAH,AED,UYU,VEB,VND,ZMK,{% endcapture %}
+  {% assign supported_codes = settings.supported_currencies | split: ' ' %}
+    <li class="bigwidth"> 
+      <span class="selected--currency-flag">
+                {% for code in supported_codes %}
+   
+          {% assign file_extensionn = 'svg' %}
+                           <img id="cunfla" src="{{ 'transparent.png' | asset_url | split:'?' | first }}"
+                                {% if code == 'ANG'%}
+                                                       data-src="{{ 'ad.svg' | asset_url | split:'?' | first  }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ad.svg' | asset_url | split:'?' | first  }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                
+                                {% else %}
+                                data-src="{{ code  | slice: 0, 2 | handle | append: '.' | append: file_extensionn | asset_url  }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ code  | slice: 0, 2 | handle | append: '.' | append: file_extensionn | asset_url | split:'?' | first }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                
+                                {%endif%}
+                                />
+     
+  {% endfor %}
+      </span>
+       
+        <span class="selectedvalue"></span> 
+    <ul class="andree">
+    {% for code in supported_codes %}
+     
+    <li data-value="{{ code }}">   <a>{% assign file_extensionn = 'svg' %}
+                           <img id="cunfla" src="{{ 'transparent.png' | asset_url | split:'?' | first }}"
+                                {% if code == 'ANG'%}
+                                                       data-src="{{ 'ad.svg' | asset_url | split:'?' | first  }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ad.svg' | asset_url | split:'?' | first  }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                
+                                {% else %}
+                                data-src="{{ code  | slice: 0, 2 | handle | append: '.' | append: file_extensionn | asset_url }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ code  | slice: 0, 2 | handle | append: '.' | append: file_extensionn | asset_url | split:'?' | first }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                
+                                {%endif%}
+                                /> {{ code }}</a></li>  
+  {% endfor %}
+    </ul>
+    </li>
+      {%endif%}
+    {% if settings.enable_header_contact %}
+     
+             <li class="center">
+              <p class="hsit">{{ settings.header_question_line }}</p>
+              <h5><a href="tel:{{ settings.header_phone }}">
+               
+             
+                {{ settings.header_phone }} </a></h5>
+              <p><strong>{{ settings.header_time }}</strong></p>
+                </li>
+           {% endif %}
+   {% include 'deal-of-the-day'%}
+  </ul>
+</nav>

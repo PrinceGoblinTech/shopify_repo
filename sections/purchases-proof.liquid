@@ -1,0 +1,340 @@
+{%- assign split_template = template | split: '.' -%}
+{%- assign template_param = split_template[1] | remove: '-' -%}
+{%- if template_param == 'purchases_proof_by_handle' -%}
+    <div id="purchases_proof_by_handle">
+        {%- for tag_handle in current_tags limit: 20 -%}
+            {%- assign handle = tag_handle | remove: '_clnhdl' -%}
+            {{ handle }}
+            {%- assign product = all_products[handle] -%}
+            {%- if product != blank -%}
+                {% if section.settings.max_desc_length_enable %}
+                    {%- assign title = product.title | truncatewords: section.settings.max_desc_length -%}
+                {% else %}
+                    {%- assign title = product.title -%}
+                {% endif %}
+                {%- assign url = product.selected_or_first_available_variant.url -%}
+                {%- assign image = product.selected_or_first_available_variant.image | default: product.images[0] -%}
+                <div class="purchases-proof__item" data-js-purchases-proof-item data-product-tag-handle="{{ tag_handle }}">
+                    <div class="purchases-proof__item_button-close" data-js-action="close"><span class="fa fa-times" aria-hidden="true"></span></div>
+                    <a href="{{ url }}" class="purchases-proof__item_image" target="_blank">
+                        <img data-srcset="{{ image | img_url: '160x' }} 1x, {{ image | img_url: '320x' }} 2x" alt="{{ title }}" data-js-purchases-proof-item-image>
+                    </a>
+                    <div class="purchases-proof__item_content">
+                        <span class="purchases-proof__item_text-line-01" data-js-purchases-proof-text-line-1></span>
+                        <div class="purchases-proof__item_title">
+                            <h4>
+                                <a href="{{ url }}" target="_blank">{{ title }}</a>
+                            </h4>
+                        </div>
+                        <span class="purchases-proof__item_text-line-02" data-js-purchases-proof-text-line-2></span>
+                    </div>
+                </div>
+            {%- endif -%}
+        {%- endfor -%}
+    </div>
+{%- else -%}
+    {%- if section.settings.enable -%}
+        <div data-section-id="{{ section.id }}" data-section-type="purchases-proof">
+            <div class="footbar__section{% if section.settings.disable_mobile %} footbar__section--invisible-mobile{% endif %} js-purchases-proof" data-js-disable-closing="{{ section.settings.disable_closing }}" data-js-lifetime="{{ section.settings.cookie_lifetime }}" data-js-delay="{{ section.settings.delay }}" data-js-interval-min="{{ section.settings.interval_min }}" data-js-interval-max="{{ section.settings.interval_max }}" data-js-max-lifetime="{{ section.settings.lifetime }}">
+                <div class="purchases-proof" data-js-purchases-proof>
+                    {%- if section.settings.enable_demo_data -%}
+                        {%- assign time_minutes = section.settings.time_minutes | split: '|' -%}
+                        {%- assign collection = section.settings.collection | default: 'all' -%}
+                        {%- for product in collections[collection].products limit: 20 -%}
+                            {%- assign random_time_diff = section.settings.range_max | minus: section.settings.range_min -%}
+                            {%- assign random_time = "now" | date: "%N" | modulo: random_time_diff | plus: section.settings.range_min -%}
+                            {%- assign places_arr = section.settings.places | split: '|' -%}
+                            {%- assign places_arr_size_0 = places_arr.size | minus: 1 -%}
+                            {%- assign random_place_index = "now" | date: "%N" | modulo:places_arr_size_0 -%}
+                            {% capture time %}{{ random_time }} {% if random_time == 1 %}{{ time_minutes[0] }}{% else %}{{ time_minutes[1] }}{% endif %}{% endcapture %}
+                            {% capture place %}{{ places_arr[random_place_index] }}{% endcapture %}
+                            {%- assign time_string = section.settings.text_time_default | replace: '{time}', time -%}
+                            {%- assign place_string = section.settings.text_place_default | replace: '{place}', place -%}
+                            {%- assign line_01_string = section.settings.text_line_01 | replace: '{time-text}', time_string | replace: '{place-text}', place_string -%}
+                            {%- assign line_02_string = section.settings.text_line_02 | replace: '{time-text}', time_string | replace: '{place-text}', place_string -%}
+                            {%- if section.settings.max_desc_length_enable -%}
+                                {%- assign title = product.title | truncatewords: section.settings.max_desc_length -%}
+                            {%- else -%}
+                                {%- assign title = product.title -%}
+                            {%- endif -%}
+                            {%- assign url = product.selected_or_first_available_variant.url -%}
+                            {%- assign image = product.selected_or_first_available_variant.image | default: product.images[0] -%}
+                            <div class="purchases-proof__item" data-js-purchases-proof-item>
+                                <div class="purchases-proof__item_button-close" data-js-action="close"><span class="fa fa-times" aria-hidden="true"></span></div>
+                                <a href="{{ url }}" class="purchases-proof__item_image" target="_blank">
+                                    <img data-srcset="{{ image | img_url: '160x' }} 1x, {{ image | img_url: '320x' }} 2x" alt="{{ title }}" data-js-purchases-proof-item-image>
+                                </a>
+                                <div class="purchases-proof__item_content">
+                                    <span class="purchases-proof__item_text-line-01">{{ line_01_string }}</span>
+                                    <div class="purchases-proof__item_title">
+                                        <h4>
+                                            <a href="{{ url }}" target="_blank">{{ title }}</a>
+                                        </h4>
+                                    </div>
+                                    <span class="purchases-proof__item_text-line-02">{{ line_02_string }}</span>
+                                </div>
+                            </div>
+                        {%- endfor -%}
+                    {%- endif -%}
+                </div>
+            </div>
+        </div>
+        {%- if shop.metafields.shoptimized and section.settings.enable_demo_data != true -%}
+            <script>
+                window.StatsApp.purchases_proof = {
+                    data: {
+                        period: {{ section.settings.real_data_period | abs }}
+                    },
+                    strings: {
+                        time_suffix: {
+                            minutes: {{ section.settings.time_minutes | json }},
+                            hours: {{ section.settings.time_hours | json }},
+                            days: {{ section.settings.time_days | json }}
+                        },
+                        line_01: {{ section.settings.text_line_01 | json }},
+                        line_02: {{ section.settings.text_line_02 | json }},
+                        time_default: {{ section.settings.text_time_default | json }},
+                        time_now: {{ section.settings.text_time_now | json }},
+                        place_default: {{ section.settings.text_place_default | json }},
+                        place_unknown: {{ section.settings.text_place_unknown | json }}
+                    }
+                };
+            </script>
+        {%- endif -%}
+    {%- endif -%}
+{%- endif -%}
+
+
+{% schema %}
+{
+"name": "Social proof popup",
+"settings": [
+{
+"type": "checkbox",
+"id": "enable",
+"label": "Enable Social Proof Pop-up",
+"default": true
+},
+{
+"type": "checkbox",
+"id": "disable_mobile",
+"label": "Disable Social Proof Pop-up on Mobile",
+"default": false
+},
+{
+"type": "text",
+"id": "text_line_01",
+"label": "Text line #1",
+"default": "Someone purchased a",
+"info": "variables: {time-text}, {place-text}"
+},
+{
+"type": "text",
+"id": "text_line_02",
+"label": "Text line #2",
+"default": "{time-text} {place-text}",
+"info": "variables: {time-text}, {place-text}"
+},
+{
+"type": "text",
+"id": "text_time_default",
+"label": "Default value for {time-text}",
+"default": "{time} ago",
+"info": "variables: {time}"
+},
+{
+"type": "text",
+"id": "text_time_now",
+"label": "'Now' value for {time-text}",
+"default": "Now"
+},
+{
+"type": "text",
+"id": "text_place_default",
+"label": "Default value for {place-text}",
+"default": "from {place}",
+"info": "variables: {place}"
+},
+{
+"type": "text",
+"id": "text_place_unknown",
+"label": "Unknown value for {place-text}",
+"default": "from some country"
+},
+{
+"type": "text",
+"id": "time_minutes",
+"label": "Suffix to minutes of {time}",
+"info": "Example: 'for one|more than one'",
+"default": "minute|minutes"
+},
+{
+"type": "text",
+"id": "time_hours",
+"label": "Suffix to hours of {time}",
+"info": "Example: 'for one|more than one'",
+"default": "hour|hours"
+},
+{
+"type": "text",
+"id": "time_days",
+"label": "Suffix to days of {time}",
+"info": "Example: 'for one|more than one'",
+"default": "day|days"
+},
+{
+"type": "checkbox",
+"id": "enable_demo_data",
+"label": "Enable demo data purchases",
+"default": true
+},
+{
+"type": "paragraph",
+"content": "Demo data settings:"
+},
+{
+"type": "collection",
+"id": "collection",
+"label": "Collection",
+"info": "default: 'All products'"
+},
+{
+"type": "paragraph",
+"content": "Random values for text lines"
+},
+{
+"type": "range",
+"id": "range_min",
+"min": 0,
+"max": 60,
+"step": 1,
+"label": "Min {time} value (minutes)",
+"default": 2
+},
+{
+"type": "range",
+"id": "range_max",
+"min": 0,
+"max": 60,
+"step": 1,
+"label": "Max {time} value (minutes)",
+"default": 20
+},
+{
+"type": "checkbox",
+"id": "max_desc_length_enable",
+"label": "Enable product title limit",
+"default": false
+},
+{
+"type": "range",
+"id": "max_desc_length",
+"min": 0,
+"max": 30,
+"step": 1,
+"label": "Product title limit",
+"default": 10
+},
+{
+"type": "text",
+"id": "places",
+"label": "{place} values",
+"default": "New York, USA|Moscow, Russian|London, Great Britain|Amsterdam, Netherlands|Berlin, Germany|Rome, Italy|Madrid, Spain",
+"info": "'|' is separator"
+},
+{
+"type": "checkbox",
+"id": "disable_closing",
+"label": "Disable when closing",
+"default": false
+},
+{
+"type": "select",
+"id": "cookie_lifetime",
+"label": "Cookie lifetime",
+"default": "1",
+"options": [
+{ "value": "1", "label": "1 day" },
+{ "value": "3", "label": "3 days" },
+{ "value": "7", "label": "1 week" },
+{ "value": "31", "label": "1 month" },
+{ "value": "365", "label": "1 year" }
+]
+},
+{
+"type": "paragraph",
+"content": "Real data settings:"
+},
+{
+"type": "select",
+"id": "real_data",
+"label": "Real purchases",
+"default": "now_and_period",
+"options": [
+{ "value": "now", "label": "Only now" },
+{ "value": "now_and_period", "label": "Now and from period" }
+]
+},
+{
+"type": "select",
+"id": "real_data_period",
+"label": "Purchases for the period",
+"default": "24",
+"options": [
+{ "value": "1", "label": "1 hour" },
+{ "value": "12", "label": "12 hours" },
+{ "value": "24", "label": "24 hours" },
+{ "value": "48", "label": "48 hours" }
+]
+},
+{
+"type": "paragraph",
+"content": "Switching"
+},
+{
+"type": "range",
+"id": "delay",
+"min": 0,
+"max": 60,
+"step": 1,
+"unit": "sec",
+"label": "Delay start",
+"default": 6
+},
+{
+"type": "range",
+"id": "interval_min",
+"min": 0,
+"max": 60,
+"step": 1,
+"unit": "sec",
+"label": "Min shift interval",
+"default": 6
+},
+{
+"type": "range",
+"id": "interval_max",
+"min": 0,
+"max": 60,
+"step": 1,
+"unit": "sec",
+"label": "Max shift interval",
+"default": 12
+},
+{
+"type": "range",
+"id": "lifetime",
+"min": 0,
+"max": 60,
+"step": 1,
+"unit": "sec",
+"label": "Max lifetime",
+"default": 9
+},
+{
+"type": "paragraph",
+"content": "Mouse hover stops switching"
+}
+]
+}
+{% endschema %}

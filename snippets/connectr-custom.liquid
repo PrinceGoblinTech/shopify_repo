@@ -1,0 +1,154 @@
+{% assign connectr_button_text = "View On Amazon" %}
+{% assign enable_connectr = false %}
+
+
+{% assign connectr-product-region = shop.metafields.connectr["region"] %}
+{% if product.metafields.connectr["product-region"] != blank %}
+       {% assign connectr-product-region = product.metafields.connectr["product-region"] %}
+{% endif %}
+
+{% assign connectr_redirect_url = "https://www.amazon." | append: connectr-product-region | append: "/dp/" | append: product.metafields.connectr["parentasin"] | append: "?m=" | append: shop.metafields.connectr["sellerid"]%} 
+
+
+
+{% assign connectr_redirect_base_url = "https://www.amazon." | append: connectr-product-region | append: "/dp/" | append: product.metafields.connectr["parentasin"] | append: "?m=" | append: shop.metafields.connectr["sellerid"]%} 
+{% assign connectr-redirect = "1" %}
+
+
+{% assign connectr_link_id = "ConnectrLink-" | append: product.id %}
+{% if connectr-redirect ==  "1"%}
+  {% if product.metafields.connectr["isconnectr"]  == "true" or product.metafields.connectr["isconnectr"]  == "t" %}
+    {% assign enable_connectr = true %}
+  {% endif %}
+{% endif %}
+
+
+<script> 
+    
+   var affiliateJsonDecode = {"com":null};   
+  var connectrregion = "{{connectr-product-region}}";
+  {% if product.metafields.connectr["product-region"] != blank %}
+        	connectrRegion       = "{{product.metafields.connectr["product-region"]}}";
+        {% endif %}
+  var connectr_redirect_url =  "{{connectr_redirect_base_url}}";
+  if(affiliateJsonDecode[connectrregion] != undefined ){
+    
+    var connectr_redirect_url = '{{connectr_redirect_base_url}}&tag='+affiliateJsonDecode[connectrregion];
+    
+    
+  }
+
+ 
+  
+  connectrdefer{{product.id}}();
+
+    //wait for jquery to load
+    function connectrdefer{{product.id}}(method) {
+    if (window.jQuery) {
+    	 $(document).on("click", "#ConnectrLink-{{product.id}}", function(){
+            
+	            connectrCustomClick('#ConnectrLink-{{product.id}}');
+	   });
+
+        connectrjQready{{product.id}}();
+    } else {
+        setTimeout(function() { connectrdefer{{product.id}}(method) }, 50);
+    }
+}
+  
+  function connectrjQready{{product.id}}() {
+
+    $('#ConnectrLink-{{product.id}}').attr('href',connectr_redirect_url);
+      }
+  
+
+  function findlocation_custom()
+ {
+    jQuery.ajax({
+        url: "//extreme-ip-lookup.com/json/",
+        type: "POST",
+        dataType: "jsonp",
+        success: function(location) {
+        
+        
+        
+            if(location.countryCode == undefined){
+                 jQuery.ajax({
+                    url: "//api.wipmania.com/json/",
+                    type: "POST",
+                    dataType: "jsonp",
+                    success: function(location) {
+                     
+                   localize_custom(location.address.country_code.toLowerCase());
+                     
+                    
+                    
+                    }
+                });
+            } else {
+                localize_custom(location.countryCode.toLowerCase());
+               
+            }
+
+        }
+    });
+ }
+
+ function localize_custom(country_code){
+    var regions = [ "us","ca","gb","in","de","fr","es","it","mx","au","br","jp","au","ae","sg","nl" ];
+
+    var indexNumber =  regions.indexOf(country_code);
+    if( regions[indexNumber] == "us"){
+        regions[indexNumber] = "com";
+    }
+     if( regions[indexNumber] == "au"){
+        regions[indexNumber] = "com.au";
+    }
+    if( regions[indexNumber] == "gb"){
+        regions[indexNumber] = "co.uk";
+    }
+
+    if(indexNumber != -1 && connectrregion != country_code  ){
+        region = regions[indexNumber]; 
+        if( affiliateJsonDecode[region] == undefined ){
+
+            connectrAmazonUrlOtherRegion = "http://amazon."+region+"/s/?field-keywords=" +encodeURIComponent(`{{product.title}}` );
+        }else{
+
+            connectrAmazonUrlOtherRegion = "http://amazon."+region+"/s/?field-keywords=" +encodeURIComponent(`{{product.title}}` )+"&tag="+affiliateJsonDecode[region];
+        }
+       
+        $('#ConnectrLink-{{product.id}}').attr('href',connectrAmazonUrlOtherRegion);
+        
+       
+
+
+    }
+
+
+   
+
+ }
+
+ function connectrCustomClick(id){
+
+    connectrRedirectURL = $(id).attr('href');
+
+    if(0)
+    {
+      if(typeof ga !== "undefined") {
+          
+           ga("send", "event", { eventCategory: "Connectr Link", eventAction: "Click", eventLabel:connectrRedirectURL});
+        }
+    }
+
+     if(0)
+     {
+      if(typeof fbq !== "undefined") {
+        
+          fbq("trackCustom", "ConnectrClick", {Amazonlink: connectrRedirectURL});
+        }
+     }
+ }
+  
+</script>

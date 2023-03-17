@@ -1,0 +1,130 @@
+  {% assign badgestyle = "topright" %}
+  {% assign badge = false %}
+  {% for tag in product.tags %}
+      {% assign tag = tag | downcase %}
+    {% if tag contains "badgestyle-" %}{% capture badgestyle %}{{ tag | replace: "badgestyle-","" }}{% endcapture %}{% endif %}
+	{% if tag contains "badge-" %}{% capture badge %}{{ tag | replace: "badge-","" }}{% endcapture %}{% endif %}
+  {% endfor %}
+  {% unless product.available %}
+	<div class="badges topleft">
+	  <img src="{{ 'transparent.png' | asset_img_url: '100x' }}"
+           
+           data-src="{{ 'sold_out.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'sold_out.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge" width="100" height="100"/>
+	</div>
+  {% elsif badge %}
+	<div class="badges {{ badgestyle }}">
+	  {% if badge == "freeshipping" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x'}}" 
+             data-src="{{ 'shipping_free.png' | asset_img_url: '100x'}}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'shipping_free.png' | asset_img_url: '100x'}}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "bestseller" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}" 
+             data-src="{{ 'best_seller.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'best_seller.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100" />
+      {% endif %}
+      {% if badge == "new" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}" 
+             data-src="{{ 'new.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'new.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "onsale" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}"
+             data-src="{{ 'on_sale.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'on_sale.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "performance" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}" 
+             data-src="{{ 'performance.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'performance.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "savenow" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}" 
+             data-src="{{ 'save_now.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'save_now.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "toprated" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}" 
+             data-src="{{ 'top_rated.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'top_rated.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "preorder" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}" 
+             data-src="{{ 'pre_order.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'pre_order.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "instock" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}" 
+             data-src="{{ 'in_stock.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'in_stock.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "soldout" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}" 
+             data-src="{{ icon_c | asset_img_url: '40x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'sold_out.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "custom1" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x' }}" 
+             data-src="{{ 'custom_1.png' | asset_img_url: '100x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'custom_1.png' | asset_img_url: '100x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+      {% if badge == "custom2" %}
+      	<img src="{{ 'transparent.png' | asset_img_url: '100x'}}"
+             data-src="{{ 'custom_2.png' | asset_img_url: '100x'}}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'custom_2.png' | asset_img_url: '100x'}}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+             class="lazyload p-badge-img" alt="Badge"  width="100" height="100"/>
+      {% endif %}
+	</div>
+  {% endunless %}

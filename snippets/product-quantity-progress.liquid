@@ -1,0 +1,101 @@
+{%- if settings.display_quantity_count_demo_data -%}
+    {% assign inventory_quantity = 0 %}
+    {% for variant in product.variants %}
+        {% capture inventory_quantity %}
+        {{ inventory_quantity | plus: variant.inventory_quantity }}
+        {% endcapture %}
+    {% endfor %}
+    {% if quantity == 0 %}
+        {% assign quantity = 100 %}
+    {% else %}
+        {% assign quantity = quantity | times: 1 %}
+    {% endif %}
+    {% if qty_sold == 0 %}
+        {% assign defaultSold = quantity | times: 80 | divided_by: 100 %}
+        {% assign totalSold = inventory_quantity | plus: defaultSold %}
+        {% if totalSold >= quantity %}
+            {% assign defaultSold = quantity | times: 60 | divided_by: 100 %}
+            {% assign totalSold = inventory_quantity | plus: defaultSold %}
+            {% if totalSold >= quantity %}
+                {% assign defaultSold = quantity | times: 40 | divided_by: 100 %}
+                {% assign totalSold = inventory_quantity | plus: defaultSold %}
+                {% if totalSold >= quantity %}
+                    {% assign defaultSold = quantity | times: 20 | divided_by: 100 %}
+                    {% assign totalSold = inventory_quantity | plus: defaultSold %}
+                    {% if totalSold >= quantity %}
+                        {% assign totalSold = inventory_quantity | times: 1 %}
+                        {% if totalSold >= quantity %}
+                            {% assign lastTwo = totalSold | slice: -2, 2 %}
+                            {% assign remaining = totalSold | replace: lastTwo, '' %}
+                            {% if lastTwo != '00' %}
+                                {% assign remaining = remaining | plus: 1 %}
+                                {% assign remaining = remaining | append: '00' %}
+                                {% assign quantity = remaining | times: 1 %}
+                            {% else %}
+                                {% assign quantity = quantity | plus: totalSold | times: 1 %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% assign defaultSold = qty_sold | times: 1 %}
+        {% if settings.display_quantity_count_demo_data %}
+            {% assign totalSold = inventory_quantity | plus: defaultSold %}
+        {% else %}
+            {% assign totalSold = defaultSold %}
+        {% endif %}
+        {% if totalSold >= quantity %}
+            {% assign plus_qty = totalSold | minus: quantity | plus: 3 %}
+            {% assign quantity = quantity | plus: plus_qty %}
+        {% endif %}
+    {% endif %}
+    {% if display_limited %}
+        {% assign displayquantity = displayquantity | times: 1 %}
+        {% if displayquantity > 0 %}
+            {% assign quantity = displayquantity | plus: 100 %}
+            {% assign totalSold = displayquantity | plus: 100 | minus: displayquantity %}
+        {% endif %}
+        {% unless product.available %}
+        {% assign totalSold = quantity %}
+        {% endunless %}
+        {% assign qtyleft = quantity | minus: totalSold %}
+        <div class="progress progress-striped" data-proid="p{{ product.id }}"
+             data-per="{{ quantity | minus: totalSold }}" data-qty="{{ quantity }}"
+             data-total="{{ totalSold }}">
+            <div class="progress-bar"></div>
+        </div>
+        <p class="remaining--text">{{ 'products.progress_bar.limited_edition' | t }}
+            : {{ 'products.progress_bar.only' | t }} <span
+                    class="danger" style="display:none;">{% if qtyleft > 0 %}{{ qtyleft }}{% else %}{{ limited_default }}{% endif %}</span> {{ 'products.progress_bar.left' | t }}
+            .</p>
+    {% else %}
+        {% unless product.available %}
+        {% assign totalSold = quantity %}
+        {% endunless %}
+        <div class="progress progress-striped" data-proid="p{{ product.id }}"
+             data-per="{{ quantity | minus: totalSold }}" data-qty="{{ quantity }}"
+             data-total="{{ quantity  | minus: totalSold }}">
+            <div class="progress-bar"></div>
+        </div>
+        <p class="remaining--text"><span
+                    class="quantity">{{ totalSold }}</span>{% if settings.product_flash_sold_enable_demo_data and settings.enable_total_quantity %} of
+            <span class="quantity">{{ quantity }}</span>{% endif %} {{ 'products.progress_bar.sold' | t }}
+        </p>
+    {% endif %}
+{%- else -%}
+    {%- assign total_quantity_value = settings.total_quantity_value | default: 200 -%}
+    <div class="js-quantity" data-product-id="{{ product.id }}" data-total="{{ total_quantity_value }}"{% unless display_limited %} data-invert{% endunless %}>
+        <div class="progress progress-striped" data-quantity-progress>
+            <div class="progress-bar" data-quantity-progress-range></div>
+        </div>
+        <p class="remaining--text">
+        {%- if display_limited -%}
+            {{ 'products.progress_bar.limited_edition' | t }} : {{ 'products.progress_bar.only' | t }} <span class="danger" data-quantity-counter>..</span> {{ 'products.progress_bar.left' | t }}.
+        {%- else -%}
+            <span class="quantity" data-quantity-counter>..</span>{% if settings.enable_total_quantity %} of <span class="quantity">{{ total_quantity_value }}</span>{% endif %} {{ 'products.progress_bar.sold' | t }}
+        {%- endif -%}
+        </p>
+    </div>
+{%- endif -%}

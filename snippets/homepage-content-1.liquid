@@ -1,0 +1,12 @@
+{% if pages[settings.homepage_page_2].content != '' %}
+<div class="home--content">
+  <div class="wrapper">
+    {% if settings.homepage_page_1_display_title %}
+      <h2 class="title">{{ pages[settings.homepage_page_1].title }}</h2>
+    {% endif %}
+    <div class="article-body">
+      {{ pages[settings.homepage_page_1].content }}
+    </div>
+  </div>
+</div>
+{% endif %}

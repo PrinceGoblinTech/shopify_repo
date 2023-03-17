@@ -1,0 +1,75 @@
+
+<div id="related_popup_upsell" class="modal fade"    role="dialog">
+  <div class="vertical-alignment-helper">
+  <div class="modal-dialog vertical-align-center">
+	
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div id="related_cart_sucsses_msg"></div>
+      <div class="modal-header">
+        <div style="display:none;">
+          <span id="related_shipping_msg">{{settings.related_popup_heading }}</span>
+          <span id="related_free_shipping_msg">{{settings.related_popup_heading_free_shipping }}</span>
+        </div>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+        <h4 class="modal-title related_popup_heading related_free_shipping_text"></h4>
+        <p class="related_popup_text">{{settings.related_popup_text}} </p>
+      </div>
+      <div class="modal-body" id="comment_parent_like">
+      <div id="comment_child_like"> 
+       {% include 'condition_forrelated_popup' %}
+       {%if collection8   %}
+          
+                {% capture index %}
+                        {{ 'now' | date: '%S' | times: collections.all.products.size | divided_by: 60 }}
+                {% endcapture %}
+                 <div class="related_pupup_rendome_parent hide-xs ">
+                   {% for product in collections[collection8.handle].products %}
+                  {% if product.available and product.variants.size >= 1 %}
+                 
+                   <div class="grid__item  medium-up--one-third small--one-half related_pupup_rendome">
+                     {% include 'product-card-grid-related-popup', grid_image_width: '250X250' %}
+                   </div>
+                   
+                   {% endif %}
+                   {% endfor %} 
+                 </div>
+         
+
+        		 
+
+
+
+
+                
+       <input type="hidden" id="check_collection_emty" value="1">
+      
+       {% else %}
+      
+       <input type="hidden" id="check_collection_emty" value="0">
+      
+      
+       {% endif %}
+        
+           
+      </div>
+        </div> 
+
+     <div class="modal-footer related_popup_footer">
+        
+        <a href="/" type="button" class="btn btn-default r_continue_shoping_color continue_shopping">{{ 'general.crossell.continue_shopping' | t  }}</a>
+        <a href="/cart" type="button" class="btn btn-default r_view_cart_color">{{ 'general.crossell.view_cart' | t  }}</a>
+ 
+        
+        <form method="post" action="/cart">
+
+           <button class="btn btn-default r_checkout_color" type="submit" name="checkout">
+          <img src="//cdn.shopify.com/s/files/1/2623/6172/t/2/assets/checkout-button-icon.png?17545970286828142699" alt="ivan-theme1" itemprop="logo" class="no-border ratina-img addIcon">{{ 'general.crossell.checkout' | t  }}
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</div>

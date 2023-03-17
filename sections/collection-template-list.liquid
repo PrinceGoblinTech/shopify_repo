@@ -1,0 +1,340 @@
+<div class="container-fluid header-space">
+		<div class="row">
+			<div class="container">
+             
+			 
+			</div>
+		</div>
+	</div>
+{% paginate collection.products by settings.collections_pagination_items %}
+	<div class="container-fluid collection_page">
+		<div class="row">
+			<div class="container">
+               {% include 'breadcrumb' %} 
+              	<div class="openings-header clearfix ri-fix">
+                          
+							<div class="select_side">
+                              {% include 'collection-sorting'%}
+ 
+							</div>
+							<div class="clear"></div>
+                          
+							<div class=" tags-wrap">
+                                            {% for tag in collection.all_tags %}
+                  {% if current_tags contains tag %}
+                          {% cycle '<div class="tag">Filter by:</div>','','','','','','','','','',''%}
+                   <div class="tag">
+                     
+                      {{ tag   | prepend :'<span class="fa fa-close"></span>' | link_to_remove_tag: tag | replace: 'title=', 'selected   title=' }} 
+       
+								 
+							</div>
+                              <div class="tag rem">
+                     
+                      <a href="{{collection.url}}" selected="" title="Remove all"><span class="fa fa-close"></span>Remove All</a> 
+       
+								 
+							</div>
+                          
+                   {% endif %}
+ {% endfor %} 
+							 
+								 
+								
+					      </div>
+						</div>
+              {% if settings.enable-filters %}
+	<div class="col-md-2 col-sm-3 col-filters">
+    
+      <div class="m-div clearfix row">
+        <div class="filter-mobile clearfix">
+            <a href="javascript:;">Filter</a>
+        </div>
+        <div class="mobile-sort-btn">
+          <a href="javascript:;">sort by</a>
+          <ul class="mobile-sort">
+              <li id="onem" data-value="manual">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.featured' | t }}</li>
+              <li id="twom" data-value="best-selling">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.best_selling' | t }}</li>
+              <li id="threem" data-value="title-ascending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.az' | t }}</li>
+              <li id="fourm" data-value="title-descending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.za' | t }}</li>
+              <li id="fivem" data-value="price-ascending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.price_ascending' | t }}</li>
+              <li  id="sixm" data-value="price-descending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.price_descending' | t }}</li>
+              <li id="sevenm" data-value="created-descending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.date_descending' | t }}</li>
+              <li id="eightm" data-value="created-ascending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.date_ascending' | t }}</li>
+          </ul>
+        </div>
+            
+					<div class="sidebar_wrap filters-container">
+                      {% if settings.sort-dropdown-a-check %}
+   	  				<div class="single-cat colorone">
+                      {% assign tags = settings.sort_a  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+ 
+{% assign other_tags = '' %}
+{% for tag in current_tags %}
+{% unless tags contains tag %}
+{% assign temp_tag = tag | handle %}
+ 
+{% assign temp_tag = temp_tag | append: '+' %}
+ 
+{% assign other_tags = other_tags | append: temp_tag %}
+{% endunless %}
+{% endfor %}
+                      
+					  <h4 class="category-head">
+					  	<a role="button" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse1">{{settings.filter1heading}}</a>
+					  </h4>
+				   	<div class="collapse in" id="collapse1">
+				   		        <ul>  
+                          
+                          
+                            
+                            {% assign clear_url = collection.url | append: '/' | append: other_tags %} 
+  
+ 
+                                  {% for tag in tags %}
+  {% if current_tags contains tag %}
+ <li class="color-filters">
+    
+                                
+                               
+     
+    {{ tag   | link_to_remove_tag: tag | replace: 'title=', 'selected class="main_Label active" title=' }} 
+                          
+                          </li>
+  {% elsif collection.all_tags contains tag %}
+  {% assign temp_tag = tag | handle %}
+  {% unless other_tags == '' %}
+                           
+  {% assign temp_tag = temp_tag | prepend: '' %}
+                           
+  {% endunless %}
+  {% assign add_tag_url = clear_url | append: temp_tag | append: '?view=list' %}
+                                  
+   <li class="color-filters">
+                         
+                               {{ tag | link_to: add_tag_url | replace: 'title=', ' class="main_Label" title='  }}</li>
+  {% endif %}
+  {% endfor %}
+                          
+    
+                        </ul>
+				    </div>
+                  </div>
+                    {% endif %}
+                      
+                      {% if settings.sort-dropdown-b-check %}
+                  <div class="single-cat">
+                         
+                          {% assign tags = settings.sort_b  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+
+{% assign other_tags = '' %}
+{% for tag in current_tags %}
+{% unless tags contains tag %}
+{% assign temp_tag = tag | handle %}
+ 
+{% assign temp_tag = temp_tag | append: '+' %}
+ 
+{% assign other_tags = other_tags | append: temp_tag %}
+{% endunless %}
+{% endfor %}
+					  <h4 class="category-head">
+					  	<a role="button" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapse1">{{settings.filter2heading}}</a>
+					  </h4>
+				   	<div class="collapse in" id="collapse2">
+				   		                                  <ul>  
+                          
+                          
+                          
+                            {% assign clear_url = collection.url | append: '/' | append: other_tags %} 
+  
+  {% for tag in tags %}
+  {% if current_tags contains tag %}
+ <li>
+    
+                                
+                               
+     
+    {{ tag   | prepend :'<div class="check">   &check;  </div>' | link_to_remove_tag: tag | replace: 'title=', 'selected class="main_Label" title=' }} 
+                          
+                          </li>
+  {% elsif collection.all_tags contains tag %}
+  {% assign temp_tag = tag | handle %}
+  {% unless other_tags == '' %}
+                          
+  {% assign temp_tag = temp_tag | prepend: '' %}
+                           
+  {% endunless %}
+  {% assign add_tag_url = clear_url | append: temp_tag | append: '?view=list' %}
+                                                           
+   <li>
+                         
+                               {{ tag | prepend  :'<div class="check">    </div>' | link_to: add_tag_url | replace: 'title=', ' class="main_Label" title='  }}</li>
+  {% endif %}
+  {% endfor %}
+                          
+    
+                        </ul>
+				    </div>
+                  </div>
+                    {% endif %} 
+                      
+                      
+                      
+                               
+                      {% if settings.sort-dropdown-c-check %}
+                  <div class="single-cat">
+                         
+                          {% assign tags = settings.sort_c  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+
+{% assign other_tags = '' %}
+{% for tag in current_tags %}
+{% unless tags contains tag %}
+{% assign temp_tag = tag | handle %}
+ 
+{% assign temp_tag = temp_tag | append: '+' %}
+ 
+{% assign other_tags = other_tags | append: temp_tag %}
+{% endunless %}
+{% endfor %}
+                   
+					  <h4 class="category-head">
+					  	<a role="button" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapse3">{{settings.filter3heading}}</a>
+					  </h4>
+				   	<div class="collapse in" id="collapse3">
+				   		                                  <ul>  
+                          
+                          
+                          
+                            {% assign clear_url = collection.url | append: '/' | append: other_tags %} 
+                                                             
+  {% for tag in tags %}
+  {% if current_tags contains tag %}
+ <li>
+    
+                                
+                               
+     
+    {{ tag | prepend :'<div class="check">  &check;  </div>' | link_to_remove_tag: tag | replace: 'title=', 'selected class="main_Label" title=' }} 
+                          
+                          </li>
+  {% elsif collection.all_tags contains tag %}
+  {% assign temp_tag = tag | handle %}
+                                                            
+  {% unless other_tags == '' %}
+                          
+  {% assign temp_tag = temp_tag | prepend: '' %}
+                                                            
+                           
+  {% endunless %}
+  {% assign add_tag_url = clear_url | append: temp_tag | append: '?view=list'%}
+                                                              
+   <li>
+                         
+                               {{ tag | prepend  :'<div class="check">    </div>' | link_to: add_tag_url | replace: 'title=', ' class="main_Label" title='  }}</li>
+  {% endif %}
+  {% endfor %}
+                          
+    
+                        </ul>
+				    </div>
+                  </div>
+                    {% endif %} 
+   	  			</div>
+      </div>
+				</div>
+                  {% endif %}
+				<div class="{% if settings.enable-filters %} col-md-10 col-sm-9 col-main-with-filters {% else %}  col-md-12 col-sm-12 {% endif %}">
+					<div class="main_category row">
+					 	<div class="openings-header clearfix ctitle">
+                          
+							  {% if settings.showtitle %}
+							<h2>{{ collection.title }}</h2>
+                          {% endif %}
+                           {% if collection.description != blank %}
+                          <div class="rte rte--header">
+                          {{ collection.description }}
+                          </div>
+                     {% endif %}
+                      </div>
+						<div class="category_wrap cearfix">
+                              <div class="grid-uniform">
+                                {% assign product_list_class = "" %}
+                                {% assign product_list_class_desk = "" %}
+                                {% assign product_list_class_mobile = "" %}
+                                {% assign products_per_row = settings.products_per_row %}
+                                {% assign products_per_row_mobile = settings.mobile_products_per_row %}
+                                {% if products_per_row == "2" %}
+                                  {% assign product_list_class_desk = "large--one-half" %}
+                                {% elsif products_per_row == "3" %}
+                                  {% assign product_list_class_desk = "large--one-third" %}
+                                {% elsif products_per_row == "4" %}
+                                  {% assign product_list_class_desk = "large--one-quarter" %}
+                                {% endif %}
+                                {% if products_per_row_mobile == "1" %}
+                                  {% assign product_list_class_mobile = "small--one-whole" %}
+                                {% elsif products_per_row_mobile == "2" %}
+                                  {% assign product_list_class_mobile = "small--one-half" %}
+                                {% endif %}
+                                {% capture product_list_class %}{{ product_list_class_desk }} medium--one-half margin--bottom-15 {{ product_list_class_mobile }}{% endcapture %}
+                                {% for product in collection.products %}
+                                {% assign hideupsell = false %} 
+                                {% for tag in product.tags %}
+                                    {% assign tag = tag | downcase %}
+                                {% if tag == "hideupsell" %}{% assign hideupsell = true %}
+                                {% break %}
+                                {% endif %}
+                                {% endfor %}
+                                {% if  hideupsell == false %} 
+                                {% include 'product-list-item' %}
+                                {% endif %}
+                                {% else %}
+                                  {% if collection.handle == 'all' and current_tags == '' %}
+                                    {% unless emptyState %}
+                                      {{ 'theme-onboarding.css' | global_asset_url | stylesheet_tag }}
+                                      {% assign emptyState = true %}
+                                    {% endunless %}
+                                    {% include 'onboarding-empty-collection' %}
+                                  {% else %}
+                                      <div class="grid__item">
+                                      
+                                      <p class="thi">{{ 'collections.general.no_matches' | t }}</p>
+                                         {% for tag in collection.all_tags  limit:1%}
+                  {% if current_tags contains tag %}
+                                 <p class="onlyone">{{ 'collections.general.no_matches1' | t }}</p>
+                                      <style>
+                                        .thi{display:none;}
+                                      </style>
+                           {% endif %}
+                                {% endfor %}              
+                                    </div>
+                                  {% endif %}
+                                {% endfor %}
+                          </div>
+
+				</div>
+					</div>
+                      {% if paginate.pages > 1 %}
+      <hr>
+      <div class="pagination">
+        {{ paginate | default_pagination | replace: '&laquo; Previous', '<i class="fa fa-angle-left"></i>' | replace: 'Next &raquo;', '<i class="fa fa-angle-right"></i>' }}
+      </div>
+    {% endif %}
+
+  
+{% endpaginate %}
+				</div>	
+			</div>
+		</div>
+	</div>
+	<style>
+      nav.breadcrumb {
+    float: left;
+}
+     @media only screen and (max-width: 767px) { 
+      .openings-header h2 {
+    text-align: center;
+    padding-top: 12px;
+}
+     }
+      .grid__item .onlyone ~ .onlyone {display:none;}
+</style>

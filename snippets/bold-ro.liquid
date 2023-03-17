@@ -1,0 +1,76 @@
+<div class='product_rp_div p{{ product.id }}'></div>
+<a class="btn btn-shopify small {{ product.id }}_custom_button" data-toggle="modal" data-target="#myModal" style="display:none;">Add to cart</a>
+ 
+<script>
+  generate_rp_tag = false;
+  add_to_order_tag = false;
+  group_id = 0;
+  
+  if (typeof rp_prod == 'undefined'){
+    rp_prod = {};
+  }
+  rp_prod.p{{ bold-ro.id }} = {};
+  {% for rp-variant in product.variants %}
+  rp_prod.p{{ product.id }}.v{{ rp-variant.id }} = {{ rp-variant.metafields.bold_rp | json }};
+  {% endfor %}
+  
+  jQuery(document).ready(function(){
+       addRPHandler();
+    setTimeout(addRPHandler, 700);
+ 
+    function addRPHandler(){
+      jQuery("[name='id'],.single-option-selector").unbind();
+      jQuery("[name='id'],.single-option-selector").change(function(){
+        var myForm = $('.product_rp_div.p{{ product.id }}').closest("form");
+        var idInput = myForm.find("[name='id']");
+        var myVariant = idInput.val();
+        var prodId = {{ product.id }};
+        
+        group_id = rp_prod['p'+prodId]["v"+myVariant].rp_group_id;
+        
+        {% if shop.metafields.bold_rp.recurring_type != 0 %}
+        //add recurring order widget
+        if(group_id){
+          $('.product_rp_div.p{{ product.id }}').show();
+        }
+        
+        if(!generate_rp_tag && group_id)
+          $('.product_rp_div.p{{ product.id }}').append('<script async class="generate_rp" src="https://ro.boldapps.net/recurring_settings/generate_rp?&shop_url={{ shop.permanent_domain }}&group_id='+group_id+'&customer_id={{ customer.id }}&product_id='+prodId+'&variant_id='+myVariant+'&v=2"></'+''+'script>');
+        
+        generate_rp_tag = true;
+        {% endif %}
+        
+        {% unless shop.metafields.bold_rp.recurring_type != 0 %}
+        //toggle buttons
+        $('.product_rp_div').hide();
+        $('#customButton, .{{ product.id }}_custom_button').hide();
+        $('.addtocart').show();
+        {% endunless %}
+        
+        if(JSON.stringify(group_id) == null){
+          $('.product_rp_div.p{{ product.id }}').hide();
+          $('#customButton, .{{ product.id }}_custom_button').hide();
+          $('.addtocart').show();
+        }
+        
+        //add add_to_order button
+        if(!add_to_order_tag)
+          $('.product_rp_div.p{{ product.id }}').append('<script async class="add_to_order" src="https://ro.boldapps.net/recurring_settings/add_to_order?&shop_url={{ shop.permanent_domain }}&group_id='+group_id+'&customer_id={{ customer.id }}&product_id='+prodId+'&variant_id='+myVariant+'&v=2"></'+''+'script>');
+        
+        add_to_order_tag = true;
+        
+        {% if shop.metafields.bold_rp.recurring_type != 0 %}
+        //toggle add to order btn
+          if(JSON.stringify(group_id) == null){
+          $('.add_modal_btn').hide();
+        }else{
+          $('.add_modal_btn').show();
+        }
+        {% else %}
+        $('.add_modal_btn').show();
+        {% endif %}
+      });
+      jQuery("[name='id']").change();
+    }
+  });
+</script>

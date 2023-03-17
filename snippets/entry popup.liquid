@@ -1,0 +1,179 @@
+ 
+<div id="Purchase-popup" class="clock-popup mfp-with-anim mfp-hide">
+  <button title="Close (Esc)" type="button" class="mfp-close" id="mfp-closeid-entry"><i class="fa fa-times"></i></button>
+  <div class="clock-popup-inner">
+    {% if settings.showlogopopup %}
+      <img class="lazyload limn" src="{{'transparent.png' | asset_url}}" 
+            data-src="{{'popuplogo.png' | asset_url}}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{'popuplogo.png' | asset_url}}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+           >
+    {% endif %}
+    <h2>{{settings.entrypopup_heading}}</h2>
+    <p class="ptag">{{settings.entrypopup_text}}</p>
+    <div id="rC_A" class="redCountdownDemo"></div>
+     <ul class="deals">
+      {{settings.entrypopup_bottomtext}}
+    </ul>
+    <div class="popup_newsletter">
+     {% if settings.newslatter_type == "mailchimp" %}
+        <form action="{{settings.mailchimpURL}}/subscribe/post-json?u={{settings.mailchimpUID}}&amp;id={{settings.mailchimpID}}&c=?" method="get" class="contact-form mailing-form mailchimpajaxpopup mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
+                          <div class="form-group clearfix">
+                            <input required type="email" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="EMAIL" id="contact_email"  class="form-ccontrol newsletter ajaxtextpopup" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+                            <button type="submit" class="btan btn-success ajxbtnpopup btncookiepur">{{ settings.newslatter_btn_text }}</button>
+                          </div>
+                        </form>
+                           <div id="subscriberesultpopup">
+                </div>
+      <script>
+           $(document).ready(function () {
+  var $form = $('.mailchimpajaxpopup')
+  if ($form.length > 0) {
+    $('.ajxbtnpopup').bind('click', function (event) {
+       {% if settings.termscheck %}
+        if ($('#footercheckentry').is(':checked')) {
+             if (event) event.preventDefault()
+      register($form)
+             
+          } else {
+            alert('{{ settings.termstext_warning }}');
+             return false;
+          }
+            {% endif %} 
+     
+    })
+  }
+})
+
+function register($form) {
+  $('.ajxbtnpopup').val('Sending...');
+  $.ajax({
+    type: $form.attr('method'),
+    url: $form.attr('action'),
+    data: $form.serialize(),
+    cache: false,
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    error: function (err) { alert('Could not connect to the registration server. Please try again later.') },
+    success: function (dataa) {
+      $('.ajxbtnpopup').val('subscribe')
+      if (dataa.result === 'success') {
+        // Yeahhhh Success
+        $('.mailchimpajaxpopup').hide();
+          $('.nhllkjupopup').hide();
+        $('.checktext, .deals').hide();
+        $('#subscriberesultpopup').html('<div class="coupon-code"><div class="w70"><p class="thank-msg"> {{ settings.newslatter_coupan }} </p> {% if settings.coupan != '' %}<p class="coupon-text">{{ 'layout.coupon_code.text' | t }}<input type="text" value="{{ settings.coupan }}" id="coupan_code"></p>{% endif %} </div>{% if settings.coupan != '' %}  <div class="w30"><p class="save-txt">{{ 'layout.coupon_code.save' | t }}</p><p class="copy-div"><span class="button_text">{{ 'layout.coupon_code.copy_code' | t }}</span></p></div>{% endif %}  </div>')
+        $('.ajaxtextpopup').val('')
+             
+      } else {
+       
+        // Something went wrong, do something to notify the user.
+        console.log(dataa.msg)
+     
+        $('#subscriberesultpopup').css('color', '#ff8282')
+         if (dataa.msg.substring(0) == '0 - Please enter a value')
+        {
+        $('#subscriberesultpopup').html('<p>Please enter Email</p>');
+        }
+        else if (dataa.msg.substring(0) == '0 - An email address must contain a single @')
+        {
+        $('#subscriberesultpopup').html('<p>An email address must contain a single @</p>');
+        }
+       else if(dataa.msg.substring(0).search("The domain portion of the email address is invalid") != -1) {
+   $('#subscriberesultpopup').html('<p>The domain portion of the email address is invalid</p>');
+} 
+        
+        
+        else 
+        {
+        $('#subscriberesultpopup').html('<p>' + dataa.msg.substring(0) + '</p>');
+        }
+         
+      
+      }
+    }
+  })
+};
+      </script>
+    {% elsif settings.newslatter_type == "klaviyo" %}
+      
+<form class="contact-form mailing-form mc-embedded-subscribe-formm" action="//manage.kmail-lists.com/subscriptions/subscribe" data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe" method="GET" target="_blank" novalidate="novalidate">
+  <input type="hidden" name="g" value="{{ settings.newslatter_klaviyo_id }}">
+  <div class="form-group clearfix klaviyo_field_group klaviyo_form_actions">
+    <input type="email" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="email" id="k_id_email" class="form-ccontrol newsletter" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+    <button type="submit" class="btan btn-success klaviyo_submit_button btncookiepur">{{ settings.newslatter_btn_text }}</button>
+  </div>
+  <div class="klaviyo_messages">
+    <div class="success_message" style="display:none;">
+    <div class='coupon-code'>
+                              <div class='w70'><p class='thank-msg'> {{ settings.newslatter_coupan }} </p>
+                                {% if settings.coupan != '' %}  
+                                <p class='coupon-text'>{{ 'layout.coupon_code.text' | t }}<input type="text" value="{{ settings.coupan }}" id="coupan_code"></p>
+                                {% endif %}
+                              </div>
+                              {% if settings.coupan != '' %} 
+                              <div class='w30'><p class='save-txt'>{{ 'layout.coupon_code.save' | t }}</p><p class='copy-div'><span class="button_text">{{ 'layout.coupon_code.copy_code' | t }}</span></p></div>
+                              {% endif %} 
+                            </div>
+    </div>
+    <div class="error_message" style="display:none;"></div>
+  </div>
+</form>
+<script type="text/javascript" src="//www.klaviyo.com/media/js/public/klaviyo_subscribe.js"></script>
+<script type="text/javascript">
+  KlaviyoSubscribe.attachToForms('.mc-embedded-subscribe-formm', {
+    hide_form_on_success: true,
+    custom_success_message: true
+  });
+</script>
+      {% else %}
+        {% form 'customer', id: null %}
+          {{ form.errors | default_errors }}
+          {% if form.posted_successfully? %}
+            <div class='coupon-code'>
+              <div class='w70'><p class='thank-msg'> {{ settings.newslatter_coupan }} </p>
+                {% if settings.coupan != '' %}  
+                  <p class='coupon-text'>{{ 'layout.coupon_code.text' | t }}<input type="text" value="{{ settings.coupan }}" id="coupan_code"></p>
+                {% endif %}
+              </div>
+              {% if settings.coupan != '' %} 
+                <div class='w30'><p class='save-txt'>{{ 'layout.coupon_code.save' | t }}</p><p class='copy-div'><span class="button_text">{{ 'layout.coupon_code.copy_code' | t }}</span></p></div>
+              {% endif %} 
+            </div>
+          {% else %}
+            <div class="input-group">
+              <input required type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="Email Address" name="contact[email]" id="popup_Email" class="form-control"  aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <span class="input-group-btn">
+                <button  name="ftentry" class="btn btncookiepur" type="submit">{{settings.entrypopup_button}}</button>
+              </span>
+            </div>  
+          {% endif %}
+        {% endform %}
+      {% endif %}
+    </div>
+    {% if settings.termscheck %}
+       
+      <p class="checktext"><label for="footercheckentry"><input type="checkbox" id="footercheckentry"> {{ settings.termstext }} <a target="_blank" href="{{ settings.termstextlink }}">{{ settings.termslinktext }}</a></label></p>
+      <script>
+        {% unless settings.newslatter_type == "mailchimp" %}
+        $('.btncookiepur').click(function () {
+          if ($('#footercheckentry').is(':checked')) {
+            $(this).submit();
+            {% unless settings.newslatter_type == "klaviyo"  %}
+            $.magnificPopup.close();
+            {% endunless%}
+          } else {
+            alert('{{ settings.termstext_warning }}');
+            return false;
+          }
+        });
+            {% endunless%}
+      </script>
+    {% endif %}
+    
+  </div>
+</div>
+ 

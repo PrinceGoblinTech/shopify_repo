@@ -1,0 +1,23 @@
+{% comment %}
+The contents of the collection.liquid template can be found in /sections/collection-template.liquid
+{% endcomment %}
+
+{% section 'collection-template' %}
+<style>
+  span.page-title {
+    color: black;
+}
+  .breadcrumb {
+    margin-bottom: 0;
+    margin-top: 0;
+    position: relative;
+    margin-bottom: 15px;
+}
+  {% if settings.collection_breadcrumb %}
+  {% else %}
+  nav.breadcrumb {
+    
+    display: none;
+}
+  {% endif %}
+</style>

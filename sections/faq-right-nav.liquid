@@ -1,0 +1,38 @@
+  <div class="col-sm-4 faq_right">
+      <div class="faq_list">
+            <ul class="nav nav-tabs" role="tablist">
+              {% for block in section.blocks %}
+                <li role="presentation" {% if forloop.index == 1%} class="active"   {% endif %}><a href="#nav{{forloop.index}}"  role="tab" data-toggle="tab" aria-expanded="false">
+                  {{ block.settings.topic_title }}
+
+</a></li>
+              {% endfor %}
+              </ul>
+          
+        </div>
+    </div>
+
+
+{% schema %}
+  {
+    "name": "SUPPORT-TOPICS", 
+    
+ "max_blocks": 15,
+  "blocks": [
+      {
+        "type": "image",
+        "name": "SUPPORT-TOPICS",
+        "settings": [
+ 
+{
+            "type": "text",
+            "id": "topic_title",
+            "label": "Topic title"
+          } 
+        ]
+      }
+      
+    ] 
+  }
+{% endschema %}
+

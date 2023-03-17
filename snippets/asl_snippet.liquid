@@ -1,0 +1,58 @@
+<!-- Start Advanced Store Localization Code: https://apps.shopify.com/advanced-geo-functions --> 
+<script rel="asl_jquery" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign page_url = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'?' | first | replace: '\/', '/' | replace:'\u0026','&' -%}    
+<script type="text/javascript">
+  window.asl_deferload = function(){
+  const asl_params = new URLSearchParams(window.location.search);
+  var asl_override = '';   
+  window.asl_location_override = function(type, location){
+    if(typeof location === '') localStorage.removeItem(type);
+    else localStorage.setItem(type, location);
+  }
+   
+  if(asl_params.has('region_redirected')) { localStorage.setItem('country_override', ''); localStorage.setItem('region_override', ''); }
+      else if(asl_params.has('country_override')) { asl_override = '&country_override='+asl_params.get('country_override');  }
+  else if(asl_params.has('region_override')) asl_override = '&region_override='+asl_params.get('region_override');
+      else if(localStorage.getItem('country_override') !== null && localStorage.getItem('country_override') !== '')  asl_override = '&country_overridden='+localStorage.getItem('country_override');
+  else if(localStorage.getItem('region_override') !== null && localStorage.getItem('region_override') !== '')  asl_override = '&region_overridden='+localStorage.getItem('region_override');  
+  (function($){
+    var asl_s = document.createElement("script"); 
+    asl_s.src = "https://shopapi.wyldcode.com/api.js?url="+encodeURIComponent(window.location.toString())+asl_override;
+    asl_s.type = 'text/javascript';
+    asl_s.onerror = function(){ $('style#asl_cleaner').remove(); $('style#asl_filter').remove(); $('style#asl_custom_filters').remove(); }
+    try{
+        document.getElementsByTagName("head")[0].appendChild(asl_s);
+    } catch(error){
+        $('style#asl_cleaner').remove(); 
+        $('style#asl_custom_filters').remove();
+        $('style#asl_filter').remove(); 
+    }
+})(jQuery);
+}
+if(typeof jQuery === 'undefined'){
+
+    var asl_jq = document.createElement("script"); 
+    console.log('Advanced Store Localization: You should enable jQuery in "System" to speed uploading');
+    asl_jq.src = "https://code.jquery.com/jquery-3.4.1.min.js";
+    asl_jq.onload = function(){ asl_deferload(); }
+    asl_jq.type = 'text/javascript';
+    document.getElementsByTagName("head")[0].appendChild(asl_jq);
+} else {
+asl_deferload();
+}
+</script>
+{% unless contentForQuerystring contains "Shopify.designMode" %}
+<style id="asl_filter">
+</style>
+<style id="asl_cleaner">
+.category_wrap .grid_collection_box:not(.asl_processed) { visibility: hidden; opacity: 0; } 
+.shopify-section .grid__item:not(.asl_processed) { visibility: hidden; opacity: 0; } 
+.container li:not(.asl_processed) { visibility: hidden; opacity: 0; } 
+.asl_discard  { visibility: none !important; opacity: 0 !important }
+</style>
+<style>
+    </style>
+{% endunless %}
+<!-- End Advanced Store Localization Code --> 
+

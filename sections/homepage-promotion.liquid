@@ -1,0 +1,299 @@
+  	<section class="container"> <!-- wrapper -->
+		<div class="collection_wrap new_collection_wrap">
+			<div class="collection_img home-collection_img">
+              <div class="deskp">
+<!-- 				<img src="{{ section.settings.promotion_main | img_url: 'master' }}" class="img-responsive lazy" data-original="{{ product-block.featured_image | product_img_url: image_size }}" height="619" width="450"> -->
+                  <img  
+                       data-src="{{ section.settings.promotion_maindesktop | img_url: 'master' }}"
+  data-sizes="auto"
+ 
+                       class="img-responsive lazy lazyload">
+              <h2>{{ section.settings.promotion_title }} <br> {{ section.settings.promotion_hashtag }}</h2>
+             <p>{{ section.settings.promotion_moretext }}</p>
+              </div>
+               <div class="mobilp">
+       
+                    <h2>{{ section.settings.promotion_title }} <br> {{ section.settings.promotion_hashtag }}</h2>
+              <img  
+             data-src="{{ section.settings.promotion_mainmobile | img_url: 'master' }}"
+ 
+ data-sizes="auto"
+ 
+             class="img-responsive lazy lazyload" data-original="{{'mobversion.jpg' | asset_url}}">  
+                 <p>{{ section.settings.promotion_moretext }}</p> 
+              </div>
+          </div>
+			<div class="collection_right home-collection_right">
+<!-- 				  <div class="collection_small">
+				  	<h2>{{ section.settings.promotion_title }}  {{ section.settings.promotion_hashtag }}</h2>
+				    <h4>{{ section.settings.promotion_moretext }}</h4>
+				  </div> -->
+				<div class="collection_slide home-collection_slide">
+                   {% if section.blocks.size > 0 %}
+                    {% for block in section.blocks %}
+       {% if block.settings.image != blank %}
+					<div class="item">
+						<a  href="javascript:;">
+                        {% if settings.lazyload %}
+                            <img
+                                    src="{{ block.settings.image | img_url: 'x150' }}"
+                                    data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+                                    data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                                    data-parent-fit="cover"
+                                    alt="{{ block.settings.image.alt | escape }}"
+                                    data-src="{{ block.settings.image | img_url: 'master' }}"  data-sizes="auto"  class="img-responsive lazy lazyload">
+                        {% else %}
+                            <img data-src="{{ block.settings.image | img_url: 'master' }}"  data-sizes="auto"  class="img-responsive lazy lazyload">
+                        {% endif %}
+						</a>
+					</div>
+   {% endif %}
+       {% endfor %}
+                  {% endif %}
+            {% if section.blocks.size == 0 %}
+    
+       <div class="item">
+  {{ 'image'  | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+          <div class="item">
+  {{ 'lifestyle-2'  | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+ 
+                    <div class="item">
+  {{ 'image'  | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+                    <div class="item">
+  {{ 'lifestyle-1'  | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+                    <div class="item">
+  {{ 'lifestyle-2'  | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+                    <div class="item">
+  {{ 'image'  | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+  {% endif %}
+				</div>
+             
+			</div>
+		</div>
+	</section>  
+ 
+
+ <style>
+   .collection_img{background:{{section.settings.promotion_color}}; }
+</style>
+{% schema %}
+  {
+    "name": "homepage-promotion",
+    "max_blocks": 8,
+	"settings": [
+{
+"type": "paragraph",
+"content": "This section displays a static promotion image and a carousel of upto 8 images."
+},
+ {
+        "type": "image_picker",
+        "id": "promotion_maindesktop",
+        "label": "Promotion Main Desktop Image" 
+      },
+ {
+        "type": "image_picker",
+        "id": "promotion_mainmobile",
+        "label": "Promotion Main Mobile Image" 
+      },
+      {
+        "type": "text",
+        "id": "promotion_title",
+        "label": "Promotion title" 
+      },
+{
+        "type": "color",
+        "id": "promotion_color",
+        "label": "background Color",
+		"default": "#49acd5"
+      },
+
+       
+	  {
+        "type": "text",
+        "id": "promotion_hashtag",
+        "label": "Promotion hashtag" 
+      },
+      {
+        "type": "text",
+        "id": "promotion_moretext",
+        "label": "Promotion more text" 
+      },
+        {
+            "type": "checkbox",
+            "id": "promotion_enable_arrows",
+            "label": "Enable arrows for swipe images?"
+        },
+        {
+
+            "type": "text",
+            "id": "promotion_timer",
+            "label": "Autoscroll timer in sec. 0 for disable",
+            "default": "0"
+    }
+    ],
+     
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image slide",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+         
+          
+        ]
+      }
+      
+    ],
+    "presets": [{
+      "name": "homepage-promotion",
+      "category": "Image",
+       
+      "blocks": [
+        
+      ]
+    }]
+  }
+{% endschema %}
+    <script>
+        jQuery(document).ready(function ($) {
+            $('.collection_slide').owlCarousel({
+                nav: {{section.settings.promotion_enable_arrows}},
+                {% assign promotion_timer = section.settings.promotion_timer | plus: 0 %}
+                {% if promotion_timer > 0 %}
+                autoplay: true,
+                autoplayTimeout: {{section.settings.promotion_timer}} * 1000,
+                {% endif %}
+
+                dots:false,
+                margin:28,
+                loop: true,
+                navText:["<i class='shoptimized-064 margin_right-2'></i>", "<i class='shoptimized-074 margin_left-3'></i>"],
+                responsive:{
+                    0:{
+                        items:2,
+               margin:5,
+                        slideBy: 2
+                    },
+                    1000:{
+                        items:3,
+                        slideBy: 3
+                    }
+                }
+            });
+
+            $(document)
+                .on('shopify:block:select', function(e){
+                    $('.collection_slide').owlCarousel({
+                        nav: {{section.settings.promotion_enable_arrows}},
+                        {% assign promotion_timer = section.settings.promotion_timer | plus: 0 %}
+                        {% if promotion_timer > 0 %}
+                        autoplay: true,
+                        autoplayTimeout: {{section.settings.promotion_timer}} * 1000,
+                        {% endif %}
+                        dots:false,
+                        margin:28,
+                        loop:true,
+                        navText:["<i class='shoptimized-064 margin_right-2'></i>", "<i class='shoptimized-074 margin_left-3'></i>"],
+                        responsive:{
+                            0:{
+                                items:2,
+                                slideBy: 2
+                            },
+                            1000:{
+                                items:3,
+                                slideBy: 3
+                            }
+                        }
+                    })
+                });
+            $(document)
+                .on('shopify:block:deselect', function(e){
+                    $('.collection_slide').owlCarousel({
+                        nav: {{section.settings.promotion_enable_arrows}},
+                        {% assign promotion_timer = section.settings.promotion_timer | plus: 0 %}
+                        {% if promotion_timer > 0 %}
+                        autoplay: true,
+                        autoplayTimeout: {{section.settings.promotion_timer}} * 1000,
+                        {% endif %}
+                        dots:false,
+                        margin:28,
+                        loop:true,
+                        navText:["<i class='shoptimized-064 margin_right-2'></i>", "<i class='shoptimized-074 margin_left-3'></i>"],
+                        responsive:{
+                            0:{
+                                items:2,
+                                slideBy: 2
+                            },
+                            1000:{
+                                items:3,
+                                slideBy: 3
+                            }
+                        }
+                    })
+                });
+            $(document)
+                .on('shopify:section:reorder', function(e){
+                    $('.collection_slide').owlCarousel({
+                        nav: {{section.settings.promotion_enable_arrows}},
+                        {% assign promotion_timer = section.settings.promotion_timer | plus: 0 %}
+                        {% if promotion_timer > 0 %}
+                        autoplay: true,
+                        autoplayTimeout: {{section.settings.promotion_timer}} * 1000,
+                        {% endif %}
+                        dots:false,
+                        margin:28,
+                        loop:true,
+                        navText:["<i class='shoptimized-064 margin_right-2'></i>", "<i class='shoptimized-074 margin_left-3'></i>"],
+                        responsive:{
+                            0:{
+                                items:2,
+                                slideBy: 2
+                            },
+                            1000:{
+                                items:3,
+                                slideBy: 3
+                            }
+                        }
+                    })
+                });
+            $(document)
+                .on('shopify:section:load', function(e){
+                    $('.collection_slide').owlCarousel({
+                        nav: {{section.settings.promotion_enable_arrows}},
+                        {% assign promotion_timer = section.settings.promotion_timer | plus: 0 %}
+                        {% if promotion_timer > 0 %}
+                        autoplay: true,
+                        autoplayTimeout: {{section.settings.promotion_timer}} * 1000,
+                        {% endif %}
+                        dots:false,
+                        margin:28,
+                        loop:true,
+                        navText:["<i class='shoptimized-064 margin_right-2'></i>", "<i class='shoptimized-074 margin_left-3'></i>"],
+                        responsive:{
+                            0:{
+                                items:2,
+                                slideBy: 2
+                            },
+                            1000:{
+                                items:3,
+                                slideBy: 3
+                            }
+                        }
+                    })
+                });
+
+        })
+
+    </script>
+
+

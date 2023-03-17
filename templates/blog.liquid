@@ -1,0 +1,172 @@
+<div class="container-fluid header-space">
+</div>
+<div class="container  "><!-- blog_div -->
+{% paginate blog.articles by settings.blog_posts_per_page %}
+  {% if settings.blog_breadcrumb %}
+  {% include 'breadcrumb' %}
+  {%endif %}
+  <div class="row">
+    
+    <div class="{% if settings.sidebar_enabled %}col-sm-9 col-lg-9{% else %}col-sm-12 col-lg-12{% endif %} blog-sides">
+      <h2 class="h3 bl-tittle"><a href="{{ blog.url }}" title="{{ blog.title | escape }}">{{ blog.title }}</a></h2>
+      {% for article in blog.articles %}
+        <div class="no-padding {% if settings.blog_articles_per_row == "1" %}         
+                    col-sm-12 col-lg-12
+                    {%endif %}
+           {% if settings.blog_articles_per_row == "2" %}         
+                    col-sm-6 col-lg-6
+                    {%endif %}
+                     {% if settings.blog_articles_per_row == "3" %}         
+                    col-sm-4 col-lg-4 
+                    {%endif %}
+                    
+                      {% if settings.blog_articles_per_row == "4" %}         
+                    col-sm-3 col-lg-3
+                    {%endif %} col-xs-12">
+          <div class="blog-row">
+          {% if article.image %}
+            <a class="article__featured-image" href="{{ article.url }}">
+              {{ article | img_url: '1024x1024' | img_tag: article.title }}
+            </a>
+          {% endif %}
+           <div class="blog-text">
+           
+          <h2 class="h3"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+        
+          <p class="blog_meta">
+          {% if settings.blog_author %}
+            <span>By {{article.author }}</span>
+          {% endif %}
+
+          {% if settings.blog_date %}
+            <span>  {{ article.published_at | date: format: "month_day_year" }} | </span>
+          {% endif %}
+		{% if settings.blog_tags %}
+            {% for tag in article.tags %}
+              <span><a href="{{ shop.url }}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" title="{{ blog.title }} {{ 'blogs.general.tagged' | t }} {{ tag | escape }}">{{ tag }}</a></span>
+            {% endfor %}
+        {% endif %}
+          {% if settings.blog_comment_count %}
+            {% if settings.disqus_enabled %}
+              <span>
+               | <a href="{{ article.url }}#disqus_thread" data-disqus-identifier="{{ article.id }}" class="disqus-comment-count">{{ 'blogs.comments.with_count' | t: count: 0 }}</a>
+              </span>
+            {% elsif article.comments_enabled? and article.comments_count > 0 %}
+              <span>
+                <a href="{{ article.url }}#comments">{{ 'blogs.comments.with_count' | t: count: article.comments_count }}</a> 
+              </span>
+            {% endif %}
+          {% endif %}
+        </p>
+             <p class="blog-excerpt">{{ article.content | strip_html | truncatewords: 50 }}</p>
+            </div>
+          <p><a class="btn blog-read-more-btn" href="{{ article.url }}">{{ 'blogs.article.read_more' | t }}</a></p>
+        </div>
+          </div>
+        
+      {% endfor %}
+      {% if paginate.pages > 1 %}
+        <hr>
+        <div class="pagination">
+          {{ paginate | default_pagination | replace: '&laquo; Previous', '<i class="fa fa-angle-left"></i>' | replace: 'Next &raquo;', '<i class="fa fa-angle-right"></i>' }}
+        </div>
+      {% endif %}
+    </div>
+    {% if settings.sidebar_enabled %}
+    <div class="col-sm-3 col-lg-3 ccv">
+      {% include 'blog-sidebar' %}
+    </div>
+     {% endif %}
+  </div>
+{% endpaginate %}
+</div>
+
+<style>
+  .blog_meta span:after {
+    content: '';
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    margin: -1px 5px 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #ced3d3;
+    box-sizing: border-box;
+}
+  .blog-widget-wrapper div#autocomplete-results {
+    display: none;
+}
+.blog-row{
+	background: #f7f9fb;
+	padding-bottom: 7px;
+}
+.blog_div .blog_meta span:after {
+	display: none;
+}
+.blog_div .blog_meta span {
+	margin-right: 5px;
+}
+.blog_div .blog-read-more-btn {
+	text-align: center;
+	text-transform: uppercase;
+	display: block;
+	float: none;
+	margin-top: 19px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 8px;
+  color: {{settings.blogbuttoncolortext}} !important;
+	border: 1px solid {{settings.blogbuttoncolortext}};
+	border-radius: 60px;
+	width: 100%;
+    max-width:225px;
+  background: {{settings.blogbuttoncolor}} !important;
+}
+  .blog_div .blog-read-more-btn:hover {
+  
+  color: {{settings.blogbuttoncolortexthover}} !important;
+    border: 1px solid {{settings.blogbuttoncolortexthover}};
+     background: {{settings.blogbuttoncolorhover}} !important;
+  }
+  
+  .blog-text {
+    padding: 0 20px;
+}
+.blog_meta span , .blog_meta a , .blog-excerpt span{
+	color : #666;
+}
+  .blog_div{max-width:1140px; width:100%;}
+  .blog-sides .col-sm-6:nth-child(odd) .blog-row{float:right;}
+  .blog-sides .bl-tittle{ font-size:{{settings.blogtitlesize}}; margin-bottom:39px; margin-top:17px; }
+  @media only screen and (max-width: 767px) {
+  .blog-sides .col-sm-6:nth-child(odd) .blog-row{float:none;}
+    #news .blog-row{margin:0 auto 35px;}
+  }
+  
+ .ccv input#search_query {
+    font-size: 17px;
+}
+  .template-blog .main-content .blog-newslatter .list-unstyled>li .stitle {
+    margin-left: 0!important;
+    max-width: 143px;
+    padding-left:25px;
+}
+  .template-blog .main-content .blog-newslatter .list-unstyled>li .stitle>h3{font-weight:400;}
+   .blog-widget-wrapper button.btn.btn-success {
+    border-color: transparent;
+}
+  .blog-widget-wrapper input#contact_email {
+    padding-left: 12px!important;
+}
+   .template-blog .main-content .blog-newslatter .list-unstyled>li .blog-sidebar-img{width:100px}
+  input.btn.btn-default.subscribe-button {
+    width: 100%;
+}
+  
+  a.btn.blog-read-more-btn {
+    background: {{settings.readmorebuttonbg}}!important;
+    color: {{settings.readmorebuttonTextcolor}}!important;
+    font-size:{{settings.readmorebuttonTextfont}}!important;
+}
+</style>

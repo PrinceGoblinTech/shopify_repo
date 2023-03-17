@@ -1,0 +1,137 @@
+{% if settings.footer_first_row_display %}
+  {% assign first_block = "one-half left" %}
+  {% assign second_block = "one-half right" %}
+  {% if settings.footer_guarantee_box_display and settings.footer_checkout_display %}
+    {% assign first_block = "one-half left" %}
+    {% assign second_block = "one-half right" %}
+  {% else %}
+    {% assign first_block = "one-whole" %}
+    {% assign second_block = "one-whole" %}
+  {% endif %}
+
+  <div class="first-footer">
+    <div class="wrapper">
+      {% if settings.footer_guarantee_box_display %}
+        <div class="{{ first_block }}">
+          <div class="two-fifths left ff-image">
+            <img src="{{ 'footer-image.png' | asset_url }}" alt="Image of footer-image" class="footer-image no-border ratina-img" />
+          </div>
+          <div class="three-fifths left ff-image-text">
+            <h3>{{ settings.guarantee_box_heading_text }}</h3>
+            <p>{{ settings.guarantee_box_info_text }}</p>
+          </div>
+        </div>
+      {% endif %}
+      {% if settings.footer_checkout_display %}
+        {% if settings.footer_checkout_single %}
+      	  <div class="{{ second_block }}">
+              <div class="one-sixth left">&nbsp;</div>
+              <div class="five-sixths left">
+                <div class="ff-checkout">
+                  <h3 class="with-lock-bg">{{ settings.checkout_box_heading_text }}</h3>
+                  <p>{{ settings.checkout_box_info_text }}</p>
+                  <img alt="Checkout Secure" src="{{ 'ff-checkout-single.png' | asset_url }}" class="no-border ratina-img checkout-img-foot" />
+                </div>
+              </div>
+          </div>
+        {% else %}
+          <div class="{{ second_block }}">
+              <div class="one-sixth left">&nbsp;</div>
+              <div class="five-sixths left">
+                <div class="ff-checkout">
+                  <h3 class="with-lock-bg">{{ settings.checkout_box_heading_text }}</h3>
+                  <p>{{ settings.checkout_box_info_text }}</p>
+                  {% include 'checkout-icons' %}
+                </div>
+              </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>   
+  </div>
+{% endif %}
+
+{% if settings.footer_second_row_display %}
+  <div class="second-footer">
+    <div class="wrapper">
+      <div class="one-third left subscribe-newsletter">
+        {% if settings.newslatter_form_show %}
+          <h3>{{ settings.newslatter_heading }}</h3>
+          {% if settings.newslatter_use_mailchimp %}
+            <form action="{{ settings.newslatter_mailchimp_url }}" method="post" class="contact-form mailing-form mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
+              <div class="input-group">
+                <i class="fa fa-envelope-o email-icon"></i>
+                <input required type="email" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="EMAIL" id="contact_email" class="input-group-field" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+                <span class="input-group-btn">
+                  <input type="submit" class="btn" name="subscribe" id="subscribe" value="{{ settings.newslatter_btn_text }}">
+                </span>
+              </div>
+            </form>
+          {% else %}
+            {% form 'customer', id: null %}
+              {{ form.errors | default_errors }}
+              {% if form.posted_successfully? %}
+                <p class="note form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+              {% else %}
+                <div class="input-group">
+                  <i class="fa fa-envelope-o email-icon"></i>
+                  <input required type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="newslatter_Email" class="input-group-field" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <span class="input-group-btn">
+                    <input type="submit" class="btn" name="subscribe" id="subscribe" value="{{ settings.newslatter_btn_text }}">
+                  </span>
+                </div>
+              {% endif %}
+            {% endform %}
+          {% endif %}
+          <span class="footer-insider">{{ settings.newslatter_text }}</span>
+        {% endif %}
+      </div>
+      <div class="one-third left menu-footer">
+        <ul class="list-inline">
+          {% for link in linklists[settings.footer_linklist].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% if settings.enable_header_search %}
+          <div class="search-form medium-down--hide">
+            {% include 'search-bar' %}
+          </div>
+        {% endif %}
+      </div>
+      <div class="one-third left contact-footer">
+        {% if settings.enable_header_contact %}
+          <div class="header-call-text">
+            <span class="phone-icon">{{ settings.header_question_line }}</span>
+            <a class="phone-number large--hide medium-down--show" href="tel:{{ settings.header_phone }}"><i class="phone-image"></i>{{ settings.header_phone }}</a>
+            <div class="phone-number medium-down--hide"><i class="phone-image"></i>{{ settings.header_phone }}</div>
+            <span class="phone-text">{{ settings.header_time }}</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<div class="powered-footer">
+  <div class="wrapper">
+    <div class="one-third left medium-down--hide">
+      <p class="copyright-text">&copy; {{ "now" | date: "%Y" }} <a href="/">{{ shop.name }}</a>. {{ 'layout.footer.copyright' | t }}</p>
+    </div>
+    <div class="one-quarter left text-right medium-down--hide">
+      <a href="http://www.shoptimized.net">{{ 'layout.footer.powered_by' | t }}</a>
+    </div>
+    <div class="five-twelfths left text-right medium-down--hide">
+      {% include 'social-icons' %}
+    </div>
+    <div class="large--one-whole large--hide medium-down--show">
+      {% include 'social-icons' %}
+    </div>
+    <div class="large--one-whole large--hide medium-down--show">
+      <p class="copyright-text">&copy; {{ "now" | date: "%Y" }} <a href="/">{{ shop.name }}</a>. {{ 'layout.footer.copyright' | t }}</p>
+    </div>
+    <div class="large--one-whole large--hide medium-down--show">
+      <a href="http://www.shoptimized.net">{{ 'layout.footer.powered_by' | t }}</a>
+    </div>
+  </div>
+</div>

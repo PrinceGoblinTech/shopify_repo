@@ -1,0 +1,284 @@
+  {% for link in linklists[settings.header_linklist_1].links %}
+    {% assign child_list_handle = link.title | handle %}
+    {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+    <li class="site-nav--has-dropdown{% if link.active %} site-nav--active{% endif %}" aria-haspopup="true">
+      <a href="{{ link.url }}" class="menu-open">
+        {{ link.title }}
+        <span class="fa fa-angle-down"></span>
+      </a>
+      <ul class="site-nav__dropdown normal-sub slides">
+        {% for child_link in linklists[child_list_handle].links %}
+        {% assign grand_child_list_handle = child_link.title | handle %}
+        {% if linklists[grand_child_list_handle] and linklists[grand_child_list_handle].links.size > 0 %}
+         <li class="site-nav--has-dropdown menu-dropdown-icon">
+            <a href="{{ child_link.url }}" class="site-nav__linkk">
+
+          {{ child_link.title  }}
+           </a>
+          <ul class="site-nav__dropdown normal-sub-sub slides">
+            {% for grand_child_link in linklists[grand_child_list_handle].links %}
+            <li>
+              <a href="{{ grand_child_link.url }}" class="site-nav__linkk">
+              {{ grand_child_link.title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% else %}
+        <li>
+           <a href="{{child_link.url}}" class="site-nav__linkk">
+          {{ child_link.title  }}
+          </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </li>
+    {% else %}
+ <li {% if link.active %}class="site-nav--active"{% endif %}>
+      <a href="{{ link.url }}" class="site-nav__linkk">{{ link.title }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+
+
+{% if settings.megamenu_custom_link_enable %}
+  {% assign customLinkHTML = "" %}
+  {% for i in (1..8) %}
+    {% assign custom_link_heading = 'megamenu_custom_link_' | append:i | append:"_text"  %}
+    {% assign custom_link_collection = 'megamenu_custom_link_' | append:i | append:"_collection"  %}
+    {% if settings[custom_link_heading] != "" %}
+      {% if settings[custom_link_collection] != "" %}
+        {% capture customLinkHTML %}
+          {{ customLinkHTML }}
+          <div class="section-wrapper-custom-links">
+            <p><a href="{{ settings[custom_link_collection] }}">{{ settings[custom_link_heading] }}<span class="separator"> » </span></a></p>
+          </div>
+        {% endcapture %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if settings.enable_megamenu %}
+  {% for i in (1..8) %}
+    {% assign enable = 'megamenu_' | append:i  | append:"_enable" %}
+    {% if settings[enable] %}
+      {% assign text = 'megamenu_' | append:i  | append:"_text" %}
+      {% assign default_collection = 'megamenu_' | append:i  | append:"_default_collection" %}
+      {% assign enable_icon = 'megamenu_' | append:i  | append:"_icon_enable" %}
+      {% assign totalEnable = 0 %}
+      {% assign totalEnableValidate = 0 %}
+      {% for j in (1..9) %}
+        {% assign submenu_heading = 'megamenu_' | append:i | append:"_submenu_" | append:j | append:"_heading"  %}
+        {% assign submenu_menu = 'megamenu_' | append:i | append:"_submenu_" | append:j %}
+        {% if settings[submenu_menu] != "" %}
+          {% assign totalEnableValidate = totalEnableValidate | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+      {% assign megamenuwidthclass = 'widthfull' %}
+      {% assign menuwrapperwidthclass = 'wraperwidthfull' %}
+      {% assign menuprodlimit = 0 %}
+      {% if totalEnableValidate == 1 %}
+        {% assign menuprodlimit = 4 %}
+      {% elsif totalEnableValidate == 2 %}
+        {% assign menuprodlimit = 3 %}
+      {% elsif totalEnableValidate == 3 %}
+        {% assign menuprodlimit = 2 %}
+      {% elsif totalEnableValidate == 5 %}
+        {% assign menuprodlimit = 2 %}
+      {% elsif totalEnableValidate == 6 %}
+        {% assign menuprodlimit = 2 %}
+      {% elsif totalEnableValidate == 7 %}
+        {% assign menuprodlimit = 2 %}
+      {% else %}
+        {% assign menuprodlimit = 2 %}
+      {% endif %}
+      <li aria-haspopup="true" id="li-main-for-{{ i }}" class="mhdp">
+        <a class="menu-open" href="{% if default_collection != '' and settings.megamenu_default_link %}/collections/{{ collections[settings[default_collection]].handle }}{% else %}javascript:void(0);{% endif %}">
+          {{ settings[text] }}
+          <span class="fa fa-angle-down" id="arrow-for-{{ i }}"></span>
+        </a>
+        <ul class="menu-for" id="menu-for-{{ i }}">
+          <div class="mega_Wrap clearfix">
+            <div class="  {% if settings[default_collection] != "" %}  {% if menuprodlimit == 4 %} col-md-4 {% elsif menuprodlimit == 3%} col-md-5  {% else %}col-md-7{% endif %} {% else %} noborderr{% endif %} equal-line mega_left_bar">
+              <div class="row">
+                <div class="menu-hei">
+                  {% for j in (1..9) %}
+                    <div class="{% if settings[default_collection] != "" %}  {% if menuprodlimit == 4 %} col-md-8 {% elsif menuprodlimit == 3%} col-md-6 {%else%}col-md-4{% endif %} {% else %}col-md-3{% endif %}">
+                      <div class="media">
+                        {% assign submenu_heading = 'megamenu_' | append:i | append:"_submenu_" | append:j | append:"_heading"  %}
+                        {% assign submenu_heading_link = 'megamenu_' | append:i | append:"_submenu_" | append:j | append:"_heading_link"  %}
+                        {% assign submenu_link = 'megamenu_' | append:i | append:"_submenu_" | append:j | append:""  %}
+                        {% assign submenu_menu = 'megamenu_' | append:i | append:"_submenu_" | append:j %}
+                        {% if settings[submenu_menu] != "" %}
+                          {% assign totalEnable = totalEnable | plus: 1 %}
+                          {% if settings[submenu_heading] != "" %}
+                            {% if settings[enable_icon] %}
+                              {% capture icon_c %}m_{{ i }}_s_{{ j }}_i.png{% endcapture %}
+                              <div class="media-left">
+                                <img src="{{ 'transparent.png' | asset_url }}"
+
+                                     data-src="{{ icon_c | asset_img_url: '40x' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ icon_c | asset_img_url: '40x' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                     alt="{{ shop.name }}"  height="40" width="26" class="lazyload media-object" >
+                              </div>
+                            {% endif %}
+                          {% endif %}
+                          <div class="media-body">
+                            <h4><a href="{{ settings[submenu_heading_link] }}">{{ settings[submenu_heading] }}</a></h4>
+                            <ul>
+                              {% for link in linklists[settings[submenu_menu]].links %}
+                              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                  {% if totalEnable == 0 %}
+                    <script type="text/javascript">
+                      $(document).ready(function(){
+                        $('#menu-for-{{ i }}').remove();
+                        $('#arrow-for-{{ i }}').remove();
+                        $('#li-main-for-{{ i }}').attr('aria-haspopup','').removeClass('menu-dropdown-icon');
+                      });
+                    </script>
+                  {% endif %}
+                </div>
+                <ul class="custom-menu-links">
+                  {% if customLinkHTML %}
+                    <li class="megamenu--custom-links col-md-12">
+                      {{ customLinkHTML }}
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+            <div class="{% if settings[default_collection] != "" %} {% if menuprodlimit == 4 %} col-md-8 {% elsif menuprodlimit == 3%} col-md-7 {% else %}col-md-5 {% endif %} {% else  %}  {% endif %} equal-line">
+              <div class="flex_item">
+                {% if settings[default_collection] != "" %}
+                  {%- capture products_grid -%}
+                    {%- if menuprodlimit == 4 -%}
+                      {%- if collections[settings[default_collection]].products.size == 3 %}col-md-4
+                      {%- else %}col-md-3
+                      {%- endif -%}
+                    {%- elsif menuprodlimit == 3 %}col-md-4
+                    {%- else %}col-md-6
+                    {%- endif -%}
+                  {%- endcapture -%}
+                  {% for product in collections[settings[default_collection]].products limit:menuprodlimit %}
+                    <div class="{{ products_grid }}">
+                      {% include 'product-grid-navigation'%}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </ul>
+      </li>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+   {% for link in linklists[settings.header_linklist_2].links %}
+    {% assign child_list_handle = link.title | handle %}
+    {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+    <li class="site-nav--has-dropdown{% if link.active %} site-nav--active{% endif %}" aria-haspopup="true">
+      <a href="{{ link.url }}" class="menu-open">
+        {{ link.title }}
+        <span class="fa fa-angle-down"></span>
+      </a>
+      <ul class="site-nav__dropdown normal-sub slides">
+        {% for child_link in linklists[child_list_handle].links %}
+        {% assign grand_child_list_handle = child_link.title | handle %}
+        {% if linklists[grand_child_list_handle] and linklists[grand_child_list_handle].links.size > 0 %}
+         <li class="site-nav--has-dropdown menu-dropdown-icon">
+            <a href="{{ child_link.url }}" class="site-nav__linkk">
+
+          {{ child_link.title  }}
+              <span class="fa fa-angle-right"></span>
+           </a>
+          <ul class="site-nav__dropdown normal-sub-sub slides">
+            {% for grand_child_link in linklists[grand_child_list_handle].links %}
+            <li>
+              <a href="{{ grand_child_link.url }}" class="site-nav__linkk">
+              {{ grand_child_link.title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% else %}
+        <li>
+           <a href="{{child_link.url}}" class="site-nav__linkk">
+          {{ child_link.title  }}
+          </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </li>
+    {% else %}
+ <li {% if link.active %}class="site-nav--active"{% endif %}>
+      <a href="{{ link.url }}" class="site-nav__linkk">{{ link.title }}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+<style>
+  .menu > ul > li.slide > ul.normal-sub {
+    width: 300px;
+    left: auto;
+
+    visibility: visible;
+    opacity: 1;
+    z-index: 9;
+    position: absolute;
+  }
+  .menu > ul > li > ul > li > ul.normal-sub-sub {
+  	opacity:0;
+    z-index:-1;
+    visibility:hidden;
+
+  }
+  .menu > ul > li > ul > li.slide > ul.normal-sub-sub {
+  	/*width: 300px;*/
+
+    visibility: visible;
+    opacity: 1;
+    z-index: 9;
+    position: absolute;
+  }
+  .menu > ul > li > ul{display:inline-block;}
+  .site-nav__dropdown a{background:transparent;}
+  .site-nav__dropdown a:hover{background:transparent;}
+  {% if settings.showhighlightbar%}
+    .menu-dropdown-icon > a:before, .menu li > a:before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: 50%;
+      right: 50%;
+      top: 0;
+      background: {{settings.color_primary}};
+      height: 2px;
+      -webkit-transition-property: left, right;
+      transition-property: left, right;
+      -webkit-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+      -webkit-transition-timing-function: ease-out;
+      transition-timing-function: ease-out;
+    }
+  {% endif %}
+  .menu li li a:before{display:none;}
+  .menu-dropdown-icon > a:hover:before, .menu li > a:hover:before{left: 0; right: 0; text-decoration: none; z-index: 99;}
+  .menu-dropdown-icon .menu-open:after{content:''; opacity:0; position:absolute; left:50%; transform:translateX(-50%) rotate(-45deg); bottom:-7px; z-index:9999; width:12px; height:12px; background:{{settings.megamenu_bg_color}}; border-top:2px solid {{settings.color_primary}}; border-right:2px solid {{settings.color_primary}};}
+  .menu-dropdown-icon.slide .menu-open:after{content:''; opacity:1; transition:0.55s ease; position:absolute; left:50%; transform:translateX(-50%) rotate(-45deg); bottom:-7px; z-index:9999; width:12px; height:12px; background:{{settings.megamenu_bg_color}}; border-top:2px solid {{settings.color_primary}}; border-right:2px solid {{settings.color_primary}};}
+</style>

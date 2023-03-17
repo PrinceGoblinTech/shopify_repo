@@ -1,0 +1,10 @@
+{% comment %}
+The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+ <script language="javascript">
+        function emailCurrentPage(){
+          var txt1 = "Check out this site!";
+            window.location.href="mailto:?subject="+txt1+"&body="+escape(window.location.href);
+        }
+    </script>
+{% section 'product-template-free-shipping' %}

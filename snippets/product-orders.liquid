@@ -1,0 +1,8 @@
+<p class="orders">
+    {%- if settings.orders_counter_enable_demo_data -%}
+        <b class="js-generate-orders-counter">XX </b>
+    {%- else -%}
+        <b class="js-statsapp-orders-counter">XX </b>
+    {%- endif -%}
+    <span> {{ settings.orders_counter_text_before }}</span>
+</p>

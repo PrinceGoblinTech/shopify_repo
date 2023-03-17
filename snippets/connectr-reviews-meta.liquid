@@ -1,0 +1,22 @@
+{% if product.metafields.connectr["productrating"]['connectr_five_star_count'] != blank %}
+
+
+{% assign connectr_five_star_count = product.metafields.connectr["productrating"]["connectr_five_star_count"]  %}
+{% assign connectr_four_star_count = product.metafields.connectr["productrating"]["connectr_four_star_count"]  %}
+{% assign connectr_three_star_count = product.metafields.connectr["productrating"]["connectr_three_star_count"]  %}
+{% assign connectr_two_star_count = product.metafields.connectr["productrating"]["connectr_two_star_count"]  %}
+{% assign connectr_one_star_count = product.metafields.connectr["productrating"]["connectr_one_star_count"]  %}
+
+
+
+{% assign connectr_total_star_count_int = connectr_five_star_count | plus: connectr_four_star_count | plus: connectr_three_star_count | plus: connectr_two_star_count | plus: connectr_one_star_count  %}
+{% assign connectr_total_star_count = connectr_total_star_count_int | times: 1.0  %}
+{% assign connectr_five_star_times = connectr_five_star_count | times: 5  %}
+{% assign connectr_four_star_times = connectr_four_star_count | times: 4  %}
+{% assign connectr_three_star_times = connectr_three_star_count | times: 3  %}
+{% assign connectr_two_star_times = connectr_two_star_count | times: 2  %}
+{% assign connectr_one_star_times = connectr_one_star_count | times: 1  %}
+{% assign connectr_total_star_times = connectr_five_star_times | plus: connectr_four_star_times | plus: connectr_three_star_times | plus: connectr_two_star_times | plus: connectr_one_star_times  %}
+{% assign connectr_final_stars = connectr_total_star_times | divided_by: connectr_total_star_count  %}
+
+{% endif %}

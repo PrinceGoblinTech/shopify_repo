@@ -1,0 +1,97 @@
+{%- if section.settings.cookie_enable -%}
+    <div data-section-id="{{ section.id }}" data-section-type="notifications">
+        <div class="footbar__section js-notification-cookie" data-js-delay="{{ section.settings.cookie_delay }}" data-js-lifetime="{{ section.settings.cookie_lifetime }}">
+            <div class="notification-cookie">
+                <div class="notification-cookie__content">
+                    {%- if section.settings.cookie_content_text != blank -%}
+                        <p>{{ section.settings.cookie_content_text }}</p>
+                    {%- endif -%}
+                </div>
+                <div class="notification-cookie__footer">
+                    {%- if section.settings.cookie_information_button_text != blank -%}
+                        <a href="{{ section.settings.cookie_information_button_link | default: '/pages/privacy-policy' }}" class="notification-cookie__button-info" target="_blank">{{ section.settings.cookie_information_button_text }}</a>
+                    {%- endif -%}
+                    {%- if section.settings.cookie_close_button_text != blank -%}
+                        <span class="notification-cookie__button-close" data-js-action="close">{{ section.settings.cookie_close_button_text }}</span>
+                    {%- endif -%}
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endif -%}
+
+
+{% schema %}
+{
+"name": "Notifications",
+"settings": [
+{
+"type": "header",
+"content": "Cookie"
+},
+{
+"type": "checkbox",
+"id": "cookie_enable",
+"label": "Enable Cookie Popup",
+"default": false
+},
+{
+"type": "text",
+"id": "cookie_content_text",
+"label": "Content text",
+"default": "This is a standard cookie notice which you can easily adapt or disable as you like in the admin. We use cookies to ensure that we give you the best experience on our website."
+},
+{
+"type": "text",
+"id": "cookie_information_button_text",
+"label": "Information button text",
+"default": "Privacy Policy"
+},
+{
+"type": "url",
+"id": "cookie_information_button_link",
+"label": "Information button link",
+"info": "default: '/pages/privacy-policy'"
+},
+{
+"type": "text",
+"id": "cookie_close_button_text",
+"label": "Close button text",
+"default": "Accept"
+},
+{
+"type": "range",
+"id": "cookie_delay",
+"min": 0,
+"max": 60,
+"step": 1,
+"unit": "sec",
+"label": "Delay start",
+"default": 3
+},
+{
+"type": "select",
+"id": "cookie_lifetime",
+"label": "Cookie lifetime",
+"default": "1",
+"options": [
+{ "value": "1", "label": "1 day" },
+{ "value": "3", "label": "3 days" },
+{ "value": "7", "label": "1 week" },
+{ "value": "31", "label": "1 month" },
+{ "value": "365", "label": "1 year" }
+]
+}
+]
+}
+{% endschema %}
+
+  {% if section.settings.products_disable_mobile %}
+<style>
+
+ @media screen and (max-width: 992px)  {
+  .notification-products {
+    display:none!Important;
+}
+</style>
+{% endif %}

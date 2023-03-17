@@ -1,0 +1,238 @@
+{% unless no_tabs%}
+<div class="grid__item large--one-whole description--tabs">
+        {% if custom_tabs %}
+          {{ product.description }}
+        {% else %}
+  
+          {% if section.settings.enable_product_tabs %}
+        	{% assign tab_cur = 0 %}
+            <div class="large--hide medium-down--show" >
+              {% if section.settings.enable_description_tab %}
+               {% unless section.settings.description_location == 'description_below_buttons' %}
+                <div id="accordion" class="panel-group">
+                  <div class="panel panel-default active">
+                    <div class="panel-heading" data-parent="#accordion" data-toggle="collapse" data-target="#collapseOne">
+                      <h4 class="panel-title"><a href="#collapseOne" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle panelactive"> {{ section.settings.product_description_tab_heading }}<i class="indicator fa fa-chevron-up  pull-right"></i></a></h4>
+                    </div>
+                    <div class="panel-collapse collapse in" id="collapseOne">
+                      <div class="panel-body">
+                        {% unless settings.benifit_bullets %}
+                        {{ product.description }}
+                        {% else %}
+                        {{ product.description | replace: '<ul>', '<ul class="fa-ul ">' | replace: '<li>', '<li><i class="fa-li fa fa-check-circle"></i>' }}
+                        {% endunless %}
+                        {% if section.settings.product_description %}
+                        <div class="product-below--img">
+                          <a href="{{ section.settings.product_desc_below_link }}"><img alt="" src="{{ 'product_desc_below.png' | asset_url }}"></a>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endunless %}
+              {% endif %}
+              {% if section.settings.enable_shipping_tab %}
+                <div id="accordionShip" class="panel-group">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-parent="#accordionShip" data-toggle="collapse" data-target="#collapseShip">
+                      <h4 class="panel-title"><a href="#collapseShip" data-parent="#accordionShip" data-toggle="collapse" class="accordion-toggle"> {{ section.settings.shipping_tab_header }}<i class="indicator fa fa-chevron-down  pull-right"></i></a></h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseShip">
+                      <div class="panel-body">
+                        <div class="grid">
+                          <div class="grid__item large--one-fifth small--one-whole margin--bottom-15">
+                            <b>{% if section.settings.shipping_tab_header != "" %}{{ section.settings.shipping_tab_header }}{% else %}&nbsp;{% endif %}</b>
+                          </div>
+                          <div class="grid__item large--four-fifths small--one-whole margin--bottom-15">
+                            {% if section.settings.enable_country_flag %}<span class="flagImg f32"></span>&nbsp;{% endif %}{% if section.settings.shipping_text != "" %}{{ section.settings.shipping_text }}&nbsp;{% endif %}<span class="countryName"></span>
+                          </div>
+                          {% if section.settings.enable_delivery_option %}
+                          <div class="grid__item large--one-fifth small--one-whole margin--bottom-15">
+                            <b>{% if section.settings.delivery_text != "" %}{{ section.settings.delivery_text }}{% else %}&nbsp;{% endif %}</b>
+                          </div>
+                          <div class="grid__item large--four-fifths small--one-whole margin--bottom-15">
+                            <p style="margin: 0;">{% if section.settings.delivery_text_1 != "" %}{{ section.settings.delivery_text_1 }}&nbsp;{% endif %}<span class="date_one_ship" data-date="{{ estimateStartDate }}"></span> and <span class="date_two_ship" data-date="{{ estimateEndDate }}"></span></p>
+                            {% if section.settings.delivery_info_text != "" %}<em style="font-size: 15px;">{{ section.settings.delivery_info_text }}</em>{% endif %}
+                          </div>
+                          <div class="grid__item large--four-fifths small--one-whole margin--bottom-15">
+                            {{section.settings.shipping_tab_text}}
+                          </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+                {% for block in section.blocks %}
+                
+                {% if block.settings.enable_tab %}
+              	  <div id="accordion{{forloop.index}}" class="panel-group">
+                    <div class="panel panel-default">
+                      <div class="panel-heading" data-parent="#accordion{{forloop.index}}" data-toggle="collapse" data-target="#collapse{{forloop.index}}">
+                        <h4 class="panel-title"><a href="#collapse{{forloop.index}}" data-parent="#accordion{{forloop.index}}" data-toggle="collapse" class="accordion-toggle"> {{ block.settings.heading }}<i class="indicator fa fa-chevron-down  pull-right"></i></a></h4>
+                      </div>
+                      <div class="panel-collapse collapse" id="collapse{{forloop.index}}">
+                        <div class="panel-body">{{ block.settings.text }}</div>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+              {% if section.settings.enable_product_review %}
+                <div id="accordion61" class="panel-group">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" data-parent="#accordion61" data-toggle="collapse" data-target="#collapse61">
+                      <h4 class="panel-title"><a href="#collapse61" data-parent="#accordion61" data-toggle="collapse" class="accordion-toggle"> {{ section.settings.product_review_tab_heading }}<i class="indicator fa fa-chevron-down  pull-right"></i></a></h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapse61">
+                      <div class="panel-body">
+                        <div id="mobile_review">
+                        
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+        	<div class="tabs">
+              <ul class="medium-down--hide">
+                {% if section.settings.enable_description_tab %}
+                  {% unless section.settings.description_location == 'description_below_buttons' %}
+                  <li><a href="#tabs-0">{{ section.settings.product_description_tab_heading }}</a></li>
+                {% endunless %}
+                {% endif %}
+                {% if section.settings.enable_shipping_tab %}
+                  <li><a href="#tabs-ship">{{ section.settings.shipping_tab_header }}</a></li>
+                {% endif %}
+                 {% for block in section.blocks %}
+                  
+                   {% if block.settings.enable_tab %}
+                    <li><a href="#tabs-{{forloop.index}}">{{ block.settings.heading }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if section.settings.enable_product_review %}
+                 {% if section.settings.review_location == 'in_tabs'  %}
+                  <li><a href="#tabs-61">{{ section.settings.product_review_tab_heading }}</a></li>
+                {% endif %}
+                {% endif %}
+              </ul>
+              {% if section.settings.enable_description_tab %}
+                {% unless section.settings.description_location == 'description_below_buttons' %}
+                <div id="tabs-0" class="medium-down--hide">
+                  {% unless settings.benifit_bullets %}
+                    {{ product.description }}
+                  {% else %}
+                    {{ product.description | replace: '<ul>', '<ul class="fa-ul">' | replace: '<li>', '<li><i class="fa-li fa fa-check-circle"></i>' }}
+                  {% endunless %}
+                  {% if section.settings.product_description %}
+                    <div class="product-below--img">
+                      <a href="{{ section.settings.product_desc_below_link }}"><img alt="" src="{{ 'product_desc_below.png' | asset_url }}"></a>
+                    </div>
+                  {% endif %}
+                </div>
+                {% endunless %}
+              {% endif %}
+              {% if section.settings.enable_shipping_tab %}
+              	<div id="tabs-ship" class="medium-down--hide">
+                  <div class="grid">
+                    <div class="grid__item large--one-fifth small--one-whole margin--bottom-15">
+                      <b>{% if section.settings.shipping_tab_header != "" %}{{ section.settings.shipping_tab_header }}{% else %}&nbsp;{% endif %}</b>
+                    </div>
+                    <div class="grid__item large--four-fifths small--one-whole margin--bottom-15">
+                      {% if section.settings.shipping_text != "" %}{{ section.settings.shipping_text }}&nbsp;{% endif %}<span class="countryName"></span> {% if section.settings.enable_country_flag %}<span class="flagImg f32"></span>&nbsp;{% endif %}
+                    </div>
+                    {% if section.settings.enable_delivery_option %}
+                      <div class="grid__item large--one-fifth small--one-whole margin--bottom-15">
+                        <b>{% if section.settings.delivery_text != "" %}{{ section.settings.delivery_text }}{% else %}&nbsp;{% endif %}</b>
+                      </div>
+                      <div class="grid__item large--four-fifths small--one-whole margin--bottom-15">
+                        <p style="margin: 0;">{% if section.settings.delivery_text_1 != "" %}{{ section.settings.delivery_text_1 }}&nbsp;{% endif %}<span class="date_one_ship" data-date="{{ estimateStartDate }}"></span> and <span class="date_two_ship" data-date="{{ estimateEndDate }}"></span></p>
+                        {% if section.settings.delivery_info_text != "" %}<em style="font-size: 15px;">{{ section.settings.delivery_info_text }}</em>{% endif %}
+                      </div>
+                    <div class="grid__item large--four-fifths small--one-whole margin--bottom-15">
+                            {{section.settings.shipping_tab_text}}
+                          </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+              {% for block in section.blocks %}
+              
+                 {% if block.settings.enable_tab %}
+                  <div id="tabs-{{forloop.index}}">
+                   {{ block.settings.text }}
+                  </div>
+                {% endif %}
+              {% endfor %}
+              {% if section.settings.enable_product_review %}
+               {% if section.settings.review_location == 'in_tabs'  %}
+                <div id="tabs-61">
+                  
+                 {% if settings.productreview == 'loox'%} 
+                   <div id="desk_review"></div>
+	 <div id="review-initil" style="display: none;"><div id="looxReviews" data-product-id="{{product.id}}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>
+                  </div>   
+                   <script type="text/javascript">
+                    jQuery(function($) {
+                      var review_html = $("#review-initil").html();
+                      $("#review-initil").remove();
+                      if($(window).width() > 767){
+                        $("#desk_review").html(review_html);
+                      } else {
+                        $("#mobile_review").html(review_html);
+                      }
+                    });
+                  </script>
+       {% endif %}
+                   {% if settings.productreview == 'shopify_reviews'%} 
+                  <div id="desk_review"></div>
+                  <div id="review-initil" style="display: none;"><div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div></div>
+                  <script type="text/javascript">
+                    jQuery(function($) {
+                      var review_html = $("#review-initil").html();
+                      $("#review-initil").remove();
+                      if($(window).width() > 767){
+                        $("#desk_review").html(review_html);
+                      } else {
+                        $("#mobile_review").html(review_html);
+                      }
+                    });
+                  </script>
+                  {% endif %}
+                </div>
+              {% endif %}
+              {% endif %}
+        	</div>
+          {% else %}
+            {% unless settings.benifit_bullets %}
+        	  <div class="grid__item large--one-whole">{{ product.description }}</div>
+            {% else %}
+              <div class="grid__item large--one-whole">{{ product.description | replace: '<ul>', '<ul class="fa-ul">' | replace: '<li>', '<li><i class="fa-li fa fa-check-circle"></i>' }}</div>
+            {% endunless %}
+            {% if section.settings.product_description %}
+              <div class="product-below--img">
+                <a href="{{ section.settings.product_desc_below_link }}"><img alt="" src="{{ 'product_desc_below.png' | asset_url }}"></a>
+              </div>
+            {% endif %}
+        
+        	{% if section.settings.enable_product_review %}
+        {% if section.settings.review_location == 'in_tabs'  %}
+        {% if settings.productreview == 'loox'%}
+       <div id="looxReviews" data-product-id="{{product.id}}" >{{ product.metafields.loox.reviews }}</div>  
+           
+        
+        {% endif %}
+        {% if settings.productreview == 'shopify_reviews'%} 
+        <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+             {% endif %}
+           {% endif %}
+        {% endif %} 
+     
+          {% endif%}
+        {% endif%}
+      </div>
+
+{% endunless %}

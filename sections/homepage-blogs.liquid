@@ -1,0 +1,257 @@
+	<div class="container-fluid blogs" id="sec{{ section.id }}">
+	  <div class="row">
+	    <div class="container">
+	      {% if section.settings.title != blank %}
+	      <h2 class="section_title">{{ section.settings.title | escape }}</h2>
+
+	      {% endif %}
+	      {%- assign blog = blogs[section.settings.blog] -%}
+
+	      <div class="category_wrap blogsa">
+	        {% assign dTotalnumber = 0 %}
+	        {% for article in blog.articles limit: section.settings.post_limit %}
+	        {% assign dTotalnumber = dTotalnumber | plus: 1 %}
+
+	        <div class="{{grid_item_width}}">
+	          <a href="{{ article.url }}" class="article__link">
+	            {% if article.image %}
+	            <img id="{{ img_id }}" class="article__grid-image lazy" src="{{ 'image-placeholder.png' | asset_url }}"
+	              data-src="{{ article.image | img_url: '300x' }}" data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+	              data-aspectratio="{{ article.image.aspect_ratio }}" data-sizes="auto" alt="">
+	            {% endif %}
+
+	            <h3 class="article__title{% if article.image %} article__title--has-image{% endif %}">
+	              {{ article.title }}
+	            </h3>
+	          </a>
+
+	          <div class="article__grid-meta{% if article.image %} article__grid-meta--has-image{% endif %}">
+	            {% if section.settings.blog_show_author %}
+	            <span class="article__author">{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+	            {% endif %}
+
+	            {% if section.settings.blog_show_date %}
+	            <span class="article__date">
+	              ,{{ article.published_at | time_tag: format: 'month_day_year' }}
+	            </span>
+	            {% endif %}
+
+	            <div class="rte article__grid-excerpt">
+	              {% if article.excerpt.size > 0 %}
+	              {{ article.excerpt }}
+	              {% else %}
+	              {{ article.content | strip_html | truncate: 150 }}
+	              {% endif %}
+	            </div>
+	          </div>
+	        </div>
+	        {% endfor %}
+
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	{% if dTotalnumber <= 5 %}
+	<style>
+	  @media screen and (min-width:992px) {
+	    #sec {
+	        {
+	        section.id
+	      }
+	    }
+
+	    .owl-nav {
+	      display: none !important;
+	    }
+	  }
+	</style>
+	{% endif %}
+	{% if dTotalnumber <= 2 %}
+	<style>
+	  @media screen and (max-width:992px) {
+	    #sec {
+	        {
+	        section.id
+	      }
+	    }
+
+	    .owl-nav {
+	      display: none !important;
+	    }
+	  }
+	</style>
+	{% endif %}
+	<style>
+	  {
+	    % if settings.arrow_style=='Left-Right'%
+	  }
+
+	  @media screen and (min-width:1268px) {
+	    .blogsa>.owl-controls>.owl-nav>.owl-prev {
+	      left: -4%;
+	    }
+
+	    .blogsa>.owl-controls>.owl-nav>.owl-next {
+	      right: -4%;
+	    }
+	  }
+
+	    {
+	    % endif %
+	  }
+
+	  .owl-item .large--one-quarter {
+	    width: auto
+	  }
+	</style>
+
+
+
+
+
+
+
+	{% schema %}
+	{
+	"name": {
+	"en": "Blog posts",
+	"de": "Blogposts",
+	"fr": "Articles de blog",
+	"it": "Articoli del blog",
+	"ja": "ブログ記事",
+	"es": "Entradas del blog",
+	"pt-BR": "Posts do blog"
+	},
+	"class": "index-section cole",
+	"settings": [
+	{
+	"type": "text",
+	"id": "title",
+	"label": {
+	"en": "Heading",
+	"de": "Titel",
+	"fr": "En-tête",
+	"it": "Heading",
+	"ja": "見出し",
+	"es": "Título",
+	"pt-BR": "Título"
+	},
+	"default": {
+	"en": "Blog posts",
+	"de": "Blogposts",
+	"fr": "Articles de blog",
+	"it": "Articoli del blog",
+	"ja": "ブログ記事",
+	"es": "Entradas del blog",
+	"pt-BR": "Posts do blog"
+	}
+	},
+	{
+	"id": "blog",
+	"type": "blog",
+	"label": {
+	"en": "Blog",
+	"de": "Blog",
+	"fr": "Blog",
+	"it": "Blog",
+	"ja": "ブログ",
+	"es": "Blog",
+	"pt-BR": "Blog"
+	}
+	},
+	{
+	"type": "range",
+	"id": "post_limit",
+	"label": {
+	"en": "Posts",
+	"de": "Posts",
+	"fr": "Articles",
+	"it": "Articoli",
+	"ja": "投稿",
+	"es": "Publicaciones",
+	"pt-BR": "Posts"
+	},
+	"min": 3,
+	"max": 12,
+	"step": 3,
+	"default": 3
+	},
+
+	{
+	"type": "checkbox",
+	"id": "blog_show_author",
+	"label": {
+	"en": "Show author",
+	"de": "Autor anzeigen",
+	"fr": "Afficher l'auteur",
+	"it": "Mostra autore",
+	"ja": "執筆者を表示する",
+	"es": "Mostrar autor",
+	"pt-BR": "Mostrar autor"
+	},
+	"default": false
+	},
+	{
+	"type": "checkbox",
+	"id": "blog_show_date",
+	"label": {
+	"en": "Show date",
+	"de": "Datum anzeigen",
+	"fr": "Afficher la date",
+	"it": "Mostra data",
+	"ja": "日付を表示する",
+	"es": "Mostrar fecha",
+	"pt-BR": "Exibir data"
+	},
+	"default": true
+	},
+	{
+	"type": "checkbox",
+	"id": "show_view_all",
+	"label": {
+	"en": "Show 'View all' button",
+	"de": "'Alle anzeigen' Button anzeigen",
+	"fr": "Afficher le bouton “Voir tout”",
+	"it": "Mostra il pulsante \"Visualizza tutto\"",
+	"ja": "「すべて表示」ボタンを表示する",
+	"es": "Mostrar el botón 'Ver todo'",
+	"pt-BR": "Exibir botão 'Ver tudo'"
+	},
+	"default": false
+	}
+	],
+	"presets": [
+	{
+	"name": {
+	"en": "Blog posts",
+	"de": "Blogposts",
+	"fr": "Articles de blog",
+	"it": "Articoli del blog",
+	"ja": "ブログ記事",
+	"es": "Entradas del blog",
+	"pt-BR": "Posts do blog"
+	},
+	"category": {
+	"en": "Blog",
+	"de": "Blog",
+	"fr": "Blog",
+	"it": "Blog",
+	"ja": "ブログ",
+	"es": "Blog",
+	"pt-BR": "Blog"
+	},
+	"settings": {
+	"blog": "News",
+	"post_limit": 3
+	}
+	}
+	]
+	}
+	{% endschema %}
+
+	<style>
+	  .collection-grid-item__title-wrapper {
+	    text-align: center;
+	  }
+	</style>

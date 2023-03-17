@@ -1,0 +1,65 @@
+{% if section.settings.enable %}
+    <!-- <hr class="releted--products-hr" /> -->
+    <div class="releted--products">
+        <div class="container">
+            <h2 class=" section_title">{{ 'products.general.related_products_title' | t }}</h2>
+
+
+            <div class="category_wrap carousel-product owl-carousel">
+                {% assign count = 0 %}
+                {% assign type = "r" %}
+                {% assign curr_title = product.title %}
+              {% assign pro_limit = section.settings.max_display %}
+                {% for collection in product.collections %}
+                    {% for product in collections[collection.handle].products %}
+                        {% if product.title != curr_title %}
+                            {% if count < pro_limit %}
+                                {% assign count = count | plus: 1 %}
+                                {% include 'product-grid-item' with type %}
+                            {% else %}
+                                {% break %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if count >= pro_limit %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+    {% if count == 0 %}
+        <script>
+            $('.releted--products').remove();
+            $('.releted--products-hr').remove();
+        </script>
+    {% endif %}
+{% endif %}
+
+{% schema %}
+      {
+        "name": "Related product section",
+        "class": "Related product section",
+        
+        "settings": [
+            {
+"type": "checkbox",
+"id": "enable",
+"label": "Enable related product",
+"default": true
+},
+{
+      "type": "range",
+      "id": "max_display",
+      "label": "Products limit",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 5
+    } 
+             
+
+        ] 
+      }
+  {% endschema %}

@@ -1,0 +1,30 @@
+<div class="home--review">
+  <div class="wrapper">
+    {% if settings.review_title != "" %}
+      <h2 class="title">{{ settings.review_title }}</h2>
+    {% endif %}
+    <ul class="review--ul">
+      <li>
+        <img alt="Image of {{ settings.review_1_user_text }}" src="{{ "review_1.png" | asset_url }}" title="{{ settings.review_1_user_text }}">
+        <p class="review-text">
+          <span class="qoute">&ldquo;</span>{{ settings.review_1_text }} <span class="qoute">&rdquo;</span>
+          <span class="review-name">- {{ settings.review_1_user_text }}</span>
+        </p>
+      </li>
+      <li>
+        <img alt="Image of {{ settings.review_2_user_text }}" src="{{ "review_2.png" | asset_url }}" title="{{ settings.review_2_user_text }}">
+        <p class="review-text">
+          <span class="qoute">&ldquo;</span>{{ settings.review_2_text }} <span class="qoute">&rdquo;</span>
+          <span class="review-name">- {{ settings.review_2_user_text }}</span>
+        </p>
+      </li>
+      <li>
+        <img alt="Image of {{ settings.review_3_user_text }}" src="{{ "review_3.png" | asset_url  }}" title="{{ settings.review_3_user_text }}">
+        <p class="review-text">
+          <span class="qoute">&ldquo;</span>{{ settings.review_3_text }} <span class="qoute">&rdquo;</span>
+          <span class="review-name">- {{ settings.review_3_user_text }}</span>
+        </p>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,694 @@
+<style>
+.connectr-review-title{
+	font-size: 25px;
+	font-weight: 600;
+}
+.connectr-histogram-section{
+	display: inline-block;
+}
+.connectr-bar-row{
+	width: 100%;
+	width: 100%;
+	display: inline-flex;
+}
+/* Three column layout */
+.connectr-left {
+	width: 75px;
+}
+.connectr-side {
+	float: left;
+}
+.connectr-middle {
+	float: left;
+	min-width: 100px;
+	max-width: calc(100% - 110px);
+	width: 250px;
+}
+.connectr-right {
+	margin-left: 10px;
+}
+/* The bar container */
+.connectr-bar-wrapper {
+	width: 100%;
+	background-color: #f1f1f1;
+	text-align: center;
+	color: white;
+}
+.connector-bar{
+	height: 20px;
+	width: 0%;
+}
+/* Individual bars */
+.connectr-bar-5 { background-color: #ffc107;}
+.connectr-bar-4 { background-color: #ffc107;}
+.connectr-bar-3 { background-color: #ffc107;}
+.connectr-bar-2 { background-color: #ffc107;}
+.connectr-bar-1 { background-color: #ffc107;}
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+	.connectr-side, .connectr-middle {
+
+	}
+	.connectr-right {
+		display: none;
+	}
+}
+.connectr-stars {
+	display: flex;
+	position: relative;
+}
+.connectr-stars-wrapper {
+	display: inline-block;
+	position: relative;
+}
+.connectr-total-reviews{
+	display: inline-block;
+	top: -2px;
+	position: relative;
+	margin-left: 5px;
+	font-size: 18px;
+}
+.connectr-filterform {
+	margin-bottom: 5px;
+}
+.connectr-filter{
+	display:inline-block;
+}
+.connectr-filter-options{
+	padding: 5px 25px;
+}
+.connectr-review-text-container{
+	margin-top:10px;
+	width:100%;
+}
+/* pm */
+.connectr-star-color {
+	color: {
+		{
+			theme.star-color
+		}
+	}
+	!important;
+}
+.connectr-star {
+	display: {
+		{
+			theme.star-hide
+		}
+	}
+	!important;
+}
+.connectr-starsvg {
+	fill: {
+		{
+			theme.star-color
+		}
+	}
+	!important;
+	height: 1.1rem;
+	width: 1.1rem;
+}
+.connectr-starspan {
+	padding-top: 5px;
+}
+
+.connectr-review-name{
+	text-decoration: underline;
+}
+
+.connectr-review-heading{
+	font-weight: 600;
+	margin-left: 5px;
+}
+.connectr-rating-wrap {
+	display: inline-block;
+	position: relative;
+}
+.connectr-review-date{
+	display: inline-block;
+	top: -3px;
+	position: relative;
+	margin-left: 5px;
+}
+.connectr-media-container{
+	margin-top:10px;
+}
+.connectr-images{
+	max-height: 100px;
+	max-width: 100px;
+	margin-right:5px;
+	vertical-align: top;
+}
+.connectr-videos{
+	max-height: 100px;
+	margin-right:5px;
+	vertical-align: top;
+}
+
+.connecter-reviews-container {
+	}
+
+/* //connectr-loader */
+.connectr-loader { border: 6px solid #f3f3f3; border-radius: 50%; border-top: 6px solid #777b7e; width: 30px; height: 30px; -webkit-animation: spin 2s linear infinite; /* Safari */ animation: spin 2s linear infinite; margin:10px 0px 20px;}
+/* Safari */
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes  spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+/******************************* image lightbox ******************************************* */
+
+
+	/* The Modal (background) */
+	#cleverImageModal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 2000; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+	}
+
+	/* Modal Content (image) */
+	.modal-content {
+	margin: auto;
+	display: block;
+
+	}
+
+	/* Caption of Modal Image */
+	#caption {
+	margin: auto;
+	display: block;
+	width: 80%;
+	max-width: 700px;
+	text-align: center;
+	color: #ccc;
+	padding: 10px 0;
+	height: 150px;
+	}
+
+	/* Add Animation */
+	.modal-content, #caption {  
+	-webkit-animation-name: zoom;
+	-webkit-animation-duration: 0.6s;
+	animation-name: zoom;
+	animation-duration: 0.6s;
+	}
+
+	@-webkit-keyframes zoom {
+	from {-webkit-transform:scale(0)} 
+	to {-webkit-transform:scale(1)}
+	}
+
+	@keyframes    zoom {
+	from {transform:scale(0)} 
+	to {transform:scale(1)}
+	}
+
+	/* The Close Button */
+	#closebtn {
+	position: absolute;
+	top: 15px;
+	right: 35px;
+	color: #f1f1f1;
+	font-size: 60px;
+	font-weight: bold;
+	transition: 0.3s;
+	}
+
+	#closebtn:hover,
+	#closebtn:focus {
+	color: #bbb;
+	text-decoration: none;
+	cursor: pointer;
+	}
+
+	/* 100% Image Width on Smaller Screens */
+	@media    only screen and (max-width: 700px){
+	.modal-content {
+		width: 100%;
+	}
+	}
+
+</style>
+
+{% assign connectr-review-region = shop.metafields.connectr["region"] %} 
+        {% if product.metafields.connectr["product-region"] != blank %}
+			{% assign connectr-review-region = product.metafields.connectr["product-region"] %} 
+			
+        {% endif %}
+
+{% assign connectr-languages = shop.metafields.connectr["languages"] %} 
+{% assign messages = connectr-languages[connectr-review-region] %} 
+
+
+<div class="connecter-reviews-container" id="connectrAmazonReview" data-asin="{{product.metafields.connectr["parentasin"]}}" data-region="{{connectr-review-region}}"  data-userid="{{shop.metafields.connectr["userid"]}}" >
+	<hr class="connectr-top-line connectr-line">
+	<div class="connectr-header-section">
+		<p class="connectr-review-title">{{messages.customerreviews | capitalize}}</p>
+		<div class="connectr-review-overallcount">
+			<div class="connectr-stars-wrapper">
+				<div class="connectr-stars" id="connectr-overall-stars"></div>
+			</div >
+			<span class="connectr-total-reviews">(<span id="connectr-total-reviews">0</span>)</span>
+			<p class="connectr-average-rating-wrapper">
+				<span class="connectr-average-rating" id="connectr-average-rating">0</span> {{messages.outof | capitalize }} 5 {{messages.stars | capitalize}}
+			</p>
+		</div>
+	</div>
+	<hr class="connectr-line">
+	<div class="connectr-main-review">
+				<div class="connectr-histogram-section">
+			<div class="connectr-histogram-wrapper">
+				<div class="connectr-bar-row">
+					<div class="connectr-left connectr-side">
+						<div class="connectr-star-text">5 {{messages.stars | capitalize}}</div>
+					</div>
+					<div class="connectr-middle">
+						<div class="connectr-bar-wrapper">
+							<div class="connector-bar connectr-bar-5"></div>
+						</div>
+					</div>
+					<div class="connectr-side connectr-right  connectr-review-count-5">
+						0
+					</div>
+				</div>
+				<div class="connectr-bar-row">
+					<div class="connectr-left connectr-side">
+						<div class="connectr-star-text">4 {{messages.stars | capitalize}}</div>
+					</div>
+					<div class="connectr-middle">
+						<div class="connectr-bar-wrapper">
+							<div class="connector-bar connectr-bar-4"></div>
+						</div>
+					</div>
+					<div class="connectr-side connectr-right  connectr-review-count-4">
+						0
+					</div>
+				</div>
+				<div class="connectr-bar-row">
+					<div class="connectr-left connectr-side">
+						<div class="connectr-star-text">3 {{messages.stars | capitalize}}</div>
+					</div>
+					<div class="connectr-middle">
+						<div class="connectr-bar-wrapper">
+							<div class="connector-bar connectr-bar-3"></div>
+						</div>
+					</div>
+					<div class="connectr-side connectr-right  connectr-review-count-3">
+						0
+					</div>
+				</div>
+				<div class="connectr-bar-row">
+					<div class="connectr-left connectr-side">
+						<div class="connectr-star-text">2 {{messages.stars | capitalize}}</div>
+					</div>
+					<div class="connectr-middle">
+						<div class="connectr-bar-wrapper">
+							<div class="connector-bar connectr-bar-2"></div>
+						</div>
+					</div>
+					<div class="connectr-side connectr-right  connectr-review-count-2">
+						0
+					</div>
+				</div>
+				<div class="connectr-bar-row">
+					<div class="connectr-left connectr-side">
+						<div class="connectr-star-text">1 {{messages.star | capitalize}}</div>
+					</div>
+					<div class="connectr-middle">
+						<div class="connectr-bar-wrapper">
+							<div class="connector-bar connectr-bar-1"></div>
+						</div>
+					</div>
+					<div class="connectr-side connectr-right connectr-review-count-1">
+						0
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="connectr-line">
+				<div class="connectr-body-section">
+			<form class= "connectr-filterform" id="connectr-filterform">
+				<div class="connectr-filter-wrapper">
+					<div class="connectr-filter connectr-sort-category">
+						<select class="connectr-filter-options" name="sortby">
+							<option value="top">{{messages.toprated | capitalize}}</option>
+							<option value="mostrecent">{{messages.mostrecent | capitalize}}</option>
+						</select>
+					</div>
+					<div class="connectr-filter connectr-filter-stars">
+						<select class="connectr-filter-options" name="rating">
+							<option value="all" selected>{{messages.allstars | capitalize}}</option>
+							<option value="5" >{{messages.staronly5 | capitalize}}</option>
+							<option value="4">{{messages.staronly4 | capitalize}}</option>
+							<option value="3">{{messages.staronly3 | capitalize}}</option>
+							<option value="2">{{messages.staronly2 | capitalize}}</option>
+							<option value="1">{{messages.staronly1 | capitalize}}</option>
+							<option value="allpostive">{{messages.allpositive | capitalize}}</option>
+							<option value="critical">{{messages.allcritical | capitalize}}</option>
+						</select>
+					</div>
+				</div>
+			</form>
+			<br>
+			<p class="connectr-resultstatus">{{messages.showing | capitalize}} <span class="connectr-from"></span>-<span class="connectr-to"></span> {{messages.of | capitalize}} <span class="connectr-total"></span> {{messages.reviews | capitalize}}</p>
+
+			<div class="connectr-loader"></div>
+			<div class="connectr-all-reviews">
+			</div>
+			<div id="connectr-review-content" class="connectr-review-content">
+			</div>
+			<div class="connectr-navigation-container">
+				<button type="button" class="connectr-navigation-button connectr-prev btn" id="connectr-prev-button" >{{messages.previous | capitalize}}</button>
+				<button type="button" class="connectr-navigation-button connectr-next btn" id="connectr-next-button">{{messages.next | capitalize}}</button>
+			</div>
+			<hr class="connectr-line linebelownavigation">
+		</div>
+	</div>
+</div>
+<div id="cleverImageModal" class="" style="display: none;">
+<span id="closebtn">×</span>
+<img class="modal-content" id="cleverModalImage" style="max-height:80%" src="">
+<div id="caption"></div>
+</div>
+
+	<script>
+
+		renderReviewConnectr = function(){
+			
+			if($('#connectrAmazonReview').length == 0) {
+				return false;
+			}
+
+			
+
+//$('#connectrAmazonReview').html(connectrReviewTemplate);
+
+var asin = $('#connectrAmazonReview').attr('data-asin'); //B0176IEB4Y;
+var userid = $('#connectrAmazonReview').attr('data-userid');
+
+var region = $('#connectrAmazonReview').attr('data-region');
+var primaryuserid = `{{shop.metafields.connectr["userid"]}}`;
+          
+var multiregionids = `{{shop.metafields.connectr["reviewusers"]}}`;
+multiregionids = JSON.parse(multiregionids)
+if(multiregionids[region] != undefined){
+	userid = multiregionids[region];
+}
+
+
+url = 'https://connectrreviews.thalia-apps.com/getreviews?asin='+asin+'&userid='+userid+'&primaryuserid='+primaryuserid;
+
+
+
+filterreview = $('#connectr-filterform').serializeArray();
+
+$.ajax({
+	type: "POST",
+	url: url,
+	data: filterreview,
+	success: function(data) {
+		
+
+		createReviewBlock(data);
+
+
+		$(".connectr-bar-1").css("width",  data.one_star_percentage+"%");
+		$(".connectr-bar-2").css("width", data.two_star_percentage+"%");
+		$(".connectr-bar-3").css("width", data.three_star_percentage+"%");
+		$(".connectr-bar-4").css("width", data.four_star_percentage+"%");
+		$(".connectr-bar-5").css("width", data.five_star_percentage+"%");
+
+		$(".connectr-review-count-1").text(data.one_star_percentage+"%");
+		$(".connectr-review-count-2").text(data.two_star_percentage+"%");
+		$(".connectr-review-count-3").text(data.three_star_percentage+"%");
+		$(".connectr-review-count-4").text(data.four_star_percentage+"%");
+		$(".connectr-review-count-5").text(data.five_star_percentage+"%");
+
+
+
+		$('#connectr-total-reviews').text(data.totalReviewCount);
+		if(data.totalReviewCount >= 2000 ){
+			$('#connectr-total-reviews').text(data.totalReviewCount+'+');	
+		}
+
+		$('#connectr-average-rating').text(data.ratingOutOf5);
+
+
+
+
+		$('#connectr-overall-stars').html(createStarts(data.ratingOutOf5));
+
+
+}//end of ajax
+});
+
+
+
+
+$(document).on('change', '.connectr-filter-options', function() {
+
+	loadReviewsFromService();
+
+});
+
+$(document).on('click', '.connectr-navigation-button', function() {
+
+
+	loadReviewsFromService($(this).attr('data-loadurl'));
+
+});
+
+}
+
+
+
+
+function loadReviewsFromService(loadurl = null) {
+var asin = $('#connectrAmazonReview').attr('data-asin'); //B0176IEB4Y;
+var userid = $('#connectrAmazonReview').attr('data-userid');
+if(loadurl == null) {
+	loadurl = 'https://connectrreviews.thalia-apps.com/getreviews?asin='+asin+'&userid='+userid;
+}
+
+
+
+var $reviewHtml = $('#connectr-review-content');
+$reviewHtml.empty();
+
+$('.connectr-loader').show();
+
+filterreview = $('#connectr-filterform').serializeArray();
+
+$.ajax({
+	url:loadurl,
+	type:"POST",
+	data:filterreview,
+	success:function( response  ){
+
+		createReviewBlock(response);
+
+	},
+	fail:function(){
+		alert('request failed');
+	}, error: function (data) {
+
+		
+
+	}
+});
+
+}
+
+
+
+function createReviewBlock(data){
+	if(data.totalReviewCount == undefined) {
+		$('.connectr-review-overallcount').html('No Reviews');
+		$('.connectr-main-review').remove();
+		return false;
+	}
+	
+	
+	if(data.totalReviewCount == 0) {
+		$('.connectr-review-overallcount').html('No Reviews');
+		$('.connectr-main-review').remove();
+		return false;
+	}
+
+	var $reviewHtml = $('#connectr-review-content');
+	$reviewHtml.empty();
+
+
+	if(data.reviews.length == 0) {
+		$reviewHtml.html('No Reviews');
+	}
+	
+	$('.connectr-from').text(data.from);
+	$('.connectr-to').text(data.to);
+	$('.connectr-total').text(data.total);
+
+	$('.connectr-navigation-button').hide();
+	$('.linebelownavigation').hide();
+	if(data.next_page_url != undefined) {
+
+		
+		$('#connectr-next-button').show();
+		$('.linebelownavigation').show();
+		$('#connectr-next-button').attr('data-loadurl',data.next_page_url );
+	}
+
+	if(data.prev_page_url != undefined) {
+		$('#connectr-prev-button').attr('data-loadurl',data.prev_page_url );
+		$('.linebelownavigation').show();
+		$('#connectr-prev-button').show();
+	}
+
+
+	$.each(data.reviews,function(key, value)
+	{
+		var mediaContent = '';
+
+		if(value.Images.length != 0){
+			$.each(value.Images,function(key, media)
+			{
+				mediaContentTmp = '<img class="connectr-images" src="'+media+'"/>';
+				mediaContent += mediaContentTmp;
+				
+
+			});
+		}
+
+		if(value.Videos.length != 0){
+			$.each(value.Videos,function(key, media)
+			{
+
+				
+				mediaContentTmp = '  <video class="connectr-videos"  controls><source  src="'+media+'"/> Your browser does not support the video tag.</video>';
+				mediaContent += mediaContentTmp;
+
+				
+			});
+		}
+
+
+
+
+		var i;
+		var ratingTmp = createStarts(value.Rating);
+		reveiewContentTmp =   '<div class="connectr-individual-review">\
+		<p class="connectr-reviewer-firstline">\
+		<span class="connectr-review-name">'+value.Author+'</span>:\
+		<span class="connectr-review-heading">'+value.Title+'</span>\
+		</p>\
+		<div class="connectr-reviewer-secondline">\
+		<div class="connectr-rating-wrap">\
+		<div class="connectr-stars">\
+		'+ratingTmp+'\
+		</div>\
+		</div>\
+		<span class="connectr-review-date">'+value.Date+'</span>\
+		</div>\
+		<div class="connectr-review-text-container">\
+		<p class="connectr-review-text">'+value.Body+'</p>\
+		</div>\
+		<div class="connectr-media-container">\
+		'+mediaContent+'\
+		</div>\
+		</div><hr class="connectr-line">';
+
+		$reviewHtml.append(reveiewContentTmp);
+
+
+});  //end of review contentblock
+
+	$('.connectr-loader').hide();
+	$(".connectr-navigation-button").click(function() {
+   $('html, body').animate({
+       scrollTop: $("#connectrAmazonReview").offset().top
+   }, 2000);
+});
+	var $reviewHtml = $('#connectr-review-content');
+	$( "#connectr-review-content" ).fadeIn( "slow", function() {
+		$reviewHtml.show();
+	});
+}
+
+
+function createStarts(rating) {
+	var fullstar = '<svg class="connectr-starsvg" fill="#ffc107"  viewBox="0 0 1792 1792"  xmlns="http://www.w3.org/2000/svg"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z"/></svg>';
+	var halfstar = '<svg class="connectr-starsvg" fill="#ffc107" height="20" viewBox="0 0 1792 1792" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M1250 957l257-250-356-52-66-10-30-60-159-322v963l59 31 318 168-60-355-12-66zm452-262l-363 354 86 500q5 33-6 51.5t-34 18.5q-17 0-40-12l-449-236-449 236q-23 12-40 12-23 0-34-18.5t-6-51.5l86-500-364-354q-32-32-23-59.5t54-34.5l502-73 225-455q20-41 49-41 28 0 49 41l225 455 502 73q45 7 54 34.5t-24 59.5z"/></svg>'
+	var emptystar = '<svg class="connectr-starsvg" fill="#ffc107" height="20" viewBox="0 0 1792 1792" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z"/></svg>';
+
+
+
+	var numStars = 5;
+	var half = 0;var fullrating = 0;var noStarval = 0;
+	if( rating > 0 ){
+		rating     = rating.toString().split(".");
+		half         = parseInt( rating[1] );
+		fullrating = parseInt( rating[0] );
+	}
+	var halfStar = '';
+
+	if( half >= 3 && half <= 7 ){
+
+		halfStar = '<span class="connectr-starspan">'+halfstar+'</span>';
+		fullrating-1;
+	}else if( half >= 8 ){
+		fullrating+=1;
+		noStarval+=1;
+	}else{
+		noStarval+=1;
+	}
+
+
+	var fullStar = new Array(Math.floor(fullrating + 1)).join('<span class="connectr-starspan">'+fullstar+'</span>');
+	noStarval += numStars-fullrating;
+	var noStar = new Array(Math.floor( noStarval )).join('<span class="connectr-starspan">'+emptystar+'</span>');
+
+	return fullStar + halfStar + noStar;
+}
+
+
+if (typeof jQuery == 'undefined') {
+
+	var script = document.createElement('script');
+	document.head.appendChild(script);
+	script.type = 'text/javascript';
+	script.src = '//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js';
+
+	script.onload = renderReviewConnectr;
+
+} else {
+
+	renderReviewConnectr();
+
+}
+
+
+
+$(document).on("click",".connectr-images",function() {
+$("#cleverImageModal").css({'display': 'block'});
+$("#cleverModalImage").attr('src', $(this).attr('src'));
+
+});
+
+
+$(document).on("click","#cleverImageModal",function() {
+
+$("#cleverImageModal").css({'display': 'none'});
+
+});
+</script>

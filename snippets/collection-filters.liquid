@@ -1,0 +1,182 @@
+	<div class="col-md-2 col-sm-3 col-filters">
+
+    <div class="m-div clearfix row">
+      <div class="filter-mobile clearfix">
+        <a href="javascript:;">Filter</a>
+      </div>
+      <div class="mobile-sort-btn">
+        <a href="javascript:;">sort by</a>
+        <ul class="mobile-sort">
+          <li id="onem" data-value="manual">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.featured' | t }}</li>
+          <li id="twom" data-value="best-selling">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.best_selling' | t }}</li>
+          <li id="threem" data-value="title-ascending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.az' | t }}</li>
+          <li id="fourm" data-value="title-descending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.za' | t }}</li>
+          <li id="fivem" data-value="price-ascending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.price_ascending' | t }}</li>
+          <li  id="sixm" data-value="price-descending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.price_descending' | t }}</li>
+          <li id="sevenm" data-value="created-descending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.date_descending' | t }}</li>
+          <li id="eightm" data-value="created-ascending">{{ 'collections.sorting.title' | t }} {{ 'collections.sorting.date_ascending' | t }}</li>
+        </ul>
+      </div>
+
+      <div class="sidebar_wrap filters-container">
+        {% if settings.sort-dropdown-a-check %}
+        <div class="single-cat colorone">
+          {% assign tags = settings.sort_a  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+
+          {% assign other_tags = '' %}
+          {% for tag in current_tags %}
+          {% unless tags contains tag %}
+          {% assign temp_tag = tag | handle %}
+
+          {% assign temp_tag = temp_tag | append: '+' %}
+
+          {% assign other_tags = other_tags | append: temp_tag %}
+          {% endunless %}
+          {% endfor %}
+
+          <h4 class="category-head">
+            <a role="button" data-toggle="collapse" href="#collapse1" aria-expanded="false" aria-controls="collapse1">{{settings.filter1heading}}</a>
+          </h4>
+          <div class="collapse in" id="collapse1">
+           <ul>  
+
+
+
+            {% assign clear_url = collection.url | append: '/' | append: other_tags %} 
+
+            {% for tag in tags %}
+
+            {% if current_tags contains tag %}
+            <li class="color-filters">
+
+
+
+
+              {{ tag   | link_to_remove_tag: tag | replace: 'title=', 'selected class="main_Label active" title=' }} 
+
+            </li>
+            {% elsif collection.all_tags contains tag %}
+            {% assign temp_tag = tag | handle %}
+            {% unless other_tags == '' %}
+
+            {% assign temp_tag = temp_tag | prepend: '' %}
+
+            {% endunless %}
+            {% assign add_tag_url = clear_url | append: temp_tag %}
+
+            <li class="color-filters">
+
+            {{ tag | link_to: add_tag_url | replace: 'title=', ' class="main_Label" title='  }}</li>
+            {% endif %}
+            {% endfor %}
+
+
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if settings.sort-dropdown-b-check %}
+      <div class="single-cat">
+
+        {% assign tags = settings.sort_b  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+
+        {% assign other_tags = '' %}
+        {% for tag in current_tags %}
+          {% unless tags contains tag %}
+            {% assign temp_tag = tag | handle %}
+            {% assign temp_tag = temp_tag | append: '+' %}
+            {% assign other_tags = other_tags | append: temp_tag %}
+          {% endunless %}
+        {% endfor %}
+        <h4 class="category-head">
+          <a role="button" data-toggle="collapse" href="#collapse2" aria-expanded="false" aria-controls="collapse1">{{settings.filter2heading}}</a>
+        </h4>
+        <div class="collapse in" id="collapse2">
+         <ul>  
+          {% assign clear_url = collection.url | append: '/' | append: other_tags %} 
+          {% for tag in tags %}
+            {% if current_tags contains tag %}
+            <li>
+              {{ tag   | prepend :'<div class="check">   &check;  </div>' | link_to_remove_tag: tag | replace: 'title=', 'selected class="main_Label" title=' }} 
+            </li>
+            {% elsif collection.all_tags contains tag %}
+              {% assign temp_tag = tag | handle %}
+              {% unless other_tags == '' %}
+                {% assign temp_tag = temp_tag | prepend: '' %}
+              {% endunless %}
+              {% assign add_tag_url = clear_url | append: temp_tag %}
+                <li>
+                 {{ tag | prepend  :'<div class="check">    </div>' | link_to: add_tag_url | replace: 'title=', ' class="main_Label" title='  }}
+               </li>
+           {% endif %}
+          {% endfor %}
+         </ul>
+       </div>
+     </div>
+     {% endif %} 
+
+
+
+
+     {% if settings.sort-dropdown-c-check %}
+     <div class="single-cat">
+
+      {% assign tags = settings.sort_c  | replace: ' ,', ',' | replace: ', ', ',' | split: ',' %}    
+
+      {% assign other_tags = '' %}
+      {% for tag in current_tags %}
+      {% unless tags contains tag %}
+      {% assign temp_tag = tag | handle %}
+
+      {% assign temp_tag = temp_tag | append: '+' %}
+
+      {% assign other_tags = other_tags | append: temp_tag %}
+      {% endunless %}
+      {% endfor %}
+
+      <h4 class="category-head">
+        <a role="button" data-toggle="collapse" href="#collapse3" aria-expanded="false" aria-controls="collapse3">{{settings.filter3heading}}</a>
+      </h4>
+      <div class="collapse in" id="collapse3">
+       <ul>  
+
+
+
+        {% assign clear_url = collection.url | append: '/' | append: other_tags %} 
+
+        {% for tag in tags %}
+        {% if current_tags contains tag %}
+        <li>
+
+
+
+
+          {{ tag | prepend :'<div class="check">  &check;  </div>' | link_to_remove_tag: tag | replace: 'title=', 'selected class="main_Label" title=' }} 
+
+        </li>
+        {% elsif collection.all_tags contains tag %}
+        {% assign temp_tag = tag | handle %}
+
+        {% unless other_tags == '' %}
+
+        {% assign temp_tag = temp_tag | prepend: '' %}
+
+
+        {% endunless %}
+        {% assign add_tag_url = clear_url | append: temp_tag %}
+
+        <li>
+
+         {{ tag | prepend  :'<div class="check">    </div>' | link_to: add_tag_url | replace: 'title=', ' class="main_Label" title='  }}</li>
+         {% endif %}
+         {% endfor %}
+
+
+       </ul>
+     </div>
+   </div>
+   {% endif %} 
+ </div>
+</div>
+</div>

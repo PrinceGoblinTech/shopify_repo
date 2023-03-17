@@ -1,0 +1,44 @@
+ 
+
+{% section 'collection-template-list' %}
+<style>
+  span.page-title {
+    color: black;
+}
+  .breadcrumb {
+    margin-bottom: 0;
+    margin-top: 0;
+    position: relative;
+    margin-bottom: 15px;
+}
+  {% if settings.collection_breadcrumb %}
+  {% else %}
+  nav.breadcrumb {
+    
+    display: none;
+}
+  {% endif %}
+  .grid__product-content.text-center .price-section.price-section-four .price {
+    width: 50%;
+    float: initial;
+}
+  .grid__product-image.text-center.col-sm-3 {
+    padding-left: 0;
+}
+  
+  @media screen and (min-width:768px){
+  .grid_collection_box{display:flex;}
+  }
+  @media screen and (max-width:767px){
+    .list-view-row{width:100%;}
+  }
+  
+  
+  .list-view-price{
+    align-self:center;
+  }
+  .grid__product-image.text-center {
+     
+    margin-bottom: 0;
+}
+</style>

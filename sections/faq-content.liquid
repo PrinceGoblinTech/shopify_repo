@@ -1,0 +1,309 @@
+      <div class="col-sm-8 faq_left">
+        <div class="faq_content">
+            <div class="tab-content">
+              {% for block in section.blocks %}
+              <div role="tabpanel" class="tab-pane fade {% if forloop.index == 1%} active in {% endif %}" id="nav{{forloop.index}}">
+                 <ul class="accordion clearfix">
+					  {% if block.settings.question1 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question1 }}</a>
+						<div>
+                        {{ block.settings.text_answer1 }}
+                     </div>
+					</li>
+                   {% endif %}
+                   
+                     {% if block.settings.question2 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question2 }}</a>
+						<div>
+                        {{ block.settings.text_answer2 }}
+                     </div>
+					</li>
+                   {% endif %}
+                   
+                     {% if block.settings.question3 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question3 }}</a>
+						<div>
+                        {{ block.settings.text_answer3 }}
+                     </div>
+					</li>
+                   {% endif %}
+                   
+                     {% if block.settings.question4 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question4 }}</a>
+						<div>
+                        {{ block.settings.text_answer4 }}
+                     </div>
+					</li>
+                   {% endif %}
+                   
+                   
+                    {% if block.settings.question5 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question5 }}</a>
+						<div>
+                        {{ block.settings.text_answer5 }}
+                     </div>
+					</li>
+                   {% endif %}
+                   
+                   
+                   
+                   
+                    {% if block.settings.question6 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question6 }}</a>
+						<div>
+                        {{ block.settings.text_answer6 }}
+                     </div>
+					</li>
+                   {% endif %}
+                   
+                    {% if block.settings.question7 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question7 }}</a>
+						<div>
+                        {{ block.settings.text_answer7 }}
+                     </div>
+					</li>
+                   {% endif %}
+                   
+                   
+                    {% if block.settings.question8 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question8 }}</a>
+						<div>
+                        {{ block.settings.text_answer8 }}
+                     </div>
+					</li>
+                   {% endif %}
+                   
+                   
+                   
+                    {% if block.settings.question9 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question9 }}</a>
+						<div>
+                        {{ block.settings.text_answer9 }}
+                     </div>
+					</li>
+                   {% endif %}
+                   
+                   
+                   
+                    {% if block.settings.question10 %}
+                   <li>
+						<a href="javascript:;" class="faq-heading">{{ block.settings.text_question10 }}</a>
+						<div>
+                        {{ block.settings.text_answer10 }}
+                     </div>
+					</li>
+                   {% endif %}
+                  
+                </ul>
+              </div>
+              {% endfor %}
+ 
+        </div>
+    </div>
+    </div>
+
+
+
+{% schema %}
+  {
+    "name": "topic-description", 
+"class": "acc",
+
+    
+ "max_blocks": 15,
+  "blocks": [
+      {
+        "type": "image",
+        "name": "topic-description",
+        "settings": [
+ 
+ 
+
+{
+            "type": "checkbox",
+            "id": "question1",
+            "label": "enable question 1"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question1",
+            "label": "question 1 text"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_answer1",
+            "label": "answer 1 text"
+          } 
+,
+
+{
+            "type": "checkbox",
+            "id": "question2",
+            "label": "enable question 2"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question2",
+            "label": "question 2 text"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_answer2",
+            "label": "answer 2 text"
+          } ,
+
+{
+            "type": "checkbox",
+            "id": "question3",
+            "label": "enable question 3"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question3",
+            "label": "question 3 text"
+          }, 
+{
+            "type": "textarea",
+            "id": "text_answer3",
+            "label": "answer 3 text"
+          } 
+,
+
+{
+            "type": "checkbox",
+            "id": "question4",
+            "label": "enable question 4"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question4",
+            "label": "question 4 text"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_answer4",
+            "label": "answer 4 text"
+          } 
+,
+
+{
+            "type": "checkbox",
+            "id": "question5",
+            "label": "enable question 5"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question5",
+            "label": "question 5 text"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_answer5",
+            "label": "answer 5 text"
+          } 
+,
+
+{
+            "type": "checkbox",
+            "id": "question6",
+            "label": "enable question 6"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question6",
+            "label": "question 6 text"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_answer6",
+            "label": "answer 6 text"
+          } 
+,
+
+{
+            "type": "checkbox",
+            "id": "question7",
+            "label": "enable question 7"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question7",
+            "label": "question 7 text"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_answer7",
+            "label": "answer 7 text"
+          } 
+,
+
+{
+            "type": "checkbox",
+            "id": "question8",
+            "label": "enable question 8"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question8",
+            "label": "question 8 text"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_answer8",
+            "label": "answer 8 text"
+          } 
+
+
+,
+
+{
+            "type": "checkbox",
+            "id": "question9",
+            "label": "enable question 9"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question9",
+            "label": "question 9 text"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_answer9",
+            "label": "answer 9 text"
+          } 
+
+
+,
+
+{
+            "type": "checkbox",
+            "id": "question10",
+            "label": "enable question 10"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_question10",
+            "label": "question 10 text"
+          } ,
+{
+            "type": "textarea",
+            "id": "text_answer10",
+            "label": "answer 10 text"
+          } 
+
+        ]
+      } 
+      
+    ] 
+  }
+{% endschema %}
+

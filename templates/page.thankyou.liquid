@@ -1,0 +1,50 @@
+{% layout.none %}
+<p>Copy the content below and paste in in to the "Additional content & scripts" textarea in the <a href="/admin/settings/checkout" target="_blank">Checkout settings</a>.</p>
+<textarea cols="50" rows="20">
+{% if pages[settings.thankyou_page].content != "" %}
+<div class="page">
+{{ pages[settings.thankyou_page].content }}
+</div>
+{% endif %}
+
+{% if collections[settings.thankyou_collection].products_count > 0 %}
+<div class="collection">
+	<div class="row">
+{% for product in collections[settings.thankyou_collection].products limit: 4 %}
+		<div class="thmb">
+			<div class="image text-center">
+				<a href="{{ shop.url }}/{{ product.url }}"><img src="{{ product.images.first | product_img_url: 'medium' }}" border="0" /></a>
+			</div>
+			<div class="text"><h5>{{ product.title }}</h5></div>
+		</div>
+	{% cycle '','','','</div><div class="row">' %}
+{% endfor %}
+	</div>
+  <style type="text/css">
+    .thmb {
+      display: inline-block;
+      width: 24%;
+      vertical-align: top;
+      margin-top: 15px;
+    }
+    .image.text-center img {
+      height: auto;
+      margin: 0 auto;
+      width: auto;
+    }
+    .image.text-center > a {
+      display: block;
+      text-align: center;
+    }
+    .text {
+      font-size: 16px;
+      padding-top: 10px;
+      text-align: center;
+    }
+    .text h5 {
+      line-height: 18px;
+    }
+  </style>
+</div>
+{% endif %}
+</textarea>

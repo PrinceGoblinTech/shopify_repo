@@ -1,0 +1,141 @@
+<div class="wrapper header-space">
+  {% include 'breadcrumb' %}
+  <div class="grid page--404">
+    <div class="grid__item large--one-whole">
+      <h1 class="main-heading--404">{{ 'general.404.heading' | t }}</h1>
+      {% if settings['404_page'] != "" %}
+        <div class="grid">
+          <div class="grid__item large--one-whole">
+            <div class="page--header">
+              <h3>{{ pages[settings['404_page']].title }}</h3>
+            </div>
+          </div>
+          <div class="grid__item large--one-whole">
+            {{ pages[settings['404_page']].content }}
+          </div>
+      	</div>
+      {% else %}
+      	<div class="grid">
+          <div class="grid__item large--one-whole">
+            <div class="page--header">
+              <h3>
+                {% if settings['404_page_title'] != "" %}
+                  {{ settings['404_page_title'] }}
+                {% else %}
+                  {{ 'general.404.title' | t }}
+                {% endif %}
+              </h3>
+            </div>
+            {% if settings['404_page_sub_title'] != "" %}
+              <div class="page--subheader">
+                <h4>{{ settings['404_page_sub_title'] }}</h4>
+              </div>
+            {% endif %}
+          </div>
+          <div class="grid__item large--one-whole">
+            <ul class="ul--404">
+              {% if settings.display_404_search_form %}
+                <li>
+                  <div class="help--title"><span>1</span> {% if settings.search_form_head_text_404 != "" %} {{ settings.search_form_head_text_404 }} {% else %}<strong>{{ 'general.404.search_form_heading_before' | t }}</strong> {{ 'general.404.search_form_heading_after' | t }}{% endif %}</div>
+                  <div class="help--search--form search_panel fourofour">
+                    <form action="/search" method="get" role="search" class="search_form">
+                  <div class="button-search"></div>
+   <div class="form-group clearfix">
+                  <input autocomplete="off" type="search" name="q" value="{{ search.terms | escape }}"  class="input-block-level search-query form-control" id="search_query" placeholder="{{ settings.header_search_placeholder }}"  aria-label="{{ 'general.search.placeholder' | t }}"/>
+                  <div id="autocomplete-results" class="results-box-fourofour"></div>
+                  <input type="hidden" name="type" value="product" />
+     <button type="submit" class="btn btn-success"><span class="fa fa-search"></span></button>
+
+   </div>
+                </form>
+<a href="javascript:;" class="search-close"><span class="fa fa-close"></span></a>
+                  </div>
+                </li>   
+              {% endif %}
+              <li>
+                <div class="help--title">
+                  {% if settings.display_404_search_form %}
+                    <span>2</span> 
+                  {% else %}
+                    <span>1</span> 
+                  {% endif %}
+                  {% if settings.help_text_url_type != "" %}
+                    {{ settings.help_text_url_type }}
+                  {% else %}
+                    <strong>{{ 'general.404.help_text_before' | t }}</strong> {{ 'general.404.help_text_after' | t }}
+                  {% endif %}
+                </div>
+              </li>
+              <li>
+                <div class="help--title">
+                  {% if settings.display_404_search_form %}
+                    <span>3</span> 
+                  {% else %}
+                    <span>2</span> 
+                  {% endif %}
+                  {% if settings.help_text_speak != "" %}
+                    {{ settings.help_text_speak }}
+                  {% else %}
+                    <strong>{{ 'general.404.speak_text_before' | t }}</strong> {{ 'general.404.speak_text_after' | t }}
+                  {% endif %}
+                </div>
+                {% if settings.display_404_speak_image %}
+                  <div class="speak--image--404">
+                    <p>
+                      <a href="{{ settings.speak_to_image_link }}">
+                        <img alt="chat to Lisa" src="{{ 'speak_to_image.jpg' | asset_url }}" title="">
+                      </a>
+                    </p>
+                  </div>
+                {% endif %}
+              </li>
+              {% if settings.display_404_collections %}
+              <li>
+                <div class="help--title">
+                  {% if settings.display_404_search_form %}
+                    <span>4</span> 
+                  {% else %}
+                    <span>3</span> 
+                  {% endif %}<strong>{{ 'general.404.search_collection_text' | t }}</strong>:
+                </div>
+                <div class="help--collections--404">
+                  {% if collections.size > 0 %}
+                  	<div class="grid">
+                    {% for collection in collections %}
+                        <div class="grid__item large--one-quarter medium--one-half">
+                          <a href="{{ collection.url }}">
+                            {% if collection.image %}
+                              {{ collection.image.src | collection_img_url: 'grande' | img_tag: collection_title }}
+                            {% else %}
+                              {{ collection.products.first.featured_image | product_img_url: 'grande' | img_tag: collection_title }}
+                            {% endif %}
+                          </a>
+                          <div class="collection--title">
+                            <a href="{{ collection.url }}"><h5>{{ collection.title }}</h5></a>
+                          </div>
+                        </div>
+                        {% cycle '','','','</div><div class="grid">' %}
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <p>{{ 'general.404.no_collection_text' | t }}</p>
+                  {% endif %}
+                </div>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+      	</div>
+      {% endif %}
+    </div>
+  </div>      
+</div>
+
+<style>
+  input.form-control {
+    float: left;
+}
+  .page--404 a.search-close {
+    display: none;
+}
+</style>

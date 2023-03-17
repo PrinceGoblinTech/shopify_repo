@@ -1,0 +1,58 @@
+{% assign count_active = 0  %}
+{% if settings.marketing1_link != '' %}
+	{% assign count_active = count_active | plus:1  %}
+{% endif %}
+{% if settings.marketing2_link != ''  %}
+	{% assign count_active = count_active | plus:1  %}
+{% endif %}
+{% if settings.marketing3_link != '' %}
+	{% assign count_active = count_active | plus:1  %}
+{% endif %}
+{% if settings.marketing4_link != '' %}
+	{% assign count_active = count_active | plus:1  %}
+{% endif %}
+
+{% if count_active == 1 %}
+	{% assign class = 'one-whole '  %}
+{% endif %}
+{% if count_active == 2 %}
+	{% assign class = 'one-half'  %}
+{% endif %}
+{% if count_active == 3 %}
+	{% assign class = 'one-third'  %}
+{% endif %}
+{% if count_active == 4 %}
+	{% assign class = 'one-quarter'  %}
+{% endif %}
+
+<hr>
+<div class="home--marketing">
+  <div class="wrapper">
+     {% for i in (1..4) %}
+       {% assign settlink = 'marketing' | append:i  | append:"_link" %}
+       {% assign img_name = 'marketing' | append:i  | append:".png" %}
+    
+          {% if settings[settlink] != '' %}
+               <div class="{{ class }} left">
+                  <a href="{{ settings[settlink] }}"><img src="{{ img_name | asset_url }}" alt="Marketing Main" class="marketing-main"/></a>
+               </div>
+            {% endif %}
+     {% endfor %}
+  </div>  
+</div> 
+
+
+{% comment %}
+<hr>
+<div class="home--marketing">
+  <div class="wrapper">
+    <div class="one-half left">
+      <a href="{{ settings.marketing1_link }}"><img src="{{ 'marketing1.png' | asset_url }}" alt="Marketing Main" class="marketing-main"/></a>
+    </div>  
+    <div class="one-half right">
+      <a href="{{ settings.marketing2_link }}"><img src="{{ 'marketing2.png' | asset_url }}" alt="Marketing Small First" class="marketing-small"/></a>
+      <a href="{{ settings.marketing3_link }}"><img src="{{ 'marketing3.png' | asset_url }}" alt="Marketing Small Second" class="marketing-small"/></a>
+    </div>
+  </div>
+</div>
+{% endcomment %}

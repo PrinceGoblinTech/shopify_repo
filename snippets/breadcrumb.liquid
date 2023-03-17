@@ -1,0 +1,82 @@
+{% unless template == 'index' or template == 'cart' or template == 'list-collections' %}
+<nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+  <a href="/" class="homepage-link" title="{{ 'general.breadcrumbs.home_link_title' | t }}">
+    {% unless template contains 'product' %}
+       
+    {% endunless%}
+     {% unless template contains 'collection' %}
+      {% endunless%}{{ 'general.breadcrumbs.home' | t }}</a>
+  {% if template contains 'product' %}
+    {% if collection %}            
+  <span>/</span>
+      {% if collection.handle %}
+        {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+        {{ collection.title | link_to: url }}
+      {% elsif collection.all_products_count > 0 and collection.products.first.type == collection.title %}
+        {{ collection.title | link_to_type }}
+      {% elsif collection.all_products_count > 0 and collection.products.first.vendor == collection.title %}
+        {{ collection.title | link_to_vendor }}
+      {% endif %}
+    {% elsif product.collections[0] %}
+     <span>/</span>
+      {{ product.collections[0].title | link_to: product.collections[0].url }}
+    {% else %}
+     <span>/</span>
+      {{ product.type | link_to_type }}
+    {% endif %}
+<!--     <span class="separator" aria-hidden="true">&nbsp;</span>
+    <span class="page-title">{{ page_title }}</span> -->
+  {% elsif template == "article" %}
+   <span>/</span>
+    {{ blog.title | link_to: blog.url }}
+  <span>/</span>
+    <span class="page-title">{{ page_title }}</span>
+  {% elsif template contains "collection" %}
+    {% if current_tags.size > 0 %}
+      <span>/</span>
+      {{ collection.title | link_to: collection.url }}
+     <span>/</span>
+      <span class="page-title">{{ current_tags.first }}</span>
+    {% else %}
+  <span class="urltag">
+    <span>/</span>
+    <span class="page-title"><a href=""></a></span>
+  
+  </span>
+     <span>/</span>
+      <span class="page-title">{{ collection.title }}</span>
+    {% endif %}
+  {% elsif template contains "search" %}
+  <span>/</span>
+   <span>SEARCH RESULTS FOR</span>
+   
+    <span class="page-title page-breadcumb">"{{ page_title }}"</span>
+    {% else %}
+       <span>/</span>
+    <span class="page-title page-breadcumb">{{ page_title }}</span>
+  {% endif %}
+</nav>
+{% endunless %}
+
+<script>
+  $( document ).ready(function() {
+    var hash;
+    var urlTag = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+     for(var i = 0; i < urlTag.length; i++)
+    {
+        hash = urlTag[i].split('=');
+    }
+    
+    if(hash[0] == 'custom'){
+      var urlTag_url = hash[1].toString().replace('%20', '-');
+      urlTag_url =urlTag_url.toLowerCase();
+      $(".urltag .page-title a").attr("href", "/pages/"+urlTag_url);
+      var urlTag_breadcrum = hash[1].toString().replace('%20', ' ');
+      $(".urltag .page-title a").text(urlTag_breadcrum);
+     
+    }else{
+    	$(".urltag").hide();
+    }
+    
+    });
+</script>

@@ -1,0 +1,27 @@
+<hr>
+<div class="footer--video">
+  <div class="wrapper">
+    <div class="one-half video--one left">
+      <h3 class="title">{{ settings.video1_title }}</h3>
+      <div class="iframe">
+        {% if settings.video1_iframe == "" %}
+        <img src="{{ 'video.png' | asset_url }}" class="video"/>
+        {% else %}
+        {{ settings.video1_iframe }}
+        {% endif %}
+      </div>
+      {% if settings.video1_caption != "" %}<div class="video_caption">{{ settings.video1_caption }}</div>{% endif %}
+    </div>
+    <div class="one-half video--two left">
+      <h3 class="title">{{ settings.video2_title }}</h3>
+      <div class="iframe">
+        {% if settings.video2_iframe == "" %}
+        <img src="{{ 'video.png' | asset_url }}" class="video"/>
+        {% else %}
+        {{ settings.video2_iframe }}
+        {% endif %}
+      </div>
+      {% if settings.video2_caption != "" %}<div class="video_caption">{{ settings.video2_caption }}</div>{% endif %}
+    </div>
+  </div>
+</div>

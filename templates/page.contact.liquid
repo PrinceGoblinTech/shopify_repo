@@ -1,0 +1,116 @@
+<div class="container contact-page  header-space">
+  {% include 'breadcrumb' %}
+  <div class="grid">
+    <div class="grid__item large--one-whole page--item">
+      <div class="page-header">
+        <h1>
+          {% if settings.contact_page_title != "" %}
+            {{ settings.contact_page_title }}
+          {% else %}
+            {{ page.title }}
+          {% endif %}
+        </h1>
+      </div>
+      {% if settings.help_text_contact != "" %}
+      	<div class="help-text-contact">{{ settings.help_text_contact }}</div>
+      {% endif %}
+      <div class="grid">
+        {% if settings.display_contact_form %}
+          <div class="grid__item large--two-thirds">
+            <div class="inner-header">
+              <h3>{{ 'contact.form.title' | t }}</h3>
+            </div>
+            <div class="form-vertical">
+              {% form 'contact' %}
+                {% if form.posted_successfully? %}
+                  <p class="note form-success">
+                    {{ 'contact.form.post_success' | t }}
+                  </p>
+                {% endif %}
+                {{ form.errors | default_errors }}
+                <div class="large--one-half left margin--textbox-right">
+                  <input type="text" id="ContactFormFirstName" class="input-full form-control" name="contact[first_name]" placeholder="{{ 'contact.form.first_name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+                </div>
+                <div class="large--one-half left margin--textbox-left">
+                  <input type="text" id="ContactFormLastName" class="input-full form-control" name="contact[last_name]" placeholder="{{ 'contact.form.last_name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+                </div>
+                <input type="email" id="ContactFormEmail" class="input-full form-control" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+
+                <input type="tel" id="ContactFormPhone" class="input-full form-control" name="contact[telephone]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+
+                <textarea rows="4" id="ContactFormMessage" class="input-full form-control" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+                <input type="submit" name="ftc" id="conagree" class="btn left mnba" value="{{ 'contact.form.send' | t }}">
+             
+                   {% if settings.termscheck %}
+    <br style="clear:both"> 
+              <p class="checktext">
+                <label>
+                  <input type="checkbox" id="footercheckcontact"> <span>{{ settings.termstext }}</span>
+                </label>
+              </p>
+                        <script>
+$('body').on('click', '[name="ftc"]', function() {
+   
+  if ($('#footercheckcontact').is(':checked')) {
+    $(this).submit();
+   
+  }
+  else {
+    alert("{{ settings.termstext_warning }}");
+    return false;
+  }
+});
+</script>
+              
+                      {% endif %}
+              {% endform %}
+            </div>
+          </div>
+        {% endif %}
+        <div class="contact-page__sidebar grid__item large--one-third page--item">
+          <div class="inner-header">
+            <h3>{{ 'contact.form.details_title' | t }}</h3>
+          </div>
+          <div class="contact-box">
+            <p><strong>{{ 'contact.form.availability' | t }}:</strong></p>
+            {% if settings.contact_availability != "" %}
+              <p>{{ settings.contact_availability }}</p>
+            {% endif %}
+            {% if settings.contact_phone_1 != "" %}<p class="bold-text"><i class="fa fa-phone"></i> <a style="padding-left: 3px;"href="tel:{{ settings.contact_phone_1 }}">{{ settings.contact_phone_1 }}</a></p>{% endif %}
+            {% if settings.contact_phone_2 != "" %}<p class="bold-text"><i class="fa fa-phone"></i> <a href="tel:{{ settings.contact_phone_2 }}">{{ settings.contact_phone_2 }}</a></p>{% endif %}
+            {% if settings.contact_phone_3 != "" %}<p class="bold-text"><i class="fa fa-phone"></i> <a href="tel:{{ settings.contact_phone_3 }}">{{ settings.contact_phone_3 }}</a></p>{% endif %}
+            {% if settings.contact_email != "" %}
+              <p class="bold-text"><i class="fa fa-envelope"></i> <a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a></p>
+            {% endif %}
+            {% if settings.display_live_chat %}
+              <p class="bold-text"><i class="fa fa-comments"></i> <a href="{{ settings.live_chat_url }}">{{ 'contact.form.live_chat' | t }}</a></p>
+            {% endif %}
+            {% if settings.physical_mailing_address != "" %}	
+              <p class="address-contact">{% if settings.physical_mailing_address_lable != "" %} {{ settings.physical_mailing_address_lable }} {% else %}{{ 'contact.form.mailing_address' | t }}{% endif %}</p>
+              <p>{{ settings.physical_mailing_address }}</p>
+            {% endif %}
+          </div>
+        
+          {% if settings.display_faqs_link %}
+            <a href="{{settings.faq_page}}" class="faq_link">{{ 'contact.form.faqs_link' | t }}</a>
+          {% endif %}
+        </div>
+      </div>
+      {% if page.content != "" %}
+        {{ page.content }}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+ 
+
+ {% if settings.hidecontactfromcontact %}
+{% else %}
+<style>
+  .contact {
+    display: none!Important;
+}
+</style>
+
+{% endif %}

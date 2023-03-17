@@ -1,0 +1,91 @@
+    <script src="{{ '//cdn.shopify.com/s/javascripts/currencies.js' }}" defer></script>
+    <script src="{{ 'jquery.currencies.min.js' | asset_url }}" defer></script>
+
+    <script data-no-instant>
+        $(function () {
+            Currency.cookie.name = 'my_awesome_cookie_name';
+
+            {% if settings.currency_format %}
+                Currency.format = '{{ settings.currency_format }}';
+            {% endif %}
+
+            var shopCurrency = '{{ shop.currency }}';
+            Currency.shopCurrency = shopCurrency;
+
+            /* Sometimes merchants change their shop currency, let's tell our JavaScript file */
+            Currency.moneyFormats[shopCurrency].money_with_currency_format = {{ shop.money_with_currency_format | strip_html | json }};
+            Currency.moneyFormats[shopCurrency].money_format = {{ shop.money_format | strip_html | json }};
+
+
+            /* Default currency */
+            var defaultCurrency = '{{ settings.default_currency }}' || shopCurrency;
+            Currency.defaultCurrency = defaultCurrency;
+            var allCurrencies = '{{ settings.supported_currencies }}';
+
+            /* Cookie currency */
+            var cookieCurrency = Currency.cookie.read();
+            if (allCurrencies.search(cookieCurrency) == -1) {
+                cookieCurrency = null;
+            }
+
+            if (allCurrencies.search(shopCurrency) == -1) {
+                //shopCurrency = defaultCurrency;
+            }
+
+            /* Fix for customer account pages */
+            jQuery('span.money span.money').each(function () {
+                jQuery(this).parents('span.money').removeClass('money');
+            });
+
+            /* Saving the current price */
+            Currency.convertAll(shopCurrency, shopCurrency, "span.money, strike.money");
+
+
+            // If there's no cookie.
+            if (cookieCurrency == null || cookieCurrency === "") {
+                if (shopCurrency !== defaultCurrency) {
+                    Currency.convertAll(shopCurrency, defaultCurrency);
+                    $(".selected--currency-flag .country--flag").hide();
+                    $(".selected--currency-flag .country--flag." + defaultCurrency).show();
+                    $('.selectedvalue').text(defaultCurrency);
+
+                } else {
+                    Currency.currentCurrency = defaultCurrency;
+                    $(".selected--currency-flag .country--flag." + defaultCurrency).show();
+                    $('.selectedvalue').text(Currency.currentCurrency);
+                }
+            }
+            // If the cookie value does not correspond to any value in the currency dropdown.
+
+            else if (jQuery('[name=currencies]').size() && jQuery('[name=currencies] option[value=' + cookieCurrency + ']').size() === 0) {
+                Currency.currentCurrency = shopCurrency;
+                Currency.cookie.write(shopCurrency);
+            } else if (cookieCurrency === shopCurrency) {
+                Currency.currentCurrency = shopCurrency;
+                $(".selected--currency-flag .country--flag." + cookieCurrency).show();
+            } else {
+                Currency.convertAll(shopCurrency, cookieCurrency);
+                $(".selected--currency-flag .country--flag").hide();
+                $(".selected--currency-flag .country--flag." + cookieCurrency).show();
+            }
+
+            jQuery('[name=currencies]').val(Currency.currentCurrency).change(function () {
+                var newCurrency = jQuery(this).val();
+                Currency.convertAll(Currency.currentCurrency, newCurrency);
+                $(".selected--currency-flag .country--flag").hide();
+                $(".selected--currency-flag .country--flag." + newCurrency).show();
+                jQuery('.selected-currency').text(Currency.currentCurrency);
+            });
+
+            var original_selectCallback = window.selectCallback;
+            var selectCallback = function (variant, selector) {
+                original_selectCallback(variant, selector);
+                Currency.convertAll(shopCurrency, jQuery('[name=currencies]').val());
+                jQuery('.selected-currency').text(Currency.currentCurrency);
+                jQuery('.selectedvalue').text(Currency.currentCurrency);
+            };
+
+            jQuery('.selected-currency').text(Currency.currentCurrency);
+            jQuery('.selectedvalue').text(Currency.currentCurrency);
+        });
+    </script>

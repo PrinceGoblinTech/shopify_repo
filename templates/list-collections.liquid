@@ -1,0 +1,78 @@
+<div class="container-fluid header-space">
+		<div class="row">
+			<div class="container">
+             
+			 
+			</div>
+		</div>
+	</div>
+ 
+	<div class="container collection_page">
+  {% include 'breadcrumb' %}
+  {% unless settings.collections_products %}
+  	<div class="section-header">
+      <p class="h1 section-header__left">{{ 'collections.general.title' | t }}</p>
+    </div>
+  {% endunless %}
+ {% for collection in collections %}
+  
+  	{% if settings.collections_products %}
+      {% unless collection.handle == 'frontpage' %}
+        {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+        <div class="section-header">
+          <p class="h1 section-header__left">{{ collection_title }}</p>
+          <div class="section-header__right">
+            <a href="{{ collection.url }}" title="{{ 'collections.general.link_title' | t: title: collection_title }}">More {{ collection_title }} &rsaquo;</a>
+          </div>
+        </div> 
+
+        <div class="category_wrap ffa cearfix">
+                              <div class="grid-uniform">
+                                {% if settings.show_in_carousel %} 
+                                <div class="category_wrap homaa">
+                                   {% endif %} 
+          {% for product in collection.products limit:settings.collectionlistingcount %}
+                                 {% unless settings.show_in_carousel %} 
+            {% assign product_list_class = 'large--one-fifth medium--one-half' %}
+                               {% endunless%} 	
+                                  {% if settings.mobile_products_per_row == '2' %}
+                                  {% assign mobile_product_list_class = 'small--one-half' %}
+                                     {% endif %} 
+                                
+            {% include 'product-grid-item' %}
+          {% endfor %}
+                                  {% if settings.show_in_carousel %} 
+                                </div>
+                                    {% endif %} 
+        </div>
+      </div>
+        {% unless forloop.last %} {% endunless %}
+      {% endunless %}
+    {% else %}
+  	  
+        <div class="grid__item large--one-quarter medium--one-half custom--width-one-half collection-list">
+          <div class="grid__product-image text-center">
+            <a href="{{ collection.url }}" class="grid__image">
+              {% if collection.image %}
+                {{ collection.image.src | collection_img_url: 'grande' | img_tag: collection_title }}
+              {% else %}
+                {{ collection.products.first.featured_image | product_img_url: 'grande' | img_tag: collection_title }}
+              {% endif %}
+            </a>
+          </div>
+
+          <div class="grid__product-content text-center">
+            <p class="h5">
+              <a href="{{ collection.url }}">{{ collection.title }} <p>{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</p></a>
+            </p>
+          </div>
+        </div>
+  	  
+          {% cycle '','','','<div style="clear:both"></div>'%}
+  	{% endif %}
+  
+  {% endfor %}
+</div>
+<style>
+  
+</style>

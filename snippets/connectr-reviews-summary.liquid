@@ -1,0 +1,290 @@
+{% if product.metafields.connectr["productrating"]['connectr_five_star_count'] != blank %}
+{% if product.metafields.connectr["productrating"]['connectr_five_star_count'] != blank %}
+
+
+{% assign connectr_five_star_count = product.metafields.connectr["productrating"]["connectr_five_star_count"]  %}
+{% assign connectr_four_star_count = product.metafields.connectr["productrating"]["connectr_four_star_count"]  %}
+{% assign connectr_three_star_count = product.metafields.connectr["productrating"]["connectr_three_star_count"]  %}
+{% assign connectr_two_star_count = product.metafields.connectr["productrating"]["connectr_two_star_count"]  %}
+{% assign connectr_one_star_count = product.metafields.connectr["productrating"]["connectr_one_star_count"]  %}
+
+
+
+{% assign connectr_total_star_count_int = connectr_five_star_count | plus: connectr_four_star_count | plus: connectr_three_star_count | plus: connectr_two_star_count | plus: connectr_one_star_count  %}
+{% assign connectr_total_star_count = connectr_total_star_count_int | times: 1.0  %}
+{% assign connectr_five_star_times = connectr_five_star_count | times: 5  %}
+{% assign connectr_four_star_times = connectr_four_star_count | times: 4  %}
+{% assign connectr_three_star_times = connectr_three_star_count | times: 3  %}
+{% assign connectr_two_star_times = connectr_two_star_count | times: 2  %}
+{% assign connectr_one_star_times = connectr_one_star_count | times: 1  %}
+{% assign connectr_total_star_times = connectr_five_star_times | plus: connectr_four_star_times | plus: connectr_three_star_times | plus: connectr_two_star_times | plus: connectr_one_star_times  %}
+{% assign connectr_final_stars = connectr_total_star_times | divided_by: connectr_total_star_count  %}
+
+{% endif %}
+
+<style>
+.connectr-review-title{
+	font-size: 25px;
+	font-weight: 600;
+}
+.connectr-histogram-section{
+	display: inline-block;
+}
+.connectr-bar-row{
+	width: 100%;
+	width: 100%;
+	display: inline-flex;
+}
+/* Three column layout */
+.connectr-left {
+	width: 75px;
+}
+.connectr-side {
+	float: left;
+}
+.connectr-middle {
+	float: left;
+	min-width: 100px;
+	max-width: calc(100% - 110px);
+	width: 250px;
+}
+.connectr-right {
+	margin-left: 10px;
+}
+/* The bar container */
+.connectr-bar-wrapper {
+	width: 100%;
+	background-color: #f1f1f1;
+	text-align: center;
+	color: white;
+}
+.connector-bar{
+	height: 20px;
+	width: 0%;
+}
+/* Individual bars */
+.connectr-bar-5 { background-color: #ffc107;}
+.connectr-bar-4 { background-color: #ffc107;}
+.connectr-bar-3 { background-color: #ffc107;}
+.connectr-bar-2 { background-color: #ffc107;}
+.connectr-bar-1 { background-color: #ffc107;}
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+	.connectr-side, .connectr-middle {
+
+	}
+	.connectr-right {
+		display: none;
+	}
+}
+.connectr-stars {
+	display: flex;
+	position: relative;
+}
+.connectr-stars-wrapper {
+	display: inline-block;
+	position: relative;
+}
+.connectr-total-star-reviews{
+	display: inline-block;
+	top: -2px;
+	position: relative;
+	margin-left: 5px;
+	font-size: 18px;
+}
+.connectr-filterform {
+	margin-bottom: 5px;
+}
+.connectr-filter{
+	display:inline-block;
+}
+.connectr-filter-options{
+	padding: 5px 25px;
+}
+.connectr-review-text-container{
+	margin-top:10px;
+	width:100%;
+}
+/* pm */
+.connectr-star-color {
+	color: {
+		{
+			theme.star-color
+		}
+	}
+	!important;
+}
+.connectr-star {
+	display: {
+		{
+			theme.star-hide
+		}
+	}
+	!important;
+}
+.connectr-starsvg {
+	fill: {
+		{
+			theme.star-color
+		}
+	}
+	!important;
+	height: 1.1rem;
+	width: 1.1rem;
+}
+.connectr-starspan {
+	padding-top: 5px;
+}
+
+.connectr-review-name{
+	text-decoration: underline;
+}
+
+.connectr-review-heading{
+	font-weight: 600;
+	margin-left: 5px;
+}
+.connectr-rating-wrap {
+	display: inline-block;
+	position: relative;
+}
+.connectr-review-date{
+	display: inline-block;
+	top: -3px;
+	position: relative;
+	margin-left: 5px;
+}
+.connectr-media-container{
+	margin-top:10px;
+}
+.connectr-images{
+	max-height: 100px;
+	max-width: 100px;
+	margin-right:5px;
+	vertical-align: top;
+}
+.connectr-videos{
+	max-height: 100px;
+	margin-right:5px;
+	vertical-align: top;
+}
+
+.connecter-starrating-container {
+	}
+
+/* //connectr-loader */
+.connectr-loader { border: 6px solid #f3f3f3; border-radius: 50%; border-top: 6px solid #777b7e; width: 30px; height: 30px; -webkit-animation: spin 2s linear infinite; /* Safari */ animation: spin 2s linear infinite; margin:10px 0px 20px;}
+/* Safari */
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes  spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+
+
+
+</style>
+<a href="#connectrAmazonReview" class="connectrSummaryParent{{product.id}}" id="connectrSummaryParent{{product.id}}">
+ <div class="connectr-review-star-overallcount" title="{{connectr_final_stars | round: 1}} out of 5 stars">
+			<div class="connectr-stars-wrapper">
+				<div class="connectr-stars connectr-overall-stars{{product.id}}" id="connectr-overall-stars{{product.id}}"></div>
+			</div>
+
+			<span class="connectr-total-star-reviews">(<span id="connectr-total-star-reviews">{{connectr_total_star_count_int}}{% if connectr_total_star_count_int >= 2000%}+{% endif %}</span>)</span>
+
+</div>
+</a>
+{% if template.name == 'product'%}
+  
+
+<div style="display:none;" itemprop="itemReviewed" itemscope itemtype="http://schema.org/Product" >
+    <h1 itemprop="name">{{ product.title }}</h1>
+	<div itemprop="aggregateRating"
+		itemscope itemtype="http://schema.org/AggregateRating" >
+	Rated <span itemprop="ratingValue">{{connectr_final_stars | round: 1}}</span>/5
+	based on <span itemprop="reviewCount">{{connectr_total_star_count_int}}</span> customer reviews
+	</div>
+</div>
+ 
+{% endif %}
+<script>
+connectrstarcode{{product.id}} = function(){
+	$('.connectr-overall-stars{{product.id}}').html(createStars({{connectr_final_stars | round: 1}}));
+	console.log($("#connectrAmazonReview").length);
+	setTimeout( function(){ 
+		console.log($("#connectrAmazonReview").length);
+		if($("#connectrAmazonReview").length == 0) {
+
+		$('.connectrSummaryParent{{product.id}}').replaceWith(function(){
+			return $("<div>" + $('#connectrSummaryParent{{product.id}}').html() + "</div>");
+		});
+
+		}
+  }  , 3000 );
+
+	
+	
+}
+if (typeof jQuery == 'undefined') {
+
+var script = document.createElement('script');
+document.head.appendChild(script);
+script.type = 'text/javascript';
+script.src = '//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js';
+
+script.onload = connectrstarcode{{product.id}};
+
+} else {
+
+	connectrstarcode{{product.id}}();
+
+}
+
+
+
+function createStars(rating) {
+	var fullstar = '<svg class="connectr-starsvg" fill="#ffc107"  viewBox="0 0 1792 1792"  xmlns="http://www.w3.org/2000/svg"><path d="M1728 647q0 22-26 48l-363 354 86 500q1 7 1 20 0 21-10.5 35.5t-30.5 14.5q-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z"/></svg>';
+	var halfstar = '<svg class="connectr-starsvg" fill="#ffc107" height="20" viewBox="0 0 1792 1792" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M1250 957l257-250-356-52-66-10-30-60-159-322v963l59 31 318 168-60-355-12-66zm452-262l-363 354 86 500q5 33-6 51.5t-34 18.5q-17 0-40-12l-449-236-449 236q-23 12-40 12-23 0-34-18.5t-6-51.5l86-500-364-354q-32-32-23-59.5t54-34.5l502-73 225-455q20-41 49-41 28 0 49 41l225 455 502 73q45 7 54 34.5t-24 59.5z"/></svg>'
+	var emptystar = '<svg class="connectr-starsvg" fill="#ffc107" height="20" viewBox="0 0 1792 1792" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z"/></svg>';
+
+
+
+	var numStars = 5;
+	var half = 0;var fullrating = 0;var noStarval = 0;
+	if( rating > 0 ){
+		rating     = rating.toString().split(".");
+		half         = parseInt( rating[1] );
+		fullrating = parseInt( rating[0] );
+	}
+	var halfStar = '';
+
+	if( half >= 3 && half <= 7 ){
+
+		halfStar = '<span class="connectr-starspan">'+halfstar+'</span>';
+		fullrating-1;
+	}else if( half >= 8 ){
+		fullrating+=1;
+		noStarval+=1;
+	}else{
+		noStarval+=1;
+	}
+
+
+	var fullStar = new Array(Math.floor(fullrating + 1)).join('<span class="connectr-starspan">'+fullstar+'</span>');
+	noStarval += numStars-fullrating;
+	var noStar = new Array(Math.floor( noStarval )).join('<span class="connectr-starspan">'+emptystar+'</span>');
+
+	return fullStar + halfStar + noStar;
+}
+</script>
+{%else %}
+<script>
+var xhttp = new XMLHttpRequest();
+xhttp.open("GET", "https://connectr.thalia-apps.com/updateconnectrmetafield/{{product.id}}/{{shop.metafields.connectr["userid"]}}", true);
+xhttp.send();
+</script>
+{% endif %}

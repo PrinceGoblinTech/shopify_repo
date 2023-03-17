@@ -1,0 +1,34 @@
+<ul class="  social-media-cc display_cart_property">
+  {% if settings.footer_checkout_display %}
+    {% if settings.ff-checkout-visa-enable %}
+  	<li style="margin-left:0px;" ><a>
+      <img data-src="{{ 'ff-checkout-visa.png' | asset_url }}" width="50" class="lazyload img-responsive no-border ratina-img" />
+      </a></li>
+    {% endif %}
+    {% if settings.ff-checkout-mastercard-enable %}
+    <li><a>
+      	<img data-src="{{ 'ff-checkout-mastercard.png' | asset_url }}" width="50" class="lazyload img-responsive no-border ratina-img" />
+        </a></li>
+    {% endif %}
+    {% if settings.ff-checkout-americanexp-enable %}
+    <li><a>
+      <img data-src="{{ 'ff-checkout-americanexp.png' | asset_url }}" width="50" class="lazyload img-responsive no-border ratina-img" />
+      </a></li>
+    {% endif %}
+    {% if settings.ff-checkout-discover-enable %}
+    <li><a>
+      <img data-src="{{ 'ff-checkout-discover.png' | asset_url }}" width="50" class="lazyload img-responsive no-border ratina-img" />
+      </a></li>
+    {% endif %}
+    {% if settings.ff-checkout-paypal-enable %}
+    <li><a>
+      <img data-src="{{ 'ff-checkout-paypal.png' | asset_url }}" width="50" class="lazyload img-responsive no-border ratina-img" />
+      </a></li>
+    {% endif %}
+    {% if settings.ff-checkout-shopify-enable %}
+  	<li><a>
+      <img data-src="{{ 'ff-checkout-shopify.png' | asset_url }}" width="50" class="lazyload img-responsive no-border ratina-img" />
+      </a></li>
+    {% endif %}
+  {% endif %}
+</ul>

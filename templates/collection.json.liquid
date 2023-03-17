@@ -1,0 +1,34 @@
+{% if settings.deal_of_the_day_enabled %}
+  {% if settings.deal_of_the_day_start_date != "" %}
+    {% layout none %}
+    {% for product in collection.products %}
+      {% for tag in product.tags %}
+        {% assign tag = tag | downcase %}
+        {% if tag contains 'dealoftheday-' %}
+          <div class="itm deal_wrap" style="display:none">
+            <a href="{{product.url}}" >
+              <div class="deal_wrap_top">
+                <div>
+                  {{settings.deal_of_the_day_text}}
+                  <div class="del progresss progress-stripedd" >
+                    <div class="progress-barr bar-left-timee" style=""></div>
+                  </div> 
+                  <div class="timer" data-date="{{ tag | remove: "dealoftheday-"}}"></div>
+                </div>
+                <div class="itm deal_item ">
+                  <img width="40" src="{{ product.images.first | img_url: 'large' }}">
+                  <div>
+                    {% if product.compare_at_price > product.price %}
+                    <span class="dealdis"> <span class='money'>{{ product.compare_at_price | money }}</span> </span>
+                    {% endif %}
+                    <span class="sdealdis"> <span class='money'>{{ product.price | money }}</span> </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>     
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+{% endif %}

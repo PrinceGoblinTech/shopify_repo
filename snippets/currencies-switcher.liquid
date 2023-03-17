@@ -1,0 +1,91 @@
+<select id="currencies" class="currencies" name="currencies" style="display:none">
+  {% capture codes %},USD,EUR,GBP,CAD,ARS,AUD,ILS,BBD,BDT,BSD,BHD,BRL,BOB,BND,BGN,MMK,KYD,CLP,CNY,COP,CRC,HRK,CZK,DKK,DOP,XCD,EGP,XPF,FJD,GHS,GTQ,GYD,GEL,HKD,HUF,ISK,INR,IDR,NIS,JMD,JPY,JOD,KZT,KES,KWD,LVL,LTL,MXN,MYR,MUR,MDL,MAD,MNT,MZN,ANG,NZD,NGN,NOK,OMR,PKR,PYG,PEN,PHP,PLN,QAR,RON,RUB,SAR,RSD,SCR,SGD,SYP,ZAR,KRW,LKR,SEK,CHF,TWD,THB,TZS,TTD,TRY,UAH,AED,UYU,VEB,VND,ZMK,{% endcapture %}
+  {% assign supported_codes = settings.supported_currencies | split: ' ' %}
+  <option value="{{ shop.currency }}" selected="selected">{{ shop.currency }}</option>
+  {% for code in supported_codes %}
+     
+      <option value="{{ code }}">{{ code }}</option>
+  
+  {% endfor %}
+</select>
+ 
+
+
+             <div class="nice-select currency-switcher  slim dd-form">
+                        <span class="current notranslate"> 
+                         <span class="selected--currency-flag">
+                              {% for code in supported_codes %}
+   
+          {% assign file_extensionn = 'svg' %}
+                           <img id="cunfla" src="{{ 'transparent.png' | asset_url | split:'?' | first }}"
+                                {% if code == 'ANG'%}
+                                                       data-src="{{ 'ad.svg' | asset_url | split:'?' | first  }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ad.svg' | asset_url | split:'?' | first  }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                              {% elsif code == 'JEP'%}
+                                                       data-src="{{ 'je.svg' | asset_url  }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'je.svg' | asset_url  }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                   
+                                {% else %}
+                                data-src="{{ code  | slice: 0, 2 | handle | append: '.' | append: file_extensionn | asset_url }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ code  | slice: 0, 2 | handle | append: '.' | append: file_extensionn | asset_url | split:'?' | first }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                
+                                {%endif%}
+                                />
+     
+  {% endfor %}
+</span>
+                          
+                          <span class="selectedvalue"> </span></span>
+        <ul class="list">
+           {% for code in supported_codes %}
+     
+          {% assign file_extensionn = 'svg' %}
+            <li class="option notranslate " data-value="{{ code }}"> <img 
+                                                            {% if code == 'ANG'%}
+                                                       data-src="{{ 'ad.svg' | asset_url | split:'?' | first  }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ad.svg' | asset_url | split:'?' | first  }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                {% elsif code == 'JEP'%}
+                                                       data-src="{{ 'je.svg' | asset_url  }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'je.svg' | asset_url  }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                   
+                                {% else %}
+                                data-src="{{ code  | slice: 0, 2 | handle | append: '.' | append: file_extensionn | asset_url }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ code  | slice: 0, 2 | handle | append: '.' | append: file_extensionn | asset_url | split:'?' | first }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                alt="{{ code }}" class="lazyload country--flag {{ code }}" 
+                                
+                                {%endif%}
+                                                                          />
+              {% if settings.fullwording%}
+              {{code  | replace: 'AED', 'UAE Dirham (AED)' | replace: 'THB', 'Thailand Baht (THB)' | replace: 'CHF', 'Switzerland Francs (CHF)'| replace: 'ZAR', 'South Africa Rand (ZAR)' | replace: 'SGD', 'Singapore Dollars (SGD)' | replace: 'PHP', 'Philippines Pesos (PHP)' | replace: 'PKR', 'Pakistan Rupees (PKR)' | replace: 'NOK', 'Norway Kroner (NOK)'  | replace: 'NZD', 'New Zealand Dollars (NZD)' | replace: 'MYR', 'Malaysia Ringgit (MYR)' | replace: 'KRW', 'Korea (South) Won (KRW)'| replace: 'JOD', 'Jordan Dinar (JOD)' | replace: 'JPY', 'Japan Yen (JPY)'| replace: 'JMD', 'Jamaica Dollars (JMD)'| replace: 'ILS', 'Israel New Shekels (ILS)'| replace: 'IEP', 'Ireland Punt (IEP)' | replace: 'INR', 'India Rupees (INR)'| replace: 'ISK', 'Iceland Krona (ISK)'| replace: 'HUF', 'Hungary Forint (HUF)'| replace: 'HKD', 'Hong Kong Dollars (HKD)'| replace: 'GRD', 'Greece Drachmas (GRD)'| replace: 'XAU', 'Gold Ounces (XAU)'| replace: 'DEM', 'Germany Deutsche Marks (DEM)'| replace: 'FRF', 'France Francs (FRF)'| replace: 'FIM', 'Finland Markka (FIM)'| replace: 'FJD', 'Fiji Dollars (FJD)' | replace: 'EGP', 'Egypt Pounds (EGP)'  | replace: 'XCD', 'Eastern Caribbean Dollars (XCD)'  | replace: 'ANG', 'Netherlands  Guilders (ANG)' | replace: 'DKK', 'Denmark Kroner (DKK)' | replace: 'CSK', 'Czech Republic Koruna (CSK)'| replace: 'CYP', 'Cyprus Pounds (CYP)'| replace: 'CNY', 'China Yuan Renmimbi (CNY)'| replace: 'CLP', 'Chile Pesos (CLP)' | replace: 'CAD', 'Canada Dollars (CAD)' | replace: 'BGL', 'Bulgaria Lev (BGL)'| replace: 'BRR', 'Brazil Real (BRR)' | replace: 'BMD', 'Bermuda Dollars (BMD)' | replace: 'BEF', 'Belgium Francs (BEF)' | replace: 'BBD', 'Barbados Dollars (BBD)' | replace: 'BSD', 'Bahamas Dollars (BSD)' | replace: 'AUD', 'Australia Dollars (AUD)' | replace: 'ARP', 'Argentina Pesos (ARP)'  | replace: 'DZD', 'Algeria Dinars (DZD)' | replace: 'GBP', 'United Kingdom Pounds (GBP)'| replace: 'USD', 'US Dollors (USD)' | replace: 'EUR', 'Euro (EUR)' }}
+            {% else %}
+              {{code}}
+                  {%endif%}
+          </li>
+       
+  {% endfor %}
+               </ul>
+    </div>
+ 

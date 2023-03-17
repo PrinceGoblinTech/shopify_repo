@@ -1,0 +1,39 @@
+	<div class="container-fluid">
+		<div class="row">
+			<div class="container">
+                        {%- assign page = pages[section.settings.page] -%}  
+   
+     <h2 class="section_title"> {{ page.title }}</h2>
+   
+              
+     
+ {{ page.content }}
+          </div></div></div>
+
+
+{% schema %}
+  {
+    "name": "Custom Page Section",
+    "class": "index-section",
+    "settings": [
+
+       {
+"type": "paragraph",
+"content": "This section displays content from any page."
+},
+               {
+        "type": "page",
+        "id": "page",
+        "label": "Page" 
+      }
+  
+    ],
+    "presets": [
+      {
+        "name": "Custom Page Section",
+        "category": "image"
+      }
+    ]
+  }
+{% endschema %}
+ 

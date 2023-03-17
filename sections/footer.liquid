@@ -1,0 +1,359 @@
+{% if settings.coupan != '' %}
+    <style>
+
+ .coupon-code div {
+    min-height: 63px;
+  }
+
+  .w70  input {
+    padding: 0;
+    display: inline-block;
+    width: 24%;
+    border: 0;
+    background: transparent;
+    padding-left: 3px;
+    z-index: -1;
+  }
+
+  .w70 {
+    width: 70%;
+    float: left;
+    background: #fff;
+    color: #000;
+  }
+
+  .w30 {
+    width: 30%;
+    float: right;
+    background: #41c54f;
+    border-style: dotted;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 0;
+  }
+  .coupon-code div{
+    padding:10px 0px 0px 10px;
+  }
+
+  .w70  p {
+    color: #414141;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .w30 .save-txt {
+    margin-bottom: 4px;
+  }
+  .copy-div{
+    margin-bottom: 9px;
+  }
+  .w70  .thank-msg {
+    font-weight: bold;
+    margin-bottom: 4px;
+    font-size: 20px;
+  }
+  .save-txt {
+    font-weight: bold;
+    margin-bottom: 4px;
+    font-size: 20px !important;
+    text-transform: uppercase;
+  }
+  .button_text, .button_copy_code {
+    padding: 2px 8px;
+    background: rgb(52,171,73);
+    border-radius: 14px;
+    cursor: pointer;
+  }
+  .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    flex-wrap: wrap;
+    font-weight: lighter;
+  }
+  .checkbox-wrapper .terms-check-input {
+    margin-top: 0;
+    margin-right: 5px;
+  }
+  @media (min-width: 768px) {
+    .footer_bottom [class*="col-"]:last-child {
+      text-align: right;
+    }
+  }
+  @media (max-width: 767px) {
+    .coupon-code div {
+    padding: 10px 0px 0px 0px;
+}
+    .footer_bottom [class*="col-"]:last-child {
+      text-align: center;
+    }
+  }
+</style>
+{% else %}
+<style>
+  .w70 {
+    width: 100%;
+    background: #fff;
+    color: #000;
+  }
+
+  .w70  .thank-msg {
+    font-weight: bold;
+
+    font-size: 20px;
+  }
+
+  .w70  p {
+    color: #414141;
+    font-size: 16px;
+
+  }
+
+  .coupon-code div{
+    padding:10px 0px 6px 10px;
+  }
+
+</style>
+ {% endif %}
+
+ 
+
+	<footer class="container-fluid">
+      {% if settings.footer_second_row_display %}
+		<div class="row footer">
+			<div class="container">
+				<div class="{% if settings.footer_checkout_display %}col-md-3{% else %} col-md-4 {% endif %} equal no-padding">
+                  {% if settings.newslatter_form_show %}
+                    <div class="footer-newsletter">
+                      <h3>{{ settings.newslatter_heading }}</h3>
+                      {% if settings.newslatter_type == "mailchimp" %}
+                        <form action="{{settings.mailchimpURL}}/subscribe/post-json?u={{settings.mailchimpUID}}&amp;id={{settings.mailchimpID}}&c=?" method="get" class="contact-form mailing-form mailchimpajax mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
+                          <div class="form-group clearfix">
+                            <input required type="email" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="EMAIL" id="ccontact_email"  class="form-ccontrol newsletter ajaxtext" aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+                            <button type="submit" class="btan btn-success ajxbtn">{{ settings.newslatter_btn_text }}</button>
+                          </div>
+                        </form>
+                           <div id="subscriberesult">
+                </div>
+                      {% elsif settings.newslatter_type == "klaviyo" %}
+                        {% include 'klaviyo' %}
+                      {% else %}
+                        {% form 'customer', id: null %}
+                          {{ form.errors | default_errors }}
+                          {% if form.posted_successfully? %}
+                              {% assign posted_successfully = true %}
+                            <div class='coupon-code'>
+                              <div class='w70'><p class='thank-msg'> {{ settings.newslatter_coupan }} </p>
+                                {% if settings.coupan != '' %}  
+                                <p class='coupon-text'>{{ 'layout.coupon_code.text' | t }}<input type="text" value="{{ settings.coupan }}" id="coupan_code_copy"></p>
+                                {% endif %}
+                              </div>
+                              {% if settings.coupan != '' %} 
+                              <div class='w30'><p class='save-txt'>{{ 'layout.coupon_code.save' | t }}</p><p class='copy-div'><span class="button_copy_code">{{ 'layout.coupon_code.copy_code' | t }}</span></p></div>
+                              {% endif %} 
+                            </div>
+                          {% else %}
+                            <div class="form-group clearfix">
+                              <input required type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="coupon_Email" class="form-ccontrol newsletter"  aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" autocorrect="off" autocapitalize="off">
+                              <input type="hidden" name="contact[tags]" value="newsletter">
+                              <button type="submit" name="ft" class="btan btn-success">{{ settings.newslatter_btn_text }}</button>
+                            </div>  
+                          {% endif %}
+                        {% endform %}
+                      {% endif %}
+                      {% unless posted_successfully %}
+                          {% if settings.termscheck %}
+                            <label class="checkbox-wrapper" for="termsCheck"><input class="terms-check-input" type="checkbox" id="termsCheck"> {{ settings.termstext }} <a target="_blank" href="{{ settings.termstextlink }}">&nbsp{{ settings.termslinktext }}</a></label>
+                            <script>
+                              $('body').on('click', '[name="ft"]', function() {
+                                if ($('#termsCheck').is(':checked')) {
+                                  $(this).submit();
+                                } else {
+                                  alert("{{ settings.termstext_warning }}");
+                                   return false;
+                                }
+                              });
+                            </script>
+                          {% endif %}
+                      {% endunless %}
+                      <p><i>{{ settings.newslatter_text }}</i></p>
+					</div>
+                  {% endif %}
+				</div>
+				<div class="{% if settings.footer_checkout_display %} col-md-3 {% else %} col-md-4 {% endif %}  equal footer_link">
+					<div class=" ">
+                      
+						<div class="clearfix">
+							<ul >
+							 {% for link in linklists[settings.footer_linklist].links %}
+                              
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                              
+          {% endfor %}
+						</ul>
+<!-- 						<ul class="clearfix">
+								 {% for link in linklists[settings.footer_linklist].links %}
+                              
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                              
+          {% endfor %}
+						</ul> -->
+						</div>
+                    
+					</div>
+				</div>
+				<div class="{% if settings.footer_checkout_display %} col-md-3 {% else %} col-md-4 {% endif %}  equal leftborder">
+					<div class="footer_contact fourthcol">
+                       {% if settings.enable_header_contact %}
+						<h3>{{ settings.header_question_line }}</h3>
+						<h5>
+                           {% if settings.linkurlforphone %}
+                            <a href="{{ settings.urlforphone }}">
+                          
+                          {% if settings.usecustomphoneiconforfooter  %}
+                          <img src="{{'question-icon-footer.png' | asset_url}}" style="width:20px;position: relative;
+    top: -3px;">
+                          {% else %}
+                          <span class="fa fa-phone"></span>
+                          {% endif %}
+                          {{ settings.header_phone }} </a>
+                          {% else %}
+                          <a href="tel:{{ settings.header_phone }}">
+                          
+                          {% if settings.usecustomphoneiconforfooter  %}
+                          <img src="{{'question-icon-footer.png' | asset_url}}" style="width:20px;position: relative;
+    top: -3px;">
+                          {% else %}
+                          <span class="fa fa-phone"></span>
+                          {% endif %}
+                          {{ settings.header_phone }} </a>
+                        {% endif %}
+                      </h5>
+						<p>{{ settings.header_time }}</p>
+                      {% endif %}
+					</div>
+				</div>
+                {% if settings.footer_checkout_display %}
+              <div class="col-md-3 equal ">
+					<div class="footer_contact fourthcol">
+                    
+					{% if settings.footer_checkout_single %}
+      
+           
+                <div class="ff-checkout">
+                  <h3 class="with-lock-bg">{{ settings.checkout_box_heading_text }}</h3>
+                  <p style="margin-bottom: 5px;">{{ settings.checkout_box_info_text }}</p>
+                  <img alt="Checkout Secure" src="{{ 'ff-checkout-single.png' | asset_url  }}" 
+                       data-src="{{ 'ff-checkout-single.png' | asset_url  }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ 'ff-checkout-single.png' | asset_url  }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                       class="lazyload no-border ratina-img checkout-img-foot" />
+                </div>
+             
+        {% else %}
+        
+                <div class="ff-checkout">
+                  <h3 class="with-lock-bg">{{ settings.checkout_box_heading_text }}</h3>
+                  <p style="margin-bottom: 5px;">{{ settings.checkout_box_info_text }}</p>
+                  {% include 'checkout-icons' %}
+                </div>
+              
+
+                       {% endif %}
+					</div>
+				</div>
+                      {% endif %}
+			</div>
+		</div>
+      {% endif %}
+		<div class="row footer_bottom">
+          {% capture powered_by_text %}{{ 'layout.footer.powered_by' | t }}{% endcapture %}
+          {% capture grid_class %}{% if powered_by_text.size > 0 %}col-sm-4{% else %}col-sm-6{% endif %}{% endcapture %}
+			<div class="container">
+				<div class="{{ grid_class }}">
+				<p>&copy; {{ "now" | date: "%Y" }} <a style="color:{{ settings.footer_copyright_font_color }}" href="/">{{ shop.name }}</a>. {{ 'layout.footer.copyright' | t }}</p>
+			</div>
+            {% if powered_by_text.size > 0 %}
+              <div class="col-sm-4 text-center">
+                  <p><a href="{{ 'layout.footer.powered_by_link' | t }}">{{ powered_by_text }}</a></p>
+              </div>
+            {% endif %}
+			<div class="{{ grid_class }}">
+				<ul class="socila-icon">
+					 {% include 'social-icons' %}
+
+				</ul>
+			</div>
+			</div>
+
+		</div>
+	</footer>
+ 
+
+ <script>
+    
+      $(document).ready(function () {
+  var $form = $('.mailchimpajax')
+  if ($form.length > 0) {
+    $('.ajxbtn').bind('click', function (event) {
+      if (event) event.preventDefault()
+      if ($('#termsCheck').is(':checked')) {
+      registerr($form)
+      }
+      else{ alert("{{ settings.termstext_warning }}");}
+    })
+  }
+})
+
+function registerr($form) {
+  $('.ajxbtn').val('Sending...');
+  $.ajax({
+    type: $form.attr('method'),
+    url: $form.attr('action'),
+    data: $form.serialize(),
+    cache: false,
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    error: function (err) { alert('Could not connect to the registration server. Please try again later.') },
+    success: function (data) {
+      $('.ajxbtn').val('subscribe')
+      if (data.result === 'success') {
+        // Yeahhhh Success
+   
+     
+        
+        $('.mailchimpajax').hide();
+          $('.nhllkju').hide();
+        $('#subscriberesult').html('<div class="coupon-code"><div class="w70"><p class="thank-msg"> {{ settings.newslatter_coupan }} </p> {% if settings.coupan != '' %}<p class="coupon-text">{{ 'layout.coupon_code.text' | t }}<input type="text" value="{{ settings.coupan }}" id="coupan_code_copy"></p>{% endif %} </div>{% if settings.coupan != '' %}  <div class="w30"><p class="save-txt">{{ 'layout.coupon_code.save' | t }}</p><p class="copy-div"><span class="button_copy_code">{{ 'layout.coupon_code.copy_code' | t }}</span></p></div>{% endif %}  </div>');
+        $('.ajaxtext').val('');
+          $('#termsCheck').hide();
+      } else {
+       
+        // Something went wrong, do something to notify the user.
+         
+     
+        $('#subscriberesult').css('color', '#ff8282');
+        if (data.msg.substring(0) == '0 - Please enter a value')
+        {
+        $('#subscriberesult').html('<p>Please enter Email</p>');
+        }
+        else if (data.msg.substring(0) == '0 - An email address must contain a single @')
+        {
+        $('#subscriberesult').html('<p>An email address must contain a single @</p>');
+        }
+       else if(data.msg.substring(0).search("The domain portion of the email address is invalid") != -1) {
+   $('#subscriberesult').html('<p>The domain portion of the email address is invalid</p>');
+} 
+        
+        
+        else 
+        {
+        $('#subscriberesult').html('<p>' + data.msg.substring(0) + '</p>');
+        }
+      
+      }
+    }
+  })
+};
+</script>

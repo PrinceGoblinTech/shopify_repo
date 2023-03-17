@@ -1,0 +1,257 @@
+{% if section.settings.banner_on_off == 'on' %}   
+<style>
+    .shopify-section.index-section.banner-section.index-section--flush {
+/*   border-bottom-color: #dddcdc;
+  border-bottom-style: solid;
+  border-bottom-width: 1px; */
+  border-top-color: #dddcdc;
+  border-top-style: solid;
+  border-top-width: 1px;
+/*   margin-bottom: 15px; */
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 15px;
+  padding-bottom: 50px;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 30px;
+}
+    .home_creative_banner.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+/*   margin-bottom: 0; */
+/*   margin-left: auto; */
+/*   margin-right: auto; */
+/*   margin-top: 0; */
+/*   width: 1180px; */
+/*   padding: 0 30px; */
+}
+.home_creative_banner.wrapper .item {
+  width: 25%;
+  padding : 20px 1%;
+  text-align: center;
+}
+    .item:hover {
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.1);
+}
+   .headline {
+  color: #fff;
+  font-size: 38px;
+  font-weight: bold;
+  left: 0;
+  line-height: 1em;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  text-transform: uppercase;
+  top: 50%;
+  transform: translate(0px, -50%);
+}
+    .img-link {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+    .bottom-part {
+  text-align: center;
+      padding: 0 1%;
+}
+    .desc {
+  color: #1e1e1e;
+  font-weight: bold !important;
+  margin-bottom: 5px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 10px;
+  font-size: 18px;
+}
+    .cta-link {
+  color: #5b5b5b;
+  font-size: 16px;
+  letter-spacing: 0px;
+}
+    .home_creative_banner.wrapper .item  a:hover {
+    opacity : 1;
+      text-decoration : underline;
+      
+    }
+    
+   @media screen and (max-width: 900px) {
+    
+      .headline {
+      
+        font-size : 32px;
+        
+      }
+    
+    }    
+      @media screen and (max-width: 768px) {
+    .home_creative_banner.wrapper .item {
+  	  padding-left: 3%;
+ 	  padding-right: 3%;
+      width: 50%;
+      margin-top:10px;
+    }
+         .headline {
+      
+         font-size : 38px;
+        
+        }
+      }
+     @media screen and (max-width: 480px) {
+    .home_creative_banner.wrapper .item {
+  margin-top: 10px;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+  width: 100%;
+   }
+    }
+    
+
+</style>
+
+{%  if section.settings.Banner_per_page  == '2' %}
+<style>
+   @media screen and (max-width: 767px) {
+      .home_creative_banner.wrapper .item{
+        width:48%;
+        float: left;
+        margin-left: 5px;
+      }
+      .headline {
+        font-size: 25px;
+      }
+      .desc{
+        font-size: 15px;
+      }
+      .cta-link {
+        font-size: 14px;
+      }
+   }
+</style>
+{% endif %}
+
+{% if section.blocks %}
+<div class="home_creative_banner wrapper">
+{% for block in section.blocks %}
+    <div class="item">
+      <div class="top-part">
+        <a class="img-link" href="{{ block.settings.slider_url }}">
+          <img src="{{ block.settings.slider_image | img_url: '400x400', crop: 'center'  }}" alt="{{ block.settings.slider_image_title }}">
+          <div class="headline">{{ block.settings.slider_image_headline }}</div>
+        </a>
+      </div>
+      <div class="bottom-part">
+        <p class="desc">{{ block.settings.slider_description }}</p>
+        <p class="cta">
+          <a class="cta-link" href="{{ block.settings.slider_url }}">
+            {{ block.settings.slider_cta_txt }}
+          </a>
+        </p>
+      </div>
+	</div>
+{% endfor %}
+</div> 
+{% endif %}
+{% endif %}
+
+
+{% schema %}
+	{
+    "name": "Creative Banner",
+    "class": "index-section banner-section index-section--flush",
+    "settings": [
+{
+"type": "paragraph",
+"content": "This section displays a row of upto 4 images including links."
+},
+
+      {
+      "type": "select",
+      "id": "Banner_per_page",
+      "options": [
+        { "value": "1", "label": "1"},
+        { "value": "2", "label": "2"}
+      ],
+      "label": "Number of Banner in Mobile Layout"
+      }
+    ],
+    "max_blocks": 4,
+	"blocks": [
+		{
+		"type":"slides",
+		"name": "Creative Banner",
+        "settings": [
+			 
+			 {
+                "type": "text",
+                "id": "slider_image_headline",
+                "label": "Enter Headline"
+              },
+            {
+                "type": "image_picker",
+                "id": "slider_image",
+                "label": "Upload Image"
+            },
+              {
+                "type": "text",
+                "id": "slider_url",
+                "label": "Enter Link Url"
+              },
+              {
+                "type": "text",
+                "id": "slider_description",
+                "label": "Enter Description"
+              },
+              {
+                "type": "text",
+                "id": "slider_cta_txt",
+                "label": "Enter CTA Text"
+              }
+		]
+		}
+
+	],
+    "presets": [{
+          "name": "Creative Banner",
+          "category": "Image",
+          "settings": {
+           
+          },
+          "blocks": [
+            {
+              "type": "slides"
+            },
+            {
+              "type": "slides"
+            },
+            {
+              "type": "slides"
+            },
+            {
+              "type": "slides"
+            }
+
+          ]
+        }],
+	  
+    
+    "settings": [
+      {
+        "type": "radio",
+        "id": "banner_on_off",
+        "label": "ON/OFF Creative Banner",
+        "default": "on",
+        "options": [
+          {"value": "on", "label": "on"},
+          {"value": "off", "label": "off"}
+        ]
+      }
+    ]
+	}
+{% endschema %}

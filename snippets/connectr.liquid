@@ -1,0 +1,295 @@
+{% if template contains "product" %}
+
+        {% assign connectr-enable = "0" %}
+         
+    <button id="ConnectrLink" type="button" style="display:none;" name="ConnectrLink" class="btn" onclick="ConnectrButtonClick()">
+                      <span id="ConnectrLinkText">View On Amazon</span>
+        </button>
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" ></script>
+        <script>
+  
+  
+  
+        var affiliateJsonDecode = [];   
+        
+        
+        var ConnectrWrapper = document.getElementById("ConnectrLink");
+        setTimeout(function waitConnectrWrapper() {
+            if (document.body.contains(ConnectrWrapper)) {
+                ConnectrInit();
+            } else {
+                setTimeout(waitConnectrWrapper, 100);
+            }
+        }, 100);
+
+        function ConnectrInit(){
+           
+            {% if connectr-enable ==  "1"%}
+            ConnectrShowButton();
+            {% endif %}
+        }
+
+        var product = {{ product | json }};
+  
+  var variants = product.variants;
+
+
+function rediectConnectrUrl() {
+
+  
+    connectrAmazonUrl ="https://www.amazon."+connectrRegion+"/dp/"+connectrProductAsin; 
+    connectrRedirectURL = connectrAmazonUrl+"?m="+connectrSellerid+"&tag="+connectrAffiliateTag;
+     if(0){
+        if({{product.available}} == false){
+
+             connectrRedirectURL = connectrAmazonUrl+"?tag="+connectrAffiliateTag;
+        }
+    }
+    
+
+    if(1)
+    {
+      if(typeof ga !== "undefined") {
+           ga("send", "event", { eventCategory: "Connectr Link", eventAction: "Click", eventLabel:connectrRedirectURL});
+        }
+    }
+
+     if(0)
+     {
+      if(typeof fbq !== "undefined") {
+          fbq("trackCustom", "ConnectrClick", {Amazonlink: connectrRedirectURL});
+        }
+     }
+
+    window.open(connectrRedirectURL);
+
+}
+
+function rediectConnectrUrlnoTag() {
+
+  
+    connectrAmazonUrl ="https://www.amazon."+connectrRegion+"/dp/"+connectrProductAsin; 
+
+    connectrRedirectURL = connectrAmazonUrl+"?m="+connectrSellerid;
+
+     if(0){
+        if({{product.available}} == false){
+
+             connectrRedirectURL = connectrAmazonUrl+"?";
+        }
+    }
+
+    if(1)
+    {
+      if(typeof ga !== "undefined") {
+           ga("send", "event", { eventCategory: "Connectr Link", eventAction: "Click", eventLabel:connectrRedirectURL});
+        }
+    }
+
+     if(0)
+     {
+      if(typeof fbq !== "undefined") {
+          fbq("trackCustom", "ConnectrClick", {Amazonlink: connectrRedirectURL});
+        }
+     }
+    window.open(connectrRedirectURL);
+
+}
+
+
+
+
+        function ConnectrShowButton()
+        {
+          var Connectraddtocartform = document.querySelector("form[action='/cart/add']");
+          var Connectraddtocartbutton = Connectraddtocartform.querySelector("[type='submit']");
+          var Connectrlinkbutton = document.getElementById("ConnectrLink");
+
+        //code for special themes
+          if((Connectraddtocartbutton === undefined) || (Connectraddtocartbutton === null) || (Connectraddtocartbutton === ""))
+          {
+            Connectraddtocartbutton = document.getElementById("add-to-cart");
+            if((Connectraddtocartbutton === undefined) || (Connectraddtocartbutton === null) || (Connectraddtocartbutton === ""))
+            {
+                Connectraddtocartbutton = document.getElementById("product-add-to-cart");
+            }
+            else
+            {
+                Connectraddtocartbutton.classList.remove("add-to-cart");
+            }
+          }
+
+          Connectrlinkbutton.className += " " + Connectraddtocartbutton.classList;
+
+          //Connectraddtocartbutton.style.display = "none";
+          Connectrlinkbutton.style.display = "block";
+
+            //remove dynamic payment button
+            //$( ".shopify-payment-button" ).remove();
+            var shopifypaymentbutton = document.getElementsByClassName("shopify-payment-button");
+           
+
+            setInterval(function () {
+                //Connectraddtocartbutton.style.display = "none";
+                Connectrlinkbutton.style.display = "block";
+
+                //remove dynamic payment button
+
+                var shopifypaymentbutton = document.getElementsByClassName("shopify-payment-button");
+              
+
+            }, 4000);
+
+            //SetAffiliateTags();
+        }
+
+        var connectrRegion       = "{{shop.metafields.connectr["region"]}}";
+        {% if product.metafields.connectr["product-region"] != blank %}
+            connectrRegion       = "{{product.metafields.connectr["product-region"]}}";
+        {% endif %}
+        var connectrProductAsin ="{{product.metafields.connectr["parentasin"]}}";
+        
+        var connectrProductTitle ="{{product.metafields.connectr["product-title"]}}";
+        
+        var connectrSellerid     = "{{shop.metafields.connectr["sellerid"]}}";
+        var connectrAffiliateTag =  affiliateJsonDecode[connectrRegion];
+  
+  
+
+ function findlocation_custom()
+ {
+    jQuery.ajax({
+        url: "//extreme-ip-lookup.com/json/",
+        type: "POST",
+        dataType: "jsonp",
+        success: function(location) {
+        
+        
+        
+            if(location.countryCode == undefined){
+                 jQuery.ajax({
+                    url: "//api.wipmania.com/json/",
+                    type: "POST",
+                    dataType: "jsonp",
+                    success: function(location) {
+                     
+                   localize_custom(location.address.country_code.toLowerCase());
+                     
+                    
+                    
+                    }
+                });
+            } else {
+                localize_custom(location.countryCode.toLowerCase());
+               
+            }
+
+        }
+    });
+ }
+ 
+ 
+ function localize_custom(country_code){
+ 
+ 
+
+ 
+var regions = [ "us","ca","gb","in","de","fr","es","it","mx","au","br","jp" ];
+var indexNumber =  regions.indexOf(country_code);
+
+if( regions[indexNumber] == "us"){
+    regions[indexNumber] = "com";
+    
+}
+
+if( regions[indexNumber] == "au"){
+    regions[indexNumber] = "com.au";
+    
+}
+
+if( regions[indexNumber] == "gb"){
+    regions[indexNumber] = "co.uk";
+    
+}
+
+
+ 
+if( indexNumber != -1 && connectrRegion !== regions[indexNumber] && 1 == 1 ){
+
+let region = regions[indexNumber];
+
+let trakingId = affiliateJsonDecode[region];
+  connectrproducttitle = "{{product.title}}";
+
+if( trakingId ){
+  
+    connectrAmazonUrlOtherRegion = "http://amazon."+region+"/s/?field-keywords=" +encodeURIComponent(connectrproducttitle)+"&tag="+trakingId+" ";
+
+
+
+
+window.open(connectrAmazonUrlOtherRegion);
+
+}else{
+
+
+connectrAmazonUrlOtherRegionNoTag = "http://amazon."+region+"/s/?field-keywords=" +encodeURIComponent(connectrproducttitle);
+
+
+
+
+window.open(connectrAmazonUrlOtherRegionNoTag);
+
+
+}
+
+
+
+
+}else{
+
+
+
+
+if(connectrAffiliateTag){
+
+
+
+rediectConnectrUrl();
+}else{
+rediectConnectrUrlnoTag();
+
+}
+
+
+
+}
+ 
+ 
+ 
+}
+
+
+
+
+
+
+       
+
+        function ConnectrButtonClick(){   
+            findlocation_custom();
+
+           
+
+        }
+        
+        
+        
+        
+        
+        
+        </script>
+
+        {% endif %}

@@ -1,0 +1,128 @@
+<hr>
+<div class="home--marketing">
+  <div class="container befor">
+    <div class="one-half left">
+      
+      <a href="{{ section.settings.link1 }}">
+         {% if section.settings.image1 == blank %}
+        {{ 'image'  | placeholder_svg_tag: 'placeholder-svg' }}
+        {%else%}
+        <img src="{{ 'transparent.png' | asset_url }}" 
+             data-src="{{ section.settings.image1 | img_url: 'master' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ section.settings.image1 | img_url: 'master' }}"
+ data-sizes="auto"
+ data-parent-fit="contain" 
+             alt="Marketing Main" class="lazyload marketing-main"/>
+      {%endif%}
+      </a>
+    </div>  
+    <div class="one-half right">
+      <a href="{{ section.settings.link2 }}">
+         {% if section.settings.image2 == blank %}
+        {{ 'image'  | placeholder_svg_tag: 'placeholder-svg' }}
+        {%else%}
+        <img src="{{ 'transparent.png' | asset_url }}"
+             data-src="{{ section.settings.image2 | img_url: 'master' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ section.settings.image2 | img_url: 'master' }}"
+ data-sizes="auto"
+ data-parent-fit="contain" 
+             alt="Marketing Small First" class="lazyload marketing-small"/>
+       {%endif%}
+      
+      </a>
+      <a href="{{ section.settings.link3 }}">
+           {% if section.settings.image3 == blank %}
+        {{ 'image'  | placeholder_svg_tag: 'placeholder-svg' }}
+        {%else%}
+        <img src="{{ 'transparent.png' | asset_url }}" 
+             data-src="{{ section.settings.image3 | img_url: 'master' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ section.settings.image3 | img_url: 'master' }}"
+ data-sizes="auto"
+ data-parent-fit="contain" 
+             alt="Marketing Small Second" class="lazyload marketing-small"/>
+             {%endif%}
+      
+      </a>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "homepage-Marketing",
+    
+	"settings": [
+
+ 
+       {
+"type": "paragraph",
+"content": "This section displays a large image and 2 smaller images including links."
+},
+     
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image 1 (540px X 540px)"
+      },
+ 
+      {
+        "type": "url",
+        "id": "link1",
+        "label": "Image 1 Link" 
+      },
+
+{
+        "type": "image_picker",
+        "id": "image2",
+        "label": "Image 2 (540px X 260px)"
+      },
+ 
+      {
+        "type": "url",
+        "id": "link2",
+        "label": "Image 2 Link" 
+      },
+       {
+        "type": "image_picker",
+        "id": "image3",
+        "label": "Image 3 (540px X 260px)"
+      },
+ 
+      {
+        "type": "url",
+        "id": "link3",
+        "label": "Image 3 Link" 
+      }
+
+    ],
+     
+    "presets": [{
+      "name": "homepage-Marketing", 
+       "category": "Image"
+       
+       
+    }]
+  }
+{% endschema %}
+
+<style>
+    
+ .container.befor:before {
+ 
+    display: none;
+  
+}
+  @media screen and (max-width: 992px){
+  hr {
+    display: none;
+}
+  }
+</style>

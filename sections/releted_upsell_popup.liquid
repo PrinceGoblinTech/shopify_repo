@@ -1,0 +1,1362 @@
+<!-- Modal -->
+<style>
+  div#related_popup_upsell .modal-dialog{
+ 	 margin:0 auto;
+  }
+  .alert-success {
+	color: #fff;
+    background-color: {{settings.color_primary}};
+ 
+  }
+  .alert {
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+  }
+  
+  .related_popup_heading{
+    color:{{section.settings.related_popup_heading_font_color}};
+    font-size:{{section.settings.related_popup_heading_font_size}}px;
+    font-family:{{section.settings.related_popup_heading_font_family}} !important;  
+   
+  }
+  .related_popup_text{
+    color:{{section.settings.related_popup_text_font_color}};
+/*     font-size:{{section.settings.related_popup_text_font_size}}px; */
+    font-size:18px;
+    font-family:{{section.settings.related_popup_text_font_family}} !important;
+    margin:0;
+    
+  }
+  .r_view_cart_color{
+    
+    font-weight:bold;
+    font-size:17px;
+  }
+  .r_continue_shoping_color{
+   
+    color: #fff !important;
+    
+  }
+  .r_checkout_color{
+   
+    font-size:17px;
+    font-weight:bold;
+  }
+  img.addcartloader {
+    height: 19px;
+    width: 20px;
+}
+/*   div#related_cart_sucsses_msg {
+    width: 74%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 40px !important;
+    position: fixed !important;
+    z-index:99999999;
+} */
+.btn {
+      text-transform: uppercase !important;
+}
+  
+.btn.btn-default.r_continue_shoping_color{ /*position:absolute;left:10px;*/ float:left; }
+.related_popup_footer a {
+    display: inline-block;
+    color: #fff;
+}
+
+.modal-footer.related_popup_footer form {
+    display: inline-block;
+}
+
+.modal-footer.related_popup_footer form input.r_checkout_color {
+    color: #fff;
+}
+.related_popup_text{
+    text-align:left !important;
+}
+ 
+ 
+.modal-backdrop.in{opacity:0.7 !important; background:#000;}
+.modal-open { overflow: hidden !important;}
+.h4.grid-view-item__title.product_title.mobile-only {
+	display: none;
+}
+  a.btn.btn-default.r_continue_shoping_color {
+    background: {{settings.color_secondary}}!important;
+        padding: 23px 25px;
+    line-height: 1;
+    font-size: 16px;
+    border: none;
+}
+  a.btn.btn-default.r_view_cart_color {
+    color: black!important;
+    background: white!important;
+    font-weight: normal;
+    padding: 23px 30px;
+    line-height: 1;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  .r_checkout_color img.no-border.ratina-img.addIcon {
+    width: 21px;
+    position: relative;
+    top: -2px;
+}
+  /* New css*/
+  a.grid-view-item__link.grid_set_box {
+    
+    display: block;
+    padding: 13px;
+}
+  div#related_popup_upsell .modal-dialog .modal-content .modal-body .small--one-half .grid-view-item .h4.grid-view-item__title {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 0;
+    min-height: 36px;
+    text-align: center;
+    margin: 26px auto;
+}
+  .r_addtocartbutton .btn {
+    width: 100%;
+    border-radius: 0;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 17px 10px;
+    line-height: 1;
+}
+  .modal-footer.related_popup_footer button.btn {
+    color: #fff;
+    font-size: 16px;
+    padding: 21px 28px;
+    line-height: 1;
+    border: none;
+}
+  .modal .modal-footer{padding:30px 28px; margin-top:15px;}
+  .related_pupup_rendome_parent{padding:0 9px 0 16px;}
+  .modal .modal-header .close{font-size:initial;opacity:1;}
+  /* new css end */
+  @media screen and (max-width: 767px) {
+  .modal-footer.related_popup_footer form {
+    display: block;
+}
+  }
+</style>
+
+{% include 'condition_forrelated_popup' %}
+{%if collection1 %}
+
+<div id="related_popup_upsell" class="modal fade"    role="dialog">
+  <div class="vertical-alignment-helper">
+  <div class="modal-dialog vertical-align-center">
+	
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div id="related_cart_sucsses_msg"></div>
+      <div class="modal-header">
+        <div style="display:none;">
+          <span id="related_shipping_msg">{{ section.settings.related_popup_heading }}</span>
+          <span id="related_free_shipping_msg">{{ section.settings.related_popup_heading_free_shipping }}</span>
+        </div>
+        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+        <h4 class="modal-title related_popup_heading related_free_shipping_text"></h4>
+        <p class="related_popup_text">{{section.settings.related_popup_text}} </p>
+      </div>
+      <div class="modal-body" id="comment_parent_like">
+      <div id="comment_child_like"> 
+       {% include 'condition_forrelated_popup' %}
+       {%if collection1 %}
+           {%- assign collection = collections[settings.show_upsell_related_collection_1] -%}
+              
+                {% capture index %}
+                        {{ 'now' | date: '%S' | times: collections.all.products.size | divided_by: 60 }}
+                {% endcapture %}
+                 <div class="related_pupup_rendome_parent hide-xs ">
+                   {% for product in collections[collection1.handle].products %}
+                  {% if product.available and product.variants.size >= 1 %}
+                 
+                   <div class="grid__item  medium-up--one-third small--one-half related_pupup_rendome">
+                     {% include 'product-card-grid-related-popup', grid_image_width: '250X250' %}
+                   </div>
+                   
+                   {% endif %}
+                   {% endfor %} 
+                 </div>
+         
+
+        		{% comment %}
+                 <div class="related_pupup_rendome_parent one-time hide-lg">
+                   {% for product in collections[collection1.handle].products %}
+                   <div class="grid__item">
+                     {% include 'product-card-grid-related-popup-mobile'%}
+                   </div>
+                   {% endfor %} 
+                 </div>
+			 {% endcomment %}
+
+
+
+
+                
+       <input type="hidden" id="check_collection_emty" value="1">
+      
+       {% else %}
+      
+       <input type="hidden" id="check_collection_emty" value="0">
+      
+      
+       {% endif %}
+        
+           
+      </div>
+        </div> 
+
+      <div class="modal-footer related_popup_footer">
+        
+        <a href="/" type="button" class="btn btn-default r_continue_shoping_color continue_shopping">Continue Shopping </a>
+        <a href="/cart" type="button" class="btn btn-default r_view_cart_color">View Cart</a>
+ 
+        
+        <form method="post" action="/cart">
+
+           <button class="btn btn-default r_checkout_color" type="submit" name="checkout">
+          <img src="//cdn.shopify.com/s/files/1/2623/6172/t/2/assets/checkout-button-icon.png?17545970286828142699" alt="ivan-theme1" itemprop="logo" class="no-border ratina-img addIcon">SECURE CHECKOUT
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</div>
+{% else %}
+<!-- <div id="related_cart_sucsses_msg"></div> -->
+{% endif %}
+{% for block in section.blocks %}
+  {% if block.settings.upsell_related_collection == '' or block.settings.show_upsell_related_collection == ''%}
+ {% else %}
+<script>
+    function custom_addcart(that){
+
+        var quantity = 1, variant_id = $(that).attr('data-variant');
+
+        data = {
+            "quantity": quantity,
+            "id": variant_id,
+        };
+
+        var userfor = $(that).html();
+        $.ajax({
+            type: 'POST',
+            url: '/cart/add.js',
+            dataType: 'json',
+            data: data,
+            beforeSend: function() {
+                $(that).attr("disabled",true);
+                $(that).html('<span class="r_AddToCartText">Adding...</span>');
+            },
+            success: function(res){
+                $(that).removeAttr("disabled");
+                $("#related_cart_sucsses_msg").html('<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close custome_close_r" data-dismiss="alert" aria-label="close">&times;</a> Item added in cart </div>')
+
+                setTimeout(function(){
+                    $(".custome_close_r").trigger("click");
+                }, 1500);
+                $(that).attr('disabled', 'disabled' ).find('.r_AddToCartText').text('In cart').css('color', '{{settings.color_primary}}');
+                ShopifyAPI.getCart();
+
+                //where_to_go();
+                jQuery.getJSON('/cart.js', function (cart, textStatus) {
+                  	free_shipping_update();
+                    var carttext=cart.item_count;
+                    jQuery("#CartCount").text(carttext);
+                });
+
+            },
+        });
+        
+    }
+	
+	jQuery(document).ready(function(){
+    jQuery('.continue_shopping').click(function(e){
+     
+       e.preventDefault();
+       e.stopPropagation()
+       jQuery('.modal-header .close .fa-times').trigger('click');
+       
+     });
+   });
+</script>
+{% endif %}
+{% endfor %}
+<style>
+  .one-time .slick-prev{left:0;z-index:999;height: 30px;width: 30px;}
+  .one-time .slick-next{right:0;z-index:999;height:30px;width: 30px;}
+</style>
+<style>
+div#related_popup_upsell .modal-dialog {
+    max-width: 750px;
+    width : 100%;
+}
+div#related_popup_upsell {
+    padding-left: 0 !important;
+}
+div#related_popup_upsell .modal-dialog .modal-content {
+    overflow: hidden;
+}
+div#related_popup_upsell .modal-dialog .modal-header {
+/*     background-color: #32ac0b; */
+    padding: 20px 29px 0px ;
+    color: #fff;
+}
+div#related_popup_upsell .modal-dialog .modal-header h4.modal-title {
+    color: #000;
+  font-size:40px;
+  margin-bottom:15px;
+}
+div#related_popup_upsell .modal-dialog .modal-content .modal-body {
+    background-color: #fff;
+  	overflow : hidden;
+  padding:0;
+}
+#related_popup_upsell .modal-header{border-bottom:none;}
+#comment_child_like img.loder_black {
+    margin: 20vh auto;
+}
+#comment_child_like{
+    text-align: center;
+    width: 100%;
+}
+div#related_popup_upsell .modal-dialog .modal-content .modal-body p.related_popup_text {
+    color: #464646;
+}
+div#related_popup_upsell .modal-dialog .modal-content .modal-body .small--one-half .grid-view-item a.grid-view-item__link {
+    margin-bottom: 0;
+}
+  div#related_popup_upsell .modal-dialog .modal-content .modal-body .small--one-half .grid-view-item .h4.grid-view-item__title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 0;
+    min-height: 35px;
+    margin-top: 10px;
+    color: #414141;
+  }
+div#related_popup_upsell .modal-dialog .modal-content .modal-body .small--one-half {
+    padding-left: 0;
+    margin: 1%;
+    width: 31%;
+    padding: 5px;
+/*     border: 1px solid #ddd; */
+}
+.modal-footer.related_popup_footer button.btn {
+    color: #fff;
+}
+/* .r_addtocartbutton .btn{width:100%;border-radius:0;font-weight:bold;font-size:17px;} */
+@media screen and (max-width:767px) {
+  div#related_popup_upsell .modal-dialog .modal-header h4.modal-title {
+    color: #000;
+    font-size: 25px;
+}
+  div#related_popup_upsell .grid__item.medium-up--one-quarter.small--one-half {
+      width: 31% !important;
+      text-align: center;
+  }
+  .r_addtocartbutton .btn {
+    width: 100%;
+    border-radius: 0;
+    font-weight: bold;
+    font-size: 16px;
+}
+  .btn.btn-default.r_continue_shoping_color {
+    position: relative;
+    left: 0;
+    width: 100%;
+    margin-bottom: 9px;
+}
+  .modal-footer .btn+.btn {
+    margin-left: 0;
+    margin-bottom: 9px;
+}
+  img.grid-view-item__image.lazy {
+    max-height: initial;
+}
+  #related_popup_upsell .modal-dialog {
+      margin: 15px auto !important;
+  }
+}
+@media screen and (max-width:750px) {
+  div#related_popup_upsell a.grid-view-item__link.grid_set_box {
+    min-height: auto !important;
+    max-height: 110px !important;
+    padding:4px 0;
+  }
+  #related_popup_upsell .modal-dialog {
+    margin: 15px auto !important;
+  }
+}
+@media screen and (max-width:650px) {
+	div#related_popup_upsell span#salePrice {
+    	font-size: 16px;
+      	padding : 4px 8px;; 
+    }
+    div#related_popup_upsell .modal-dialog .modal-content .modal-body .small--one-half .grid-view-item .h4.grid-view-item__title {
+    font-size: 12px;
+    line-height: 28px;
+  }
+
+  .r_addtocartbutton .btn {
+    width: 100%;
+    border-radius: 0;
+    font-weight: bold;
+    font-size: 12px;
+}
+  div#related_popup_upsell .modal-dialog .modal-header h4.modal-title{font-size:20px;}
+  .related_popup_text{font-size:16px;}
+}
+@media screen and (max-width: 500px) {
+	div#related_popup_upsell .grid__item.medium-up--one-quarter.small--one-half {
+    	width: 48% !important;
+    	text-align: center;
+	}
+} 
+@media screen and (max-width: 350px) {
+	div#related_popup_upsell .grid__item.medium-up--one-quarter.small--one-half {
+    	width: 100% !important;
+    	text-align: center;
+	}
+  	div#related_popup_upsell a.grid-view-item__link.grid_set_box {
+         min-height: inherit !important;
+         max-height: inherit !important;
+    }
+}
+
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+  } 
+  .modal-backdrop.in {
+    opacity: 0.7 !important;
+  }
+  
+    /*cross sell popup css*/
+#related_popup_upsell .grid-view-item__title.product_title{
+    text-align:center !important;
+}
+
+</style>
+<script>
+{% for block in section.blocks %}
+  {% if block.settings.upsell_related_collection == '' or block.settings.show_upsell_related_collection == ''%}
+  jQuery(document).ready(function(){
+ 
+    window.x = "sachin";
+     console.log(window.x);
+  });
+  {% endif%}
+  {% endfor %}
+</script>
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+{% schema %}
+  {
+    "name": "Cross-sell Popup",
+    "settings": [
+  {
+        "type": "header",
+        "content": "Related Upsell Popup"
+      },
+      {
+        "type": "text",
+        "id": "related_popup_heading",
+        "info": "Use the XX placeholder to display the amount they need to spend to qualify for free shipping",
+        "label": "Heading",
+        "default": "You may also like this"
+      },
+    {
+        "type": "text",
+        "id": "related_popup_heading_free_shipping",
+        "label": "Free Shipping message",
+        "default": "You have free Shipping"
+      }, 
+      {
+        "type": "color",
+        "id": "related_popup_heading_font_color",
+        "label": "Heading color",
+        "default": "#000000"
+      },
+      {
+        "type": "select",
+        "id": "related_popup_heading_font_family",
+        "label": "Heading font family",
+        "options": [
+          {
+            "value": "Arial",
+            "label": "default theme font family"
+          },
+          {
+            "value": "Anton",
+            "label": "Anton"
+          },
+          {
+            "value": "Arimo",
+            "label": "Arimo"
+          },
+          {
+            "value": "Arvo",
+            "label": "Arvo"
+          },
+          {
+            "value": "Baloo Bhai",
+            "label": "Baloo Bhai"
+          },
+          {
+            "value": "Baloo Bhaina",
+            "label": "Baloo Bhaina"
+          },
+          {
+            "value": "Bitter",
+            "label": "Bitter"
+          },
+          {
+            "value": "Bree Serif",
+            "label": "Bree Serif"
+          },
+          {
+            "value": "Cabin",
+            "label": "Cabin"
+          },
+          {
+            "value": "Catamaran",
+            "label": "Catamaran"
+          },
+          {
+            "value": "David Libre",
+            "label": "David Libre"
+          },
+          {
+            "value": "Dosis",
+            "label": "Dosis"
+          },
+          {
+            "value": "Droid Sans",
+            "label": "Droid Sans"
+          },
+          {
+            "value": "Droid Serif",
+            "label": "Droid Serif"
+          },
+          {
+            "value": "Ek Mukta",
+            "label": "Ek Mukta"
+          },
+          {
+            "value": "Fjalla One",
+            "label": "Fjalla One"
+          },
+          {
+            "value": "Hind",
+            "label": "Hind"
+          },
+          {
+            "value": "Inconsolata",
+            "label": "Inconsolata"
+          },
+          {
+            "value": "Indie Flower",
+            "label": "Indie Flower"
+          },
+          {
+            "value": "Lato",
+            "label": "Lato"
+          },
+          {
+            "value": "Libre Baskerville",
+            "label": "Libre Baskerville"
+          },
+          {
+            "value": "Lobster",
+            "label": "Lobster"
+          },
+          {
+            "value": "Lora",
+            "label": "Lora"
+          },
+          {
+            "value": "Merriweather",
+            "label": "Merriweather"
+          },
+          {
+            "value": "Modak",
+            "label": "Modak"
+          },
+          {
+            "value": "Montserrat",
+            "label": "Montserrat"
+          },
+          {
+            "value": "Muli",
+            "label": "Muli"
+          },
+          {
+            "value": "Noto Sans",
+            "label": "Noto Sans"
+          },
+          {
+            "value": "Noto Serif",
+            "label": "Noto Serif"
+          },
+          {
+            "value": "Nunito",
+            "label": "Nunito"
+          },
+          {
+            "value": "Open Sans Condensed",
+            "label": "Open Sans Condensed"
+          },
+          {
+            "value": "Oswald",
+            "label": "Oswald"
+          },
+          {
+            "value": "Oxygen",
+            "label": "Oxygen"
+          },
+          {
+            "value": "PT Sans",
+            "label": "PT Sans"
+          },
+          {
+            "value": "PT Sans Narrow",
+            "label": "PT Sans Narrow"
+          },
+          {
+            "value": "PT Serif",
+            "label": "PT Serif"
+          },
+          {
+            "value": "Pavanam",
+            "label": "Pavanam"
+          },
+          {
+            "value": "Playfair Display",
+            "label": "Playfair Display"
+          },
+          {
+            "value": "Poppins",
+            "label": "Poppins"
+          },
+          {
+            "value": "Raleway",
+            "label": "Raleway"
+          },
+          {
+            "value": "Roboto",
+            "label": "Roboto"
+          },
+          {
+            "value": "Roboto Condensed",
+            "label": "Roboto Condensed"
+          },
+          {
+            "value": "Roboto Slab",
+            "label": "Roboto Slab"
+          },
+          {
+            "value": "Slabo",
+            "label": "Slabo"
+          },
+          {
+            "value": "Source Sans Pro",
+            "label": "Source Sans Pro"
+          },
+          {
+            "value": "Teko",
+            "label": "Teko"
+          },
+          {
+            "value": "Titillium Web",
+            "label": "Titillium Web"
+          },
+          {
+            "value": "Ubuntu",
+            "label": "Ubuntu"
+          },
+          {
+            "value": "Yanone Kaffeesatz",
+            "label": "Yanone Kaffeesatz"
+          },
+          {
+            "value": "Yatra One",
+            "label": "Yatra One"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "related_popup_heading_font_size",
+        "label": "  Heading font size",
+        "default": "14",
+        "options": [
+          {
+            "value": "12",
+            "label": "12"
+          },
+          {
+            "value": "13",
+            "label": "13"
+          },
+          {
+            "value": "14",
+            "label": "14"
+          },
+          {
+            "value": "15",
+            "label": "15"
+          },
+          {
+            "value": "16",
+            "label": "16"
+          },
+          {
+            "value": "17",
+            "label": "17"
+          },
+          {
+            "value": "18",
+            "label": "18"
+          },
+          {
+            "value": "19",
+            "label": "19"
+          },
+          {
+            "value": "20",
+            "label": "20"
+          },
+          {
+            "value": "21",
+            "label": "21"
+          },
+          {
+            "value": "22",
+            "label": "22"
+          },
+          {
+            "value": "23",
+            "label": "23"
+          },
+          {
+            "value": "24",
+            "label": "24"
+          },
+          {
+            "value": "25",
+            "label": "25"
+          },
+          {
+            "value": "26",
+            "label": "26"
+          },
+          {
+            "value": "28",
+            "label": "28"
+          },
+          {
+            "value": "29",
+            "label": "29"
+          },
+          {
+            "value": "30",
+            "label": "30"
+          },
+          {
+            "value": "31",
+            "label": "31"
+          },
+          {
+            "value": "32",
+            "label": "32"
+          },
+          {
+            "value": "33",
+            "label": "33"
+          },
+          {
+            "value": "34",
+            "label": "34"
+          },
+          {
+            "value": "35",
+            "label": "35"
+          },
+          {
+            "value": "36",
+            "label": "36"
+          },
+          {
+            "value": "37",
+            "label": "37"
+          },
+          {
+            "value": "38",
+            "label": "38"
+          },
+          {
+            "value": "39",
+            "label": "39"
+          },
+          {
+            "value": "40",
+            "label": "40"
+          },
+          {
+            "value": "41",
+            "label": "42"
+          },
+          {
+            "value": "42",
+            "label": "42"
+          },
+          {
+            "value": "43",
+            "label": "43"
+          },
+          {
+            "value": "44",
+            "label": "44"
+          },
+          {
+            "value": "45",
+            "label": "45"
+          },
+          {
+            "value": "46",
+            "label": "46"
+          },
+          {
+            "value": "47",
+            "label": "47"
+          },
+          {
+            "value": "48",
+            "label": "48"
+          },
+          {
+            "value": "49",
+            "label": "49"
+          },
+          {
+            "value": "50",
+            "label": "50"
+          },
+          {
+            "value": "51",
+            "label": "51"
+          },
+          {
+            "value": "52",
+            "label": "52"
+          },
+          {
+            "value": "53",
+            "label": "53"
+          },
+          {
+            "value": "54",
+            "label": "54"
+          },
+          {
+            "value": "55",
+            "label": "55"
+          },
+          {
+            "value": "56",
+            "label": "56"
+          },
+          {
+            "value": "57",
+            "label": "57"
+          },
+          {
+            "value": "58",
+            "label": "58"
+          },
+          {
+            "value": "59",
+            "label": "59"
+          },
+          {
+            "value": "60",
+            "label": "60"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "related_popup_text",
+        "label": "Text message",
+        "default": "Customer who have also purchased"
+      },
+      {
+        "type": "color",
+        "id": "related_popup_text_font_color",
+        "label": "Heading color",
+        "default": "#000000"
+      },
+      {
+        "type": "select",
+        "id": "related_popup_text_font_family",
+        "label": "Text font family",
+        "options": [
+          {
+            "value": "Arial",
+            "label": "default theme font family"
+          },
+          {
+            "value": "Anton",
+            "label": "Anton"
+          },
+          {
+            "value": "Arimo",
+            "label": "Arimo"
+          },
+          {
+            "value": "Arvo",
+            "label": "Arvo"
+          },
+          {
+            "value": "Baloo Bhai",
+            "label": "Baloo Bhai"
+          },
+          {
+            "value": "Baloo Bhaina",
+            "label": "Baloo Bhaina"
+          },
+          {
+            "value": "Bitter",
+            "label": "Bitter"
+          },
+          {
+            "value": "Bree Serif",
+            "label": "Bree Serif"
+          },
+          {
+            "value": "Cabin",
+            "label": "Cabin"
+          },
+          {
+            "value": "Catamaran",
+            "label": "Catamaran"
+          },
+          {
+            "value": "David Libre",
+            "label": "David Libre"
+          },
+          {
+            "value": "Dosis",
+            "label": "Dosis"
+          },
+          {
+            "value": "Droid Sans",
+            "label": "Droid Sans"
+          },
+          {
+            "value": "Droid Serif",
+            "label": "Droid Serif"
+          },
+          {
+            "value": "Ek Mukta",
+            "label": "Ek Mukta"
+          },
+          {
+            "value": "Fjalla One",
+            "label": "Fjalla One"
+          },
+          {
+            "value": "Hind",
+            "label": "Hind"
+          },
+          {
+            "value": "Inconsolata",
+            "label": "Inconsolata"
+          },
+          {
+            "value": "Indie Flower",
+            "label": "Indie Flower"
+          },
+          {
+            "value": "Lato",
+            "label": "Lato"
+          },
+          {
+            "value": "Libre Baskerville",
+            "label": "Libre Baskerville"
+          },
+          {
+            "value": "Lobster",
+            "label": "Lobster"
+          },
+          {
+            "value": "Lora",
+            "label": "Lora"
+          },
+          {
+            "value": "Merriweather",
+            "label": "Merriweather"
+          },
+          {
+            "value": "Modak",
+            "label": "Modak"
+          },
+          {
+            "value": "Montserrat",
+            "label": "Montserrat"
+          },
+          {
+            "value": "Muli",
+            "label": "Muli"
+          },
+          {
+            "value": "Noto Sans",
+            "label": "Noto Sans"
+          },
+          {
+            "value": "Noto Serif",
+            "label": "Noto Serif"
+          },
+          {
+            "value": "Nunito",
+            "label": "Nunito"
+          },
+          {
+            "value": "Open Sans Condensed",
+            "label": "Open Sans Condensed"
+          },
+          {
+            "value": "Oswald",
+            "label": "Oswald"
+          },
+          {
+            "value": "Oxygen",
+            "label": "Oxygen"
+          },
+          {
+            "value": "PT Sans",
+            "label": "PT Sans"
+          },
+          {
+            "value": "PT Sans Narrow",
+            "label": "PT Sans Narrow"
+          },
+          {
+            "value": "PT Serif",
+            "label": "PT Serif"
+          },
+          {
+            "value": "Pavanam",
+            "label": "Pavanam"
+          },
+          {
+            "value": "Playfair Display",
+            "label": "Playfair Display"
+          },
+          {
+            "value": "Poppins",
+            "label": "Poppins"
+          },
+          {
+            "value": "Raleway",
+            "label": "Raleway"
+          },
+          {
+            "value": "Roboto",
+            "label": "Roboto"
+          },
+          {
+            "value": "Roboto Condensed",
+            "label": "Roboto Condensed"
+          },
+          {
+            "value": "Roboto Slab",
+            "label": "Roboto Slab"
+          },
+          {
+            "value": "Slabo",
+            "label": "Slabo"
+          },
+          {
+            "value": "Source Sans Pro",
+            "label": "Source Sans Pro"
+          },
+          {
+            "value": "Teko",
+            "label": "Teko"
+          },
+          {
+            "value": "Titillium Web",
+            "label": "Titillium Web"
+          },
+          {
+            "value": "Ubuntu",
+            "label": "Ubuntu"
+          },
+          {
+            "value": "Yanone Kaffeesatz",
+            "label": "Yanone Kaffeesatz"
+          },
+          {
+            "value": "Yatra One",
+            "label": "Yatra One"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "related_popup_text_font_size",
+        "label": "Text font size",
+        "default": "14",
+        "options": [
+          {
+            "value": "12",
+            "label": "12"
+          },
+          {
+            "value": "13",
+            "label": "13"
+          },
+          {
+            "value": "14",
+            "label": "14"
+          },
+          {
+            "value": "15",
+            "label": "15"
+          },
+          {
+            "value": "16",
+            "label": "16"
+          },
+          {
+            "value": "17",
+            "label": "17"
+          },
+          {
+            "value": "18",
+            "label": "18"
+          },
+          {
+            "value": "19",
+            "label": "19"
+          },
+          {
+            "value": "20",
+            "label": "20"
+          },
+          {
+            "value": "21",
+            "label": "21"
+          },
+          {
+            "value": "22",
+            "label": "22"
+          },
+          {
+            "value": "23",
+            "label": "23"
+          },
+          {
+            "value": "24",
+            "label": "24"
+          },
+          {
+            "value": "25",
+            "label": "25"
+          },
+          {
+            "value": "26",
+            "label": "26"
+          },
+          {
+            "value": "28",
+            "label": "28"
+          },
+          {
+            "value": "29",
+            "label": "29"
+          },
+          {
+            "value": "30",
+            "label": "30"
+          },
+          {
+            "value": "31",
+            "label": "31"
+          },
+          {
+            "value": "32",
+            "label": "32"
+          },
+          {
+            "value": "33",
+            "label": "33"
+          },
+          {
+            "value": "34",
+            "label": "34"
+          },
+          {
+            "value": "35",
+            "label": "35"
+          },
+          {
+            "value": "36",
+            "label": "36"
+          },
+          {
+            "value": "37",
+            "label": "37"
+          },
+          {
+            "value": "38",
+            "label": "38"
+          },
+          {
+            "value": "39",
+            "label": "39"
+          },
+          {
+            "value": "40",
+            "label": "40"
+          },
+          {
+            "value": "41",
+            "label": "42"
+          },
+          {
+            "value": "42",
+            "label": "42"
+          },
+          {
+            "value": "43",
+            "label": "43"
+          },
+          {
+            "value": "44",
+            "label": "44"
+          },
+          {
+            "value": "45",
+            "label": "45"
+          },
+          {
+            "value": "46",
+            "label": "46"
+          },
+          {
+            "value": "47",
+            "label": "47"
+          },
+          {
+            "value": "48",
+            "label": "48"
+          },
+          {
+            "value": "49",
+            "label": "49"
+          },
+          {
+            "value": "50",
+            "label": "50"
+          },
+          {
+            "value": "51",
+            "label": "51"
+          },
+          {
+            "value": "52",
+            "label": "52"
+          },
+          {
+            "value": "53",
+            "label": "53"
+          },
+          {
+            "value": "54",
+            "label": "54"
+          },
+          {
+            "value": "55",
+            "label": "55"
+          },
+          {
+            "value": "56",
+            "label": "56"
+          },
+          {
+            "value": "57",
+            "label": "57"
+          },
+          {
+            "value": "58",
+            "label": "58"
+          },
+          {
+            "value": "59",
+            "label": "59"
+          },
+          {
+            "value": "60",
+            "label": "60"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "r_continue_shoping_color",
+        "label": "Continue shopping button color",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "r_view_cart_color",
+        "label": "View cart button color",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "r_checkout_color",
+        "label": "Checkout button color",
+        "default": "#fff"
+      }
+
+],
+"blocks": [
+      {
+        "type": "Upsell",
+        "name": "Upsell",
+        "settings": [
+            {
+            "type": "collection",
+            "id": "upsell_related_collection",
+            "label": "Upsell"
+            },
+            {
+            "type": "collection",
+            "id": "show_upsell_related_collection",
+            "label": "Show For Upsell"
+            }
+        ]
+      }
+    ]
+
+  }
+{% endschema %}

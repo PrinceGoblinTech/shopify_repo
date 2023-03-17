@@ -1,0 +1,26 @@
+<!-- <form action="/search" method="get" class=" " role="search">
+  <div class="form-group clearfix">
+  <input type="hidden" name="type" value="product" />
+  <input type="search" name="q" value="{{ search.terms | escape }}" class="form-control" placeholder="{{ settings.header_search_placeholder }}"   aria-label="{{ 'general.search.placeholder' | t }}">
+ <button type="submit" class="btn btn-success"><span class="fa fa-search"></span></button>
+  </div>
+</form> -->
+ <form action="/search" method="get" role="search" class="search_form">
+                  <div class="button-search"></div>
+   <div class="form-group clearfix">
+                  <input autocomplete="off" type="text" name="q" value="{{ search.terms | escape }}"  class="input-block-level search-query form-control" id="search_query" placeholder="{{ settings.header_search_placeholder }}"  aria-label="{{ 'general.search.placeholder' | t }}"/>
+                  <div id="autocomplete-results" class="results-box"></div>
+     {% if settings.searchonlyproduct%}
+                  <input type="hidden" name="type" value="product" />
+     {% endif %}
+     <button type="submit" class="btn btn-success">
+       {% if settings.usesearchicon %}
+       <img src="{{'searchicon.png' | asset_url}}" class="search_icon">
+       {% else %}
+       <span class="fa fa-search"></span>
+     {% endif %}
+     </button>
+
+   </div>
+                </form>
+<a href="javascript:;" class="search-close"><i class="fa fa-times"></i></a>

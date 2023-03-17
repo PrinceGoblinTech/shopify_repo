@@ -1,0 +1,19 @@
+<span id="ProductPrice" class="h2" itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+  {{ current_variant.price | money }}
+</span>
+{% if settings.show_compare_price %}
+  {% if product.compare_at_price_max > product.price %}
+    <span id="ComparePrice">
+      {{ current_variant.compare_at_price | money }}
+    </span>
+  {% endif %}
+  <div class="ComparePrice">
+    {% if product.compare_at_price_max > product.price %}
+      {% if settings.show_saved_amount %}
+        <div class="you-save">
+          <p id="YouSave"></p>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endif %}

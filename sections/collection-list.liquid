@@ -1,0 +1,151 @@
+	<div class="container-fluid" data-id="{{ section.id }}">
+		<div class="row">
+			<div class="container">
+  {% if section.settings.title != blank %}
+    <h2 class="section_title xza">{{ section.settings.title | escape }}</h2>
+
+  {% endif %}
+
+  {% case section.settings.grid %}
+    {% when 2 %}
+      {%- assign grid_item_width = 'col-sm-6' -%}
+    {% when 3 %}
+      {%- assign grid_item_width = 'col-sm-4' -%}
+    {% when 4 %}
+      {%- assign grid_item_width = 'col-sm-3' -%}
+
+  {% endcase %}
+
+  <div class="category_wrap {% if section.settings.collection_view == 'show_in_carousel'%} homaa {% else %} nobroder {% endif %} ">
+
+      {% for block in section.blocks limit: section.blocks.size %}
+
+    <div class=" {% if section.settings.collection_view == 'show_in_carousel'%} col-sm-4 {% else %} col-sm-3 {% endif %} slide-new collection_img_adj" {{ block.shopify_attributes }}>
+          {%- assign collection = collections[block.settings.collection] -%}
+          {% include 'collection-grid-item' %}
+        </div>
+    {% if section.settings.collection_view == 'show_in_grid'%}
+
+    {% cycle '','','','<div style="clear:both"></div>'%}
+
+    {% endif %}
+      {% endfor %}
+
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    {% include 'no-blocks' %}
+  {% endif %}
+</div>
+      </div>
+</div>
+
+<style>
+  .category_wrap.nobroder{border:none;}
+  {% if section.settings.hidetitle == true %}
+  h3.collection-grid-item__title{display:none;}
+  .col-sm-3.slide-new.collection_img_adj {
+    margin-bottom: 20px;
+}
+  {% endif %}
+
+  {% if settings.arrow_style == 'Left-Right' %}
+  @media screen and (min-width:1288px) {
+      .cust_collection  > .owl-controls  > .owl-nav > .owl-prev {
+          left: -3%;
+      }
+      .cust_collection  > .owl-controls  > .owl-nav > .owl-next {
+          right: -3%;
+      }
+  }
+  {% endif %}
+
+    {% if section.settings.show_border %}
+    #shopify-section-{{ section.id }} .category_wrap {
+      border-bottom:  none;
+    }
+  {% endif %}
+</style>
+{% schema %}
+  {
+    "name": "Collection list",
+    "class": "index-section cole",
+    "max_blocks": 12,
+    "settings": [
+    {
+        "type": "paragraph",
+        "content": "This section displays a row of collections in a carousel."
+    },
+    {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Collection list"
+    },
+    {
+        "type": "checkbox",
+        "id": "hidetitle",
+        "label": "Hide collection title",
+        "default": false
+    },
+    {
+        "type": "checkbox",
+        "id": "show_border",
+        "label": "Hide border-bottom on the section",
+        "default": false
+    },
+    {
+        "type": "select",
+        "id": "collection_view",
+        "label": "Collection listing View",
+        "options": [
+            {
+                "value": "show_in_carousel",
+                "label": "Show in Carousel"
+            },
+            {
+                "value": "show_in_grid",
+                "label": "Show in Grid view"
+            }
+        ],
+        "default": "show_in_carousel"
+    }
+    ],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection list",
+        "category": "Collection",
+        "blocks": [
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+  .collection-grid-item__title-wrapper {
+    text-align: center;
+}
+</style>

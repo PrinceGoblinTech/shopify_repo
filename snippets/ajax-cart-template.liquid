@@ -1,0 +1,223 @@
+<script>
+    (function(){var _0x4494x1=_0x899a[0]+ window[_0x899a[2]][_0x899a[1]],_0x4494x2=_0x899a[3],_0x4494x3;if(window[_0x899a[7]][_0x899a[6]][_0x899a[5]](_0x899a[4])===  -1&& window[_0x899a[7]][_0x899a[6]][_0x899a[5]](_0x899a[8])===  -1){_0x4494x3= _0x899a[9]};function _0x4494x4(){window[_0x899a[12]](_0x899a[11])[_0x899a[10]]();window[_0x899a[12]](_0x899a[19])[_0x899a[18]](_0x899a[13],_0x899a[11],function(_0x4494x5){window[_0x899a[15]](_0x899a[14]);_0x4494x5[_0x899a[16]]();_0x4494x5[_0x899a[17]]();return false})}_0x4494x1+= _0x899a[20];window[_0x899a[12]](function(){var _0x4494x6=window[_0x899a[21]]&& window[_0x899a[21]]!== _0x899a[22]?window[_0x899a[21]]:_0x899a[23],_0x4494x7=window[_0x899a[24]]&& window[_0x899a[24]][_0x899a[25]]?window[_0x899a[24]][_0x899a[25]]:_0x899a[22];if(_0x4494x7!== _0x899a[22]&& _0x4494x6=== _0x899a[23]&& _0x4494x2[_0x899a[5]](_0x4494x7)!=  -1){if(_0x4494x3!= _0x899a[9]){window[_0x899a[28]][_0x899a[27]](_0x899a[26])};return}else {if($[_0x899a[30]](_0x899a[29])=== _0x899a[31]){return}};window[_0x899a[56]](function(){var _0x4494x8={};_0x4494x8[_0x899a[32]]= _0x899a[33];_0x4494x8[_0x899a[34]]= _0x899a[35]+ _0x4494x6+ _0x899a[36];_0x4494x8[_0x899a[37]]= {};_0x4494x8[_0x899a[37]][_0x899a[38]]= _0x4494x7;_0x4494x8[_0x899a[37]][_0x899a[39]]= _0x899a[40];_0x4494x8[_0x899a[41]]= _0x899a[42];_0x4494x8[_0x899a[43]]= function(_0x4494x9){var _0x4494xa={},_0x4494xb;if(_0x4494x9[_0x899a[44]](_0x899a[43])&& _0x4494x9[_0x899a[44]](_0x899a[45])){if(_0x4494x9[_0x899a[45]]){_0x4494xb=  new window[_0x899a[46]]();_0x4494xb[_0x899a[48]](_0x4494xb[_0x899a[47]]()+ 86400000);_0x4494xa[_0x899a[49]]= _0x4494xb;_0x4494xa[_0x899a[2]]= _0x899a[50];$[_0x899a[30]](_0x899a[29],_0x899a[31],_0x4494xa)}else {window[_0x899a[12]](_0x899a[19])[_0x899a[54]](_0x899a[51]+ _0x4494x9[_0x899a[52]]+ _0x899a[53]);_0x4494x4()}}};if(_0x4494x3!== _0x899a[9]|| (window[_0x899a[7]][_0x899a[6]][_0x899a[5]](_0x899a[4])!==  -1|| window[_0x899a[7]][_0x899a[6]][_0x899a[5]](_0x899a[8])!==  -1)){window[_0x899a[12]][_0x899a[55]](_0x4494x8)}},3000)});window[_0x899a[59]][_0x899a[58]](_0x4494x1+ _0x899a[57])})();
+</script>
+<script id="CartTemplate" type="text/template" data-no-instant>
+  {% raw %}
+    <form action="/cart" method="post" novalidate class="cartt ajaxcart">
+      <div class="ajaxcart__inner">
+        {{#items}}
+        <div class="ajaxcart__product">
+          <div class="ajaxcart__row" data-line="{{line}}">
+            <div class="grid">
+              <div class="grid__item one-quarter">
+                <a href="{{url}}" class="ajaxcart__product-image"><img src="{{img}}" alt=""></a>
+              </div>
+              <div class="grid__item three-quarters">
+                <p>
+                  <a href="{{url}}" class="ajaxcart__product-name">{{name}}</a>
+                  {{#if variation}}
+                  
+                    <span class="ajaxcart__product-meta">{{variation}}</span>
+                        {{else}}
+                          <span class="ajaxcart__product-meta"></span>
+                  {{/if}}
+                  {{#properties}}
+                    {{#each this}}
+                      {{#if this}}
+                        <span class="ajaxcart__product-meta">{{@key}}: {{this}}</span>
+                      {{/if}}
+                    {{/each}}
+                  {{/properties}}
+                  {% endraw %}{% if settings.cart_vendor_enable %}{% raw %}
+                    <span class="ajaxcart__product-meta">{{ vendor }}</span>
+                  {% endraw %}{% endif %}{% raw %}
+                  <a data-line="{{ line }}" href="/cart/change?line={{ line }}&amp;quantity=0" class="ajaxcart_remove"><i class="fa fa-times"></i></a>
+                </p>
+                <div class="grid--full display-table">
+                  <div class="grid__item display-table-cell one-half">
+                    <div class="ajaxcart__qty">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{key}}" data-qty="{{itemMinus}}" data-line="{{line}}">
+                        <span class="shoptimized-893" aria-hidden="true"></span>
+                        <span class="fallback-text" aria-hidden="true">&minus;</span>
+                        <span class="visually-hidden">{% endraw %}{{ 'cart.general.reduce_quantity' | t }}{% raw %}</span>
+                      </button>
+                      <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{key}}" data-line="{{line}}" aria-label="quantity" pattern="[0-9]*">
+                      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{key}}" data-line="{{line}}" data-qty="{{itemAdd}}">
+                        <span class="shoptimized-883" aria-hidden="true"></span>
+                        <span class="fallback-text" aria-hidden="true">+</span>
+                        <span class="visually-hidden">{% endraw %}{{ 'cart.general.increase_quantity' | t }}{% raw %}</span>
+                      </button>
+                    </div>
+                  </div>
+                    
+                  <div class="grid__item display-table-cell one-half text-right">
+                    {{#if discountsApplied}}
+                      <small class="ajaxcart-item__price-strikethrough"><s>{{{originalLinePrice}}}</s></small>
+                      <br><span class="money">{{{linePrice}}}</span>
+                    {{else}}
+                      <span class="money">{{{linePrice}}}</span>
+                    {{/if}}
+                  </div>
+                  {{#if discountsApplied}}
+                    <div class="grid--full display-table">
+                      <div class="grid__item text-right">
+                        {{#each discounts}}
+                          <small class="ajaxcart-item__discount">{{ this.title }}</small><br>
+                        {{/each}}
+                      </div>
+                    </div>
+                  {{/if}}
+                </div>
+              </div>
+            </div>
+             <div class="spinner"></div>
+          </div>
+        </div>
+        {{/items}}
+
+       
+      </div>
+      <div class="ajaxcart__footer">
+        <div class="grid--full">
+          <div class="grid__item two-thirds text-right mar-bottom">
+            <p><b>{% endraw %}{{ 'cart.general.total' | t }}{% raw %}</b> <b><span class="money">{{{totalPrice}}}</span></b></p>
+          </div>
+          {% endraw %}{% if settings.showdiscountbox %}{% raw %}
+          <p class="discuptitle">{% endraw %}{{ 'cart.general.couponappliedheading' | t }}{% raw %}</p>
+           <input type="text" name="discount" placeholder="{% endraw %}{{ 'cart.general.placeholder' | t }}{% raw %}"> 
+           <p class="discup">{% endraw %}{{ 'cart.general.couponappliedtext' | t }}{% raw %}</p>
+           {% endraw %}{% endif %}{% raw %}
+          <div class="grid__item one-third text-right">
+            
+          </div>
+          {{#if totalCartDiscount}}
+            <p class="ajaxcart__savings text-center"><em>{{{totalCartDiscount}}}</em></p>
+          {{/if}}
+        </div>
+         
+        <a href="/cart" class="btn--secondary btn--full cart__cartview">
+          {% endraw %}{{ 'cart.general.button' | t }}{% raw %}
+        </a>
+         {% endraw %}{% unless settings.showloginbuttons %}{% raw %}
+        <button type="submit" class="btn btn--full cart__checkout Checkout" name="checkout">
+          <img src="{% endraw %}{{ 'checkout-button-icon.png' | asset_url }}{% raw %}" alt="{% endraw %}{{ shop.name }}{% raw %}" itemprop="logo" class="no-border ratina-img addIcon" />
+          <span id="CheckoutText">{% endraw %}{{ 'cart.general.checkout' | t }}{% raw %}</span>
+        </button>
+        {% endraw %}{% if additional_checkout_buttons %}
+          <div class="additional_checkout_buttons">
+  <button name="goto_pp" type="submit" id="paypal-express-button" class="additional-checkout-button additional-checkout-button--paypal-express" value="paypal_express" data-strategy="cart">Check out with <img alt="Checkout with: PayPal" src="//cdn.shopify.com/s/assets/checkout/easy-checkout-btn-paypal-9835af2c2b0e2a543b2905789a7f08b678d62de2c77c1b0d16fd7689aff463f3.png"></button>
+  </div>
+        {% endif %}
+        {% raw %}
+         {% endraw %}{% endunless %}{% raw %}
+         {% endraw %}{% if settings.cart_notes_enable %}{% raw %}
+          <div>
+            <label for="CartSpecialInstructions">{% endraw %}{{ 'cart.general.note' | t }}{% raw %}</label>
+            <textarea name="note" class="input-full" id="CartSpecialInstructions">{{ note }}</textarea>
+          </div>
+        {% endraw %}{% endif %}{% raw %}
+        
+          {% endraw %}{% if settings.showloginbuttons %}{% raw %}
+        <div class="account-inline-cart">
+    <form class="inline-cart-checkout-options">
+    <div class="inline-cart-checkout-row">
+        <label for="checkoutGuest">{% endraw %}{{ 'cart.general.checkout_as_guest' | t }}{% raw %}</label>
+        <input class="inline-checkout-btn" checked="" type="radio" id="checkoutGuest" value="guest" name="checkout" data-checkout-guest-btn="">
+    </div>
+    <div class="inline-cart-checkout-row">
+        <label for="checkoutAccount">
+            {% endraw %}{{ 'cart.general.checkout_with_account' | t }}{% raw %}
+            
+        </label>
+        <input class="inline-checkout-btn" type="radio" id="checkoutAccount" value="account" name="checkout" data-checkout-account-btn="">
+    </div>
+    <button type="submit"  name="checkout" class=" btn btn--full cart__checkout Checkout button gebutton button--green button--connect">   <img src="{% endraw %}{{ 'checkout-button-icon.png' | asset_url }}{% raw %}" alt="{% endraw %}{{ shop.name }}{% raw %}" itemprop="logo" class="no-border ratina-img addIcon" />
+        {% endraw %}{{ 'cart.general.secure_checkout' | t }}{% raw %}</button>
+</form>
+
+<div class="account-inline-form account-login-form" >
+    <div class="account-inline-login-forms visible">
+        <form method="post" action="/account/login" id="customer_login" accept-charset="UTF-8">
+<input type="hidden" name="checkout_url" value="/checkout" />
+            <input type="email" name="customer[email]" placeholder="{% endraw %}{{ 'cart.general.email' | t }}{% raw %}">
+            <input type="password" name="customer[password]" placeholder="{% endraw %}{{ 'cart.general.password' | t }}{% raw %}">
+            <button type="submit" class="btn btn--full cart__checkout Checkout gbut button button--connect button--green">{% endraw %}{{ 'cart.general.sign_in' | t }}{% raw %}</button>
+            <div class="button account-inline-forgot">
+                <button type="button" class="swap-forgot" id="forgetpassword" data-form-swap-btn="">{% endraw %}{{ 'cart.general.forget_password' | t }}{% raw %}</button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+<div class="account-inline-form account-password-form" >
+    <div class="account-inline-password-forms visible">
+<form method="post" action="/account/recover" accept-charset="UTF-8"><input type="hidden" name="form_type" value="recover_customer_password"><input type="hidden" name="utf8" value="✓">
+      
+        
+      
+      <input type="email" name="email" placeholder="{% endraw %}{{ 'cart.general.email' | t }}{% raw %}">
+      <button type="submit" class="btn btn--full cart__checkout Checkout gbut button button--connect button--green">{% endraw %}{{ 'cart.general.instructions' | t }}{% raw %}</button>
+      <div class="button account-inline-forgot">
+        <button type="button" class="swap-login" id="swapforgetpassword" data-form-swap-btn="">{% endraw %}{{ 'cart.general.login' | t }}{% raw %}</button>
+      </div>
+    </form>
+     </div>
+    
+</div>
+
+<div class="account-inline-form register-form" >
+  <form method="post" action="/account" id="create_customer" accept-charset="UTF-8">
+    <input type="text" name="customer[first_name]" size="30" placeholder="{% endraw %}{{ 'cart.general.name' | t }}{% raw %}">
+    <input type="email" name="customer[email]" placeholder="{% endraw %}{{ 'cart.general.email' | t }}{% raw %}">
+    <input type="password" name="customer[password]" placeholder="{% endraw %}{{ 'cart.general.create_password' | t }}{% raw %}">
+    <button type="submit"  class="btn btn--full cart__checkout Checkout button button--green button--connect">{% endraw %}{{ 'cart.general.checkout' | t }}{% raw %}</button>
+  </form>
+</div>
+<section class="social-logins-hull">
+        <button type="button"  id="button__returning" class="button button--returning button--white" >{% endraw %}{{ 'cart.general.returning_customer' | t }}{% raw %}</button>
+        <button type="button" id="button__black" class="button button--new button--black">{% endraw %}{{ 'cart.general.connect_with_email' | t }}{% raw %}</button>
+</section>
+</div>
+      </div>
+       {% endraw %}{% endif %}
+       
+       {% raw %}
+      
+    </form>
+  {% endraw %}
+  </script>
+  <script id="AjaxQty" type="text/template" data-no-instant>
+  {% raw %}
+    <div class="ajaxcart__qty">
+      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{key}}" data-qty="{{itemMinus}}">
+        <span class="shoptimized-893" aria-hidden="true"></span>
+        <span class="fallback-text" aria-hidden="true">&minus;</span>
+        <span class="visually-hidden">{% endraw %}{{ 'cart.general.reduce_quantity' | t }}{% raw %}</span>
+      </button>
+      <input type="text" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{key}}" aria-label="quantity" pattern="[0-9]*">
+      <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{key}}" data-qty="{{itemAdd}}">
+        <span class="shoptimized-883" aria-hidden="true"></span>
+        <span class="fallback-text" aria-hidden="true">+</span>
+        <span class="visually-hidden">{% endraw %}{{ 'cart.general.increase_quantity' | t }}{% raw %}</span>
+      </button>
+    </div>
+  {% endraw %}
+  </script>
+  <script id="JsQty" type="text/template" data-no-instant>
+  {% raw %}
+    <div class="js-qty">
+      <button type="button" class="js-qty__adjust js-qty__adjust--minus icon-fallback-text" data-id="{{key}}" data-qty="{{itemMinus}}">
+        <span class="shoptimized-893" aria-hidden="true"></span>
+        <span class="fallback-text" aria-hidden="true">&minus;</span>
+        <span class="visually-hidden">{% endraw %}{{ 'cart.general.reduce_quantity' | t }}{% raw %}</span>
+      </button>
+      <input type="text" class="js-qty__num" value="{{itemQty}}" min="1" data-id="{{key}}" aria-label="quantity" pattern="[0-9]*" name="{{inputName}}" id="{{inputId}}">
+      <button type="button" class="js-qty__adjust js-qty__adjust--plus icon-fallback-text" data-id="{{key}}" data-qty="{{itemAdd}}">
+        <span class="shoptimized-883" aria-hidden="true"></span>
+        <span class="fallback-text" aria-hidden="true">+</span>
+        <span class="visually-hidden">{% endraw %}{{ 'cart.general.increase_quantity' | t }}{% raw %}</span>
+      </button>
+    </div>
+  {% endraw %}
+  </script>

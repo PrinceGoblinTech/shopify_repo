@@ -1,0 +1,41 @@
+{%- assign display_quantity_count_demo_data = display_quantity_count_demo_data | default: settings.display_quantity_count_demo_data -%}
+{%- assign visitors_counter_enable_demo_data = visitors_counter_enable_demo_data | default: settings.visitors_counter_enable_demo_data -%}
+{%- assign orders_counter_enable_demo_data = orders_counter_enable_demo_data | default: settings.orders_counter_enable_demo_data -%}
+{%- assign informations_alert_text = informations_alert_text | default: settings.informations_alert_text -%}
+{% capture quantity_counter_html %}
+    {%- if display_quantity_count_demo_data -%}
+        {% assign inventory_quantity = 0 %}
+        {% for variant in product.variants %}
+            {% capture inventory_quantity %}
+                {{ inventory_quantity | plus: variant.inventory_quantity }}
+            {% endcapture %}
+        {% endfor %}
+        <span data-js-product-informations-alert-quantity-denerate data-max-value="{{ inventory_quantity }}">..</span>
+    {%- else -%}
+        <span class=js-quantity data-product-id={{ product.id }}><span class=quantity data-quantity-counter>..</span></span>
+    {%- endif -%}
+{% endcapture %}
+{% capture fire_icon_html %}
+    <span class="flash--total-sold"><span class="flash-fire"></span></span>
+{% endcapture %}
+{% capture visitors_counter_html %}
+    {%- if visitors_counter_enable_demo_data -%}
+        <b class="js-generate-visitors-counter">..</b>
+    {%- else -%}
+        <b class="js-statsapp-visitors-counter">..</b>
+    {%- endif -%}
+{% endcapture %}
+{% capture orders_counter_html %}
+    {%- if orders_counter_enable_demo_data -%}
+        <b class="js-generate-orders-counter">..</b>
+    {%- else -%}
+        <b class="js-statsapp-orders-counter">..</b>
+    {%- endif -%}
+{% endcapture %}
+<div class="product-informations-alert" data-js-product-informations-alert>
+    <p>{{ informations_alert_text | replace: '[quantity_counter]', quantity_counter_html | replace: '[fire_icon]', fire_icon_html | replace: '[visitors_counter]', visitors_counter_html | replace: '[orders_counter]', orders_counter_html }}</p>
+</div>
+{%- assign display_quantity_count_demo_data = null -%}
+{%- assign visitors_counter_enable_demo_data = null -%}
+{%- assign orders_counter_enable_demo_data = null -%}
+{%- assign informations_alert_text = null -%}

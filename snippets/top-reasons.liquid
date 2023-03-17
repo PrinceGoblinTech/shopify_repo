@@ -1,0 +1,35 @@
+<div class="product-reasons great_reason">
+  {% if settings.display_topreasons_counter %}
+    {% assign countreasons = 0 %}
+    {% for i in (1..7) %}
+      {% assign reason-image-display = 'topreasons_' | append: i | append: '_display' %}
+      {% if settings[reason-image-display] %}
+          {% assign countreasons = countreasons | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  <p>{% if settings.display_topreasons_counter %}{{ countreasons }} {% endif %}{{ settings.topreasons_text }}</p>
+  <ul class="clearfix">
+    {% for i in (1..7) %}
+      {% assign reason = 'topreasons_' | append: i %}
+      {% assign reason-image-display = 'topreasons_' | append: i | append: '_display' %}
+      {% assign reason-image = 'topreasons_' | append: i | append: '_image.png' %}
+      {% if settings[reason-image-display] %}
+      <li class="total-{{ countreasons }}-reasons">
+        <img src="{{ reason-image | asset_img_url: '150x' }}" class="ratina-img" alt="Image of {{ settings[reason] | escape }}" />
+        {% if settings.display_topreasons_text %}
+          <br />
+        <span 
+              {% if settings[reason] contains 'shipping' or settings[reason] contains 'Shipping' or settings[reason] contains 'XX'%}
+              class="badage_shipping_text"
+               {% endif %}
+              > {{ settings[reason] }}
+        </span>
+          <span id="badage_shipping_msg" style="display:none;">{{ settings[reason] }}</span>
+        {% endif %}
+      </li>
+      {% endif %}
+    {% endfor %}
+     
+  </ul>
+</div>

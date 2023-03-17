@@ -1,0 +1,212 @@
+ {% if template !="cart" %}
+{% if section.settings.footer_review_display%}
+<div class="container reviewsssections" id="sec{{ section.id }}">
+			<h2 class="section_title" >{{ section.settings.section_title }}</h2>
+			<div class="owl-carousel testimonial_wrap">
+               {% assign dTotalrev = 0 %}
+               {% for block in section.blocks %}
+               {% assign dTotalrev = dTotalrev | plus: 1 %}
+				<div class="item">
+					<div class="testimonial-author clearfix">
+						<div class="testimonial-author-thumbnail img-thumbnail">
+							    {% if block.settings.image == blank %}
+
+        	<img src="{{'transparent.png' | asset_url}}"
+
+                  data-src="{{'footer_review_1_1.png' | asset_url}}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{'footer_review_1_1.png' | asset_url}}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                 height="89" width="89" alt="" class="lazyload img-rounded">
+
+        {%else%}
+							<img src="{{'transparent.png' | asset_url}}"
+
+
+                                  data-src="{{ block.settings.image | img_url: 'master' }}"
+ data-widths="[540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2048]"
+ data-aspectratio="{{ block.settings.image | img_url: 'master' }}"
+ data-sizes="auto"
+ data-parent-fit="contain"
+                                 height="89" width="89" alt="" class="lazyload img-rounded">
+						{%endif%}
+                      </div>
+						<div class="testimonial_right">
+						 	<p class="blockquote">{{ block.settings.quote }}</p>
+						     <p class="autor_name">{{ block.settings.autor_name }}</p>
+						 </div>
+					</div>
+				</div>
+              {% endfor %}
+
+			</div>
+   <style>
+      .reviewsssections {
+        margin-bottom: 25px;
+      }
+
+      @media screen and (max-width:768px) {
+        .testimonial-author .blockquote {
+          font-size: {{section.settings.author_mobile_font_size}};
+        }
+      }
+       {% if settings.arrow_style == 'Left-Right' %}
+           @media screen and (min-width:1294px) {
+               .testimonial_wrap > .owl-controls  > .owl-nav > .owl-prev {
+                   left: -4%;
+               }
+               .testimonial_wrap > .owl-controls  > .owl-nav > .owl-next {
+                   right: -4%;
+                   position: absolute !important;
+                   top: 45%;
+               }
+           }
+       {% endif %}
+
+
+       {% if dTotalrev <= 3 %}
+
+          @media screen and (min-width:992px){
+          #sec{{ section.id }} .owl-nav {
+            display: none !important;
+          }
+          }
+
+        {% endif %}
+{% if dTotalrev <= 1 %}
+
+          @media screen and (max-width:992px){
+          #sec{{ section.id }} .owl-nav {
+            display: none !important;
+          }
+          }
+
+        {% endif %}
+
+       div#shopify-section-homepage-review {
+    background: {{section.settings.footer_review_bg_color}};
+    color: {{section.settings.footer_review_font_color}};
+}
+  .testimonial-author .blockquote:before, .testimonial-author .blockquote:after{color:{{section.settings.footer_quotation_mark_color}}}
+
+  div#shopify-section-homepage-review h2.section_title{
+  color: {{section.settings.footer_review_title_color}};
+  }
+  .testimonial_wrap{margin-bottom: 65px;}
+  .testimonial-author .testimonial_right p.autor_name {color: {{section.settings.footer_review_author_color}}};
+</style>
+	</div>
+{% endif%}
+{% endif%}
+
+
+{% schema %}
+  {
+    "name": "homepage-review",
+    "max_blocks": 10,
+	"settings": [
+      {
+"type": "paragraph",
+"content": "This section displays a carousel of customers reviews with photos."
+},
+{
+        "type": "checkbox",
+        "id": "footer_reviews_homepage_only",
+        "label": "Show Review section In Homepage Only"
+      },
+  {
+        "type": "checkbox",
+        "id": "footer_review_display",
+        "label": "Display Reviews"
+      },
+
+      {
+        "type": "text",
+        "id": "section_title",
+        "label": "section_title"
+      } ,
+{
+        "type": "header",
+        "content": "Look And Feel"
+      },
+      {
+        "type": "color",
+        "id": "footer_review_bg_color",
+        "label": "Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "footer_quotation_mark_color",
+        "label": "Quotation Mark Color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "footer_review_font_color",
+        "label": "Font Color",
+        "default": "#000000"
+      },
+
+      {
+        "type": "color",
+        "id": "footer_review_title_color",
+        "label": "Title Font Color",
+        "default": "#f0723d"
+      },
+      {
+        "type": "color",
+        "id": "footer_review_author_color",
+        "label": "Author Font Color",
+        "default": "#f0723d"
+      },
+      {
+        "type": "text",
+        "id": "author_mobile_font_size",
+        "label": "Mobile Font Size",
+        "default": "18px"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "reviews",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+			"info": "For best results use images with a 1:1 Aspect ratio(Like 100x100)"
+          },
+ {
+            "type": "text",
+            "id": "quote",
+            "label": "Review Text"
+          }
+,
+ {
+            "type": "text",
+            "id": "autor_name",
+            "label": "Review User Name"
+          }
+
+
+        ]
+      }
+
+    ],
+    "presets": [{
+      "name": "homepage-review"
+
+    }]
+  }
+{% endschema %}
+
+<style>
+ {% if section.settings.footer_reviews_homepage_only %}
+   {% unless template =='index' %}
+    div#shopify-section-homepage-review{display:none;}
+   {% endunless %}
+   {% endif %}
+</style>

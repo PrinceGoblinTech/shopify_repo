@@ -1,0 +1,116 @@
+{%- if settings.collection_item_options_display or settings.collection_item_add_to_cart_display -%}
+    <div class="product-control" data-product-control data-id="{{ product.id }}_{{ type }}">
+        {% form "product", product, id: null %}
+            {%- assign hide_default_title = false -%}
+            {%- if product.variants.size == 1 and product.variants.first.title contains 'Default' -%}
+                {%- assign hide_default_title = true -%}
+            {%- endif -%}
+            <div class="product-control__variants{% if settings.collection_item_options_display and settings.collection_item_options_default_view and hide_default_title != true %} product-control__variants--controler{% endif %}">
+                <select name="id" data-product-options-variants>
+                    {%- for variant in product.variants -%}
+                        <option{% if variant == product.selected_or_first_available_variant and variant.available %} selected="selected"{% endif %}{% unless variant.available %} disabled="disabled"{% endunless %} value="{{ variant.id }}">{{ variant.title }}</option>
+                    {%- endfor -%}
+                </select>
+            </div>
+            {%- if settings.collection_item_options_display and settings.collection_item_options_default_view != true -%}
+                {%- unless product.has_only_default_variant -%}
+                <div class="product-control__options">
+                    {%- assign style_circle = settings.collection_item_options_style_circle | escape | downcase | split: '|' -%}
+                    {%- assign style_square = settings.collection_item_options_style_square | escape | downcase | split: '|' -%}
+                    <div class="product-options product-options--type-{{ options_type | default: 'grid' }} js-product-options" data-default-variant-id="{{ product.selected_or_first_available_variant.id }}">
+                        {%- for option in product.options_with_values -%}
+                            {%- assign option_name = option.name | escape | downcase -%}
+                            <label class="product-options__title">{{ option.name }}:</label>
+                            <div class="product-options__property" data-property="{{ option.name | handleize }}">
+                                {% capture style_class %}
+                                    {%- if style_circle contains option_name %} product-options__value--style-circle
+                                    {%- elsif style_square contains option_name %} product-options__value--style-square
+                                    {%- else %} product-options__value--style-text
+                                {%- endif -%}
+                                {% endcapture %}
+                                {%- for value in option.values -%}
+                              {%- if forloop.length == 1 -%} 
+                              {%- else -%}
+                                    {%- assign is_active_value = false -%}
+                                    {%- assign is_disabled_value = true -%}
+                                    {%- for variant in product.variants -%}
+                                        {%- if variant.option1 == value or variant.option2 == value or variant.option3 == value -%}
+                                            {%- if variant.available -%}
+                                                {%- assign is_disabled_value = false -%}
+                                                {%- break -%}
+                                            {%- endif -%}
+                                        {% endif %}
+                                    {%- endfor -%}
+                                    {%- unless is_disabled_value == true -%}
+                                        {%- if product.options contains option.name -%}
+                                            {%- if product.selected_or_first_available_variant.option1 == value or product.selected_or_first_available_variant.option2 == value or product.selected_or_first_available_variant.option3 == value -%}
+                                                {%- assign is_active_value = true -%}
+                                            {%- endif -%}
+                                        {%- endif -%}
+                                    {%- endunless -%}
+                                    {%- if settings.collection_item_options_hide_inaccessible != true or is_disabled_value != true -%}
+                                        {%- assign need_color = null -%}
+                                        {%- if style_circle contains option_name and settings.collection_item_options_style_circle_settings == 'color' -%}
+                                            {%- assign need_color = true -%}
+                                        {%- elsif style_square contains option_name and settings.collection_item_options_style_square_settings == 'color' -%}
+                                            {%- assign need_color = true -%}
+                                        {%- endif -%}
+                                        <div class="product-options__value{{ style_class }}{% if need_color %} default-color-{{ value | escape | downcase }}{% endif %}{% if is_disabled_value %} disabled{% endif %}{% if is_active_value %} active{% endif %} {% if forloop.length == 1 %} hideit {% else %} unhideit {% endif %} "
+                                            {%- if style_circle contains option_name or style_square contains option_name %} title="{{ value }}"{% endif -%}
+                                            data-value="{{ value | handleize }}"
+                                            {%- assign need_image = null -%}
+                                            {%- if style_circle contains option_name and settings.collection_item_options_style_circle_settings == 'image' -%}
+                                                {%- assign need_image = true -%}
+                                            {%- elsif style_square contains option_name and settings.collection_item_options_style_square_settings == 'image' -%}
+                                                {%- assign need_image = true -%}
+                                            {%- endif -%}
+                                            {%- if need_image -%}
+                                                {%- assign value_image = null -%}
+                                                {%- for variant in product.variants -%}
+                                                    {%- if value == variant.option1 or value == variant.option2 or value == variant.option3 -%}
+                                                        {%- if variant.image != blank -%}
+                                                            {%- assign value_image = variant.image -%}
+                                                            {%- break -%}
+                                                        {%- endif -%}
+                                                    {%- endif -%}
+                                                {%- endfor -%}
+                                                {%- if value_image == null -%}
+                                                    {%- assign value_image = image -%}
+                                                {%- endif %}
+                                                style="background-image: url({{ value_image | img_url }});"
+                                            {%- endif -%}
+                                        > 
+                                            {{- value -}}
+                                            {%- if is_disabled_value -%}
+                                          <div class="tooltip">Currently out of stock</div>
+                                                <img class="crossed-out" src="//cdn.shopify.com/s/files/1/0065/6356/1533/t/31/assets/soldout.png?4362112070760459094">
+                                            {%- endif -%}
+                                        </div>
+                                    {%- endif -%}
+                                {%- endif -%}
+                                {%- endfor -%}
+                            </div>
+                        {%- endfor -%}
+                    </div>
+                </div>
+                {%- endunless -%}
+            {%- endif -%}
+            {%- if settings.collection_item_add_to_cart_display -%}
+                <div class="product-control__add-to-cart">
+                    <button type="submit" name="add" class="product-control-add-to-cart AddToCart btn btn-success" data-product-options-add-to-cart{% unless product.selected_or_first_available_variant.available %} data-status="sold-out" disabled="disabled"{% endunless %}>
+                        {% capture default_add_to_cart_button_text %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}
+                        <span>
+                              {%- if settings.enable_checkout_icon -%}
+                                  <img src="{{ 'cart-button-icon.png' | asset_url }}" alt="+" class="no-border ratina-img addIcon" />
+                              {%- endif -%}
+                            <span> {{ settings.add_to_cart_button_text | default: default_add_to_cart_button_text -}}</span>
+                        </span>
+                        <span data-content="sold-out">{{ 'products.product.unavailable' | t }}</span>
+                        <span data-content="adding">{{ settings.adding_to_cart_button_text }}</span>
+                        <span data-content="added">{{ settings.added_to_cart_button_text }}</span>
+                    </button>
+                </div>
+            {%- endif -%}
+        {% endform %}
+    </div>
+{%- endif -%}

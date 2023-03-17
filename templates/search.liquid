@@ -1,0 +1,503 @@
+<script type="text/javascript">
+  window.sps = window.sps || {};
+  sps.beforeIt = '.col-main-with-filters .all_products > .grid__item:first';
+  sps.allProducts = [];
+</script>
+<style type="text/css">
+  /*.all_products.search-result-grid .large--one-half:nth-child(2n+1), .all_products.search-result-grid .large--one-third:nth-child(3n+1), .all_products.search-result-grid .large--one-quarter:nth-child(4n+1){
+      clear: none;
+  }*/
+  .page--search .all_products {
+    visibility: hidden;
+  }
+  .page--search .filter-by {
+    margin-bottom: 15px;
+    display: none;
+  }
+  .activetag-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .activetag-container .activeTag,.activetag-container .remove-all {
+    padding: 4px 8px;
+    background: #000;
+    color: #fff;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .activetag-container .activeTag {
+    margin-bottom: 5px;
+  }
+  .activetag-container .activeTag > i, .activetag-container .remove-all > i {
+    margin-right: 5px;
+  }
+  .page--search select#SortBy {
+    float: right;
+  }
+  li.color-filters a .check {
+    opacity: 0;
+  }
+  @media screen and (min-width: 1025px){
+    #SortBy {
+      min-width: 190px;
+    }
+  }
+  @media screen and (max-width: 767px){
+    .page--search .form-horizontal {
+      display: none;
+    }
+    .page--search .form-horizontal::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+    .page--search .filter-by {
+      margin-left: 15px;
+    }
+  }
+</style>
+
+<div class="wrapper header-space"></div>
+  <div class="container">
+  {% include 'breadcrumb' %}
+  {% if search.results_count <= 0 %}
+    <div class="grid page--search">
+      <div class="grid__item large--one-whole">
+        <h1 class="main-heading--search">{{ 'general.search.heading' | t }}</h1>
+        {% if settings['search_page'] != "" %}
+          <div class="grid">
+            <div class="grid__item large--one-whole">
+              <div class="page--header">
+                <h3>{{ pages[settings['search_page']].title }}</h3>
+              </div>
+            </div>
+            <div class="grid__item large--one-whole">
+              {{ pages[settings['search_page']].content }}
+            </div>
+          </div>
+        {% else %}
+          <div class="grid">
+            <div class="grid__item large--one-whole">
+              <div class="page--header">
+                <h3>
+                  {% if settings['search_page_title'] != "" %}
+                    {{ settings['search_page_title'] }}
+                  {% else %}
+                    {{ 'general.search.title' | t }}
+                  {% endif %}
+                </h3>
+              </div>
+              {% if settings['search_page_sub_title'] != "" %}
+                <div class="page--subheader">
+                  <h4>{{ settings['search_page_sub_title'] }}</h4>
+                </div>
+              {% endif %}
+            </div>
+            <div class="grid__item large--one-whole">
+              <ul class="ul--search">
+                {% if settings.display_search_search_form %}
+                  <li>
+                    <div class="help--title"><span>1</span> {% if settings.search_form_head_text_search != "" %} {{ settings.search_form_head_text_search }} {% else %}<strong>{{ 'general.search.search_form_heading_before' | t }}</strong> {{ 'general.search.search_form_heading_after' | t }}{% endif %}</div>
+                    <div class="help--search--form search_panel">
+                      {% include 'search-bar' %}
+                    </div>
+                  </li>   
+                {% endif %}
+                <li>
+                  <div class="help--title">
+                    {% if settings.display_search_search_form %}
+                      <span>2</span> 
+                    {% else %}
+                      <span>1</span> 
+                    {% endif %}
+                    {% if settings.search_help_text_url_type != "" %}
+                      {{ settings.search_help_text_url_type }}
+                    {% else %}
+                      <strong>{{ 'general.search.help_text_before' | t }}</strong> {{ 'general.search.help_text_after' | t }}
+                    {% endif %}
+                  </div>
+                </li>
+                <li>
+                  <div class="help--title">
+                    {% if settings.display_search_search_form %}
+                      <span>3</span> 
+                    {% else %}
+                      <span>2</span> 
+                    {% endif %}
+                    {% if settings.search_help_text_speak != "" %}
+                      {{ settings.search_help_text_speak }}
+                    {% else %}
+                      <strong>{{ 'general.search.speak_text_before' | t }}</strong> {{ 'general.search.speak_text_after' | t }}
+                    {% endif %}
+                  </div>
+                  {% if settings.display_search_speak_image %}
+                    <div class="speak--image--search">
+                      <p>
+                        <a href="{{ settings.search_speak_to_image_link }}">
+                          <img alt="chat to Lisa" src="{{ 'search_speak_to_image.jpg' | asset_url }}" title="">
+                        </a>
+                      </p>
+                    </div>
+                  {% endif %}
+                </li>
+                {% if settings.display_search_collections %}
+                <li>
+                  <div class="help--title">
+                    {% if settings.display_search_search_form %}
+                      <span>4</span> 
+                    {% else %}
+                      <span>3</span> 
+                    {% endif %}<strong>{{ 'general.search.search_collection_text' | t }}</strong>:
+                  </div>
+                  <div class="help--collections--search">
+                    {% if collections.size > 0 %}
+                      <div class="grid">
+                      {% for collection in collections %}
+                        <div class="grid__item large--one-quarter medium--one-half">
+                          <a href="{{ collection.url }}">
+                            {% if collection.image %}
+                              {{ collection.image.src | collection_img_url: 'grande' | img_tag: collection_title }}
+                            {% else %}
+                              {{ collection.products.first.featured_image | product_img_url: 'grande' | img_tag: collection_title }}
+                            {% endif %}
+                          </a>
+                          <div class="collection--title">
+                            <a href="{{ collection.url }}"><h5>{{ collection.title }}</h5></a>
+                          </div>
+                        </div>
+                        {% cycle '','','','</div><div class="grid">' %}
+                      {% endfor %}
+                      </div>
+                    {% else %}
+                      <p>{{ 'general.search.no_collection_text' | t }}</p>
+                    {% endif %}
+                  </div>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+  
+
+  	<div class="page--search cearfix">
+      {% if settings.enable-filters %}
+      <div class="filter-by">
+        <div class="activetag-container">
+          <!-- <div class="activeTag"><i class="fa fa-close"></i><span>red</span></div> -->
+          <a href="{{canonical_url}}" class="remove-all"><i class="fa fa-close"></i><span>Remove All</span></a>
+        </div>
+      </div>
+      {% endif %}
+      {% include 'search-sorting' %}
+      {% if settings.enable-filters %}
+        {% include 'search-filters'%}
+      {% endif %}
+
+      {% paginate search.results by 20 %}
+        <div {% if settings.enable-filters %}class="col-md-10 col-sm-9 col-main-with-filters"{% else %}class="col-md-12 col-sm-12"{% endif %}>
+          {% assign search_products = search.results | sort:'created_at' %}
+      	{% assign type = "s" %}
+        <div class="grid-uniform search-result-grid">
+          {% for product in search_products  %}
+            {% if product.object_type == 'product' %}
+                {% for tag in current_tags %}
+                  {% unless tags contains tag %}
+                    {% assign temp_tag = tag | handle %}
+                    {% assign temp_tag = temp_tag | append: '+' %} 
+                    {% assign other_tags = other_tags | append: temp_tag %}
+                  {% endunless %}
+                {% endfor %}
+              {% if forloop.index == 1%}
+               <h1 class="tti">Products</h1>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      	<div class="all_products grid-uniform search-result-grid">
+          {% for product in search_products %}
+          {% if product.object_type == 'product' %}
+        {% assign hideupsell = false %} 
+        {% for tag in product.tags %}
+            {% assign tag = tag | downcase %}
+        {% if tag == "hideupsell" %}{% assign hideupsell = true %}
+        {% break %}
+        {% endif %}
+        {% endfor %}
+        {% assign sr = 1 %}
+       {% if  hideupsell == false %} 
+            {% include 'product-grid-item' with type %}
+            {% cycle '','','','' %}
+          {% endif %}
+       
+          {% endif %}
+          {% endfor %}
+      	</div>
+        </div>
+        <div class="grid search-result-grid">
+        {% assign ff = 0 %}
+        {% for product in search_products %}
+        {% unless product.object_type == 'product' %}
+          {% assign ff = ff | plus: 1 %}
+         {% if ff == 1 %}
+        <h1 class="tti">Blogs and Pages</h1>
+            {% endif %} 
+            {% endunless %}
+        {% endfor %}
+        </div>
+      	<div class="grid search-result-grid">
+           {% assign ff = 0 %}
+        
+        
+          {% for product in search_products %}
+          {% unless product.object_type == 'product' %}
+            {% assign ff = ff | plus: 1 %}
+             {% include 'product-grid-item-search' with type %}
+               {%comment%}
+                {% cycle '','','','<div class="clearfix"></div>' %}
+               {%endcomment%}
+          {% endunless %}
+          {% endfor %}
+      	</div>
+        
+      	{% if paginate.pages > 1 %}
+          <hr>
+          <div class="pagination">
+            {{ paginate | default_pagination | replace: '&laquo; Previous', '<i class="fa fa-angle-left"></i>' | replace: 'Next &raquo;', '<i class="fa fa-angle-right"></i>' }}
+          </div>
+        {% endif %}
+      {% endpaginate %}
+  	</div>
+    
+  {% endif %}
+	</div>
+
+  <script type="text/javascript">
+    sps.filterProducts = ()=>{
+      var currentUrl = window.location.href;
+      if(currentUrl.indexOf('sort_by') > -1){
+      var tempUrl = currentUrl.split('&'); 
+        var getSortby = currentUrl.substring(currentUrl.indexOf('&sort_by')).split('&');
+        for(var key in getSortby){
+          key = parseInt(key);
+          if(getSortby[key].indexOf('sort_by') > -1) {
+            for(var key in tempUrl){
+              if(tempUrl[key].indexOf('sort_by') > -1){
+                currentUrl = currentUrl.replace('&'+tempUrl[key],'');
+                break;
+              }
+            }
+          }
+        }
+      }
+      var srtByArr = currentUrl.split('&');
+      srtByArr.shift();
+
+      if(srtByArr.length > 0) {
+        var typeProductIndex = srtByArr.indexOf('type=product');
+
+        if (srtByArr.indexOf('type=product') > -1) {
+          srtByArr.splice(typeProductIndex, 1);
+        }
+
+        for(var key in srtByArr){
+            var activetTag = srtByArr[key].split('=')[1];
+            var activeTagMarkup = '<div data-tag="'+activetTag+'" class="activeTag"><i class="fa fa-close"></i><span>'+activetTag+'</span></div>';
+            $('.filters-container .single-cat a[data-tag="'+activetTag+'"]').addClass('selected');
+            $('.page--search .filter-by .activetag-container').prepend(activeTagMarkup);
+        }
+        $('.page--search .filter-by').fadeIn(); 
+          if(sps.allProducts.length > 0){
+            for(var key in sps.allProducts){
+              var pId = sps.allProducts[key].id;
+              var allTagsArr = [];
+              allTagsArr = sps.allProducts[key].tags;
+
+              // Check for filter tag-prefix in url
+              var withFiltering = false;
+              for(var keyy in srtByArr) {
+                if (srtByArr[keyy].indexOf('clr=') > -1 || srtByArr[keyy].indexOf('sz=') > -1 || srtByArr[keyy].indexOf('bnd=') > -1 ) {
+                  withFiltering = true;
+                } else {
+                  withFiltering = false;
+                }
+              }
+
+              if(allTagsArr.length > 0){
+                for(var key in allTagsArr){
+                  allTagsArr[key] =  allTagsArr[key].toLowerCase();
+                }
+                var k =0;
+                for(var keyy in srtByArr){
+                  var urlTag = srtByArr[keyy].split('=')[1].toLowerCase();
+
+                  if(allTagsArr.indexOf(''+urlTag) > -1){
+                    k++;
+                  }
+                }
+                if(srtByArr.length == k){
+                  $('.all_products').find(' > .grid__item[data-id="'+pId+'"]').show();
+                } else {
+                  $('.all_products').find(' > .grid__item[data-id="'+pId+'"]').hide();
+                }
+              } else {
+                $('.all_products').find(' > .grid__item[data-id="'+pId+'"]').hide();
+              }
+
+              if (!withFiltering) {
+                $('.all_products').find(' > .grid__item[data-id="'+pId+'"]').show();
+              }
+            }
+          }
+          $('.page--search .all_products').css('visibility','visible');
+      } else {
+        $('.page--search .all_products').css('visibility','visible');
+      }
+    }
+    sps.arrayContainsArray = (superset, subset)=> {
+      return subset.every(function (value) {
+        return (superset.indexOf(value) >= 0);
+      });
+    }
+    sps.showProducts = ()=>{
+      if(sps.allProducts.length > 0){
+        for(var key in sps.allProducts){
+          // debugger;
+          var pId = sps.allProducts[key].id;
+          $('.col-main-with-filters .all_products').find(' > .grid__item[data-id="'+pId+'"]').insertBefore(sps.beforeIt);
+        }
+      }
+      $('.page--search .all_products').css('visibility','visible');
+    }
+    sps.sortProducts = ()=>{
+      // debugger;
+        // console.log(sps.allProducts);
+        var currentUrl = window.location.href;
+        var isReverse = false;
+        if(currentUrl.indexOf('sort_by') > -1){
+          var tempVar = currentUrl.split('&');
+          for(var key in tempVar){
+            if(tempVar[key].indexOf('sort_by') > -1){
+              $('#SortBy').val(tempVar[key].split('=')[1]);
+              break;
+            }
+          }
+          var sort_By = currentUrl.substr(currentUrl.indexOf('sort_by')).split('=')[1];
+          if(sort_By.indexOf('descending') > -1){
+            isReverse = true;
+          }
+          if(sps.allProducts.length > 0){
+            switch(sort_By){
+              case 'manual': 
+              break;
+              // break;
+              case 'best-selling': 
+              case 'title-ascending': 
+              case 'title-descending': 
+              sps.allProducts.sort(function(a, b){
+                if(a.title < b.title) { return -1; }
+                if(a.title > b.title) { return 1; }
+                return 0;
+              })
+              break;
+              case 'price-ascending': 
+              case 'price-descending': 
+              sps.allProducts.sort(function(a, b){return parseInt(a.price) - parseInt(b.price)});
+              break;
+              case 'created-ascending': 
+              case 'created-descending': 
+              sps.allProducts.sort(function(a, b){return a.published_at - b.published_at});
+              break;
+            }
+            if(!isReverse){
+              sps.allProducts.reverse();
+            }
+            // console.log(sps.allProducts);
+            sps.showProducts();
+          }
+        }
+    }
+    sps.getProductsData = ()=>{
+      $('.col-main-with-filters .all_products').find(' > .grid__item').each(function(){
+        var pid = $(this).attr('data-id');
+        var pData = JSON.parse($('#product-json-'+pid+'_s').html());
+        sps.allProducts.push(pData);
+      });
+    }
+    $(document).ready(function(){
+      sps.getProductsData();
+      sps.sortProducts();
+      sps.filterProducts();
+      $(document).on('click','.filter-by .activeTag', function(){
+        var a_tag = $(this).attr("data-tag");
+        $('.filters-container .single-cat .main_Label[data-tag="'+a_tag+'"]').click();
+      });
+      $(document).on('click','.filters-container .single-cat .main_Label',function(e){
+          e.preventDefault();
+          var tag = $(this).attr('data-tag');
+          var category = $(this).attr('data-cat');
+          var currentUrl = window.location.href;
+          var tempUrl = currentUrl.split('&'); 
+          switch(category){
+            case 'Color': 
+                          if(currentUrl.indexOf('clr') > -1){
+                            if($(this).hasClass('selected')){
+                              for(var key in tempUrl){
+                                if(tempUrl[key].indexOf('clr') > -1){
+                                  currentUrl = currentUrl.replace('&'+tempUrl[key],'');
+                                  break;
+                                }
+                              }
+                            } else {  
+                              var c_tag = currentUrl.substring(parseInt(currentUrl.indexOf('clr') + 4)).split('&')[0];
+                              currentUrl = currentUrl.replace(c_tag,tag);
+                            }
+                          } else {
+                            currentUrl += '&clr='+tag;
+                          }
+                          break;
+            case 'Size':
+                          if(currentUrl.indexOf('sz') > -1){
+                            if($(this).hasClass('selected')){
+                              for(var key in tempUrl){
+                                if(tempUrl[key].indexOf('sz') > -1){
+                                  currentUrl = currentUrl.replace('&'+tempUrl[key],'');
+                                  break;
+                                }
+                              }
+                            } else {  
+                              var c_tag = currentUrl.substring(parseInt(currentUrl.indexOf('sz') + 3)).split('&')[0];
+                              currentUrl = currentUrl.replace(c_tag,tag);
+                            }
+                          } else {
+                            currentUrl += '&sz='+tag;
+                          }
+                          break;
+            case 'Brand': 
+                          if(currentUrl.indexOf('bnd') > -1){
+                            if($(this).hasClass('selected')){
+                              for(var key in tempUrl){
+                                if(tempUrl[key].indexOf('bnd') > -1){
+                                  currentUrl = currentUrl.replace('&'+tempUrl[key],'');
+                                  break;
+                                }
+                              }
+                            } else {  
+                              var c_tag = currentUrl.substring(parseInt(currentUrl.indexOf('bnd') + 4)).split('&')[0];
+                              currentUrl = currentUrl.replace(c_tag,tag);
+                            }
+                          } else {
+                            currentUrl += '&bnd='+tag;
+                          }
+                          break;
+          }
+          $(this).addClass('selected').parent('li').siblings('li').find('.main_Label').removeClass('selected'); 
+          window.location.href = currentUrl;
+      });
+    });
+  </script>

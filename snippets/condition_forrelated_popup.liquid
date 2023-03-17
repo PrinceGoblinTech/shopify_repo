@@ -1,0 +1,60 @@
+ {% assign loop_brk = 0 %}
+{% for collection in product.collections %}
+{%- assign   collectio_with_dash = collection.title | replace: ' ', '-' | downcase -%}
+ 
+ 
+
+
+{% if  settings.show_upsell_related_collection1 != ""  %}
+
+	{%- assign collection1 = collections[settings.show_upsell_related_collection1] -%}
+ 
+{% endif %}
+
+{% if  settings.show_upsell_related_collection2 != ""  %}
+
+	{%- assign collection2 = collections[settings.show_upsell_related_collection2] -%}
+ 
+{% endif %}
+
+{% if  settings.show_upsell_related_collection3 != ""  %}
+
+	{%- assign collection3 = collections[settings.show_upsell_related_collection3] -%}
+ 
+{% endif %}
+
+{% if  settings.show_upsell_related_collection4 != ""  %}
+
+	{%- assign collection4 = collections[settings.show_upsell_related_collection4] -%}
+ 
+{% endif %}
+
+{% if  settings.show_upsell_related_collection5 != ""  %}
+
+	{%- assign collection5 = collections[settings.show_upsell_related_collection5] -%}
+ 
+{% endif %}
+
+{% if  settings.show_upsell_related_collection6 != ""  %}
+
+	{%- assign collection6 = collections[settings.show_upsell_related_collection6] -%}
+ 
+{% endif %}
+
+{% if  settings.show_upsell_related_collection7 != ""  %}
+
+	{%- assign collection7 = collections[settings.show_upsell_related_collection7] -%}
+ 
+{% endif %}
+
+{% if  settings.show_upsell_related_collection8 != ""  %}
+
+	{%- assign collection8 = collections[settings.show_upsell_related_collection8] -%}
+ 
+{% endif %}
+
+ 
+
+    {% endfor %}
+ 
+

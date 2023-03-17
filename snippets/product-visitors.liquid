@@ -1,0 +1,10 @@
+<p class="visitor_counter">
+    <span class="visitor_counter_v">
+        {%- if settings.visitors_counter_enable_demo_data -%}
+            <b class="js-generate-visitors-counter">..</b>
+        {%- else -%}
+            <b class="js-statsapp-visitors-counter">..</b>
+        {%- endif -%}
+    </span>
+    <span class="visitor_counter_a"> {{ settings.visitors_counter_text_after }}</span>
+</p>

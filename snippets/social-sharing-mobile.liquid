@@ -1,0 +1,70 @@
+
+
+
+{% if template contains 'article' or template contains 'blog' %}
+  {% capture permalinkURL %}{{ shop.url }}{{ article.url }}{% endcapture %}
+  {% capture shareTitle %}{{ article.title }}{% endcapture %}
+
+{% elsif template contains 'product' %}
+  {% capture permalinkURL %}{{ shop.url }}{{ product.url }}{% endcapture %}
+  {% capture shareTitle %}{{ product.title }}{% endcapture %}
+  
+{% elsif template contains 'password' %}
+  {% capture permalinkURL %}{{ shop.url }}{% endcapture %}
+  {% capture shareTitle %}{% unless shop.metafields.global.description_tag == blank %}{{ shop.metafields.global.description_tag | url_param_escape }}{% else %}{{ shop.name | url_param_escape }}{% endunless %}{% endcapture %}
+{% endif %}
+
+{% assign shareButtonStyle = settings.social_sharing_style %}
+
+<div class="social-sharing mobile-onla {{ shareButtonStyle }}" data-permalink="{{ permalinkURL }}">
+
+  {% if settings.share_facebook %}
+    <a href="javascript:void(0);" onclick="openpopup('//www.facebook.com/sharer.php?u={{ permalinkURL }}','Facebook Share')" class="share-facebook">
+      <i class="fa fa-facebook" aria-hidden="true"></i>
+      <span class="share-title">Share</span>
+      {% if settings.social_sharing_count %}
+        <span class="share-count">0</span>
+      {% endif %}
+    </a>
+  {% endif %}
+
+  {% if settings.share_twitter %}
+    <a href="javascript:void(0);" onclick="openpopup('//twitter.com/share?url={{ permalinkURL }}&amp;text={{ shareTitle | url_param_escape | replace: ' ', '%20' | replace: '&', '%26' | replace: '?', '%3F' | replace: '!', '%21' | replace: ',', '%2C' | replace: "'", "%27" }}','Twitter Tweet')" class="share-twitter">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+      <span class="share-title">Tweet</span>
+      {% if settings.social_sharing_count %}
+        <span class="share-count">0</span>
+      {% endif %}
+    </a>
+  {% endif %}
+
+  {% if template contains 'product' %}
+
+    {% if settings.share_pinterest %}
+      <a href="javascript:void(0);" onclick="openpopup('//pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media=http:{{ product.featured_image | product_img_url: '1024x1024' }}&amp;description={{ shareTitle | url_param_escape | replace: ' ', '%20' | replace: '&', '%26' | replace: '?', '%3F' | replace: '!', '%21' | replace: ',', '%2C' | replace: "'", "%27" }}','Pinterest Share')" class="share-pinterest">
+        <i class="fa fa-pinterest" aria-hidden="true"></i>
+        <span class="share-title">Pin it</span>
+        {% if settings.social_sharing_count %}
+          <span class="share-count">0</span>
+        {% endif %}
+      </a>
+    {% endif %}
+
+    {% if settings.share_fancy %}
+       
+    {% endif %}
+
+  {% endif %}
+
+  {% if settings.share_google %}
+    <a href="javascript:void(0);" onclick="openpopup('//plus.google.com/share?url={{ permalinkURL }}','Google +1')" class="share-google">
+      <i class="fa fa-google-plus" aria-hidden="true"></i>
+      {% if settings.social_sharing_count %}
+        <span class="share-count">+1</span>
+      {% else %}
+        <span class="share-title">+1</span>
+      {% endif %}
+    </a>
+  {% endif %}
+   <a class="fa fa-envelope"  href="javascript:emailCurrentPage()"></a>
+</div>

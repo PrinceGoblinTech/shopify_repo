@@ -1,0 +1,16 @@
+{% if settings.upsell_popup_enable3 %}
+  <div id="upsell-popup" class="modal fade">
+    <div class="modal-content">
+       <a href="javascript:void(0);" class="upsell-no-btn close"><i class="fa fa-times"></i></a>
+      <img src="{{ 'special_offer.png' | asset_url }}" alt="Offer" class="modal--offer-image" />
+      <div class="modal-body">
+        <img src="{{ all_products[settings.free_product3].images.first | img_url: 'compact' }}" alt="{{ all_products[settings.free_product3].images.first.alt | escape }}" class="modal--free-image" />
+        <h4 class="upsell-heading">{{ settings.upsell_headline_text3 }}</h4>
+        <div class="upsell-bottom">
+          <button type="button" class="btn btn-default upsell-yes-btn">{{ settings.yes_button_text3 }}</button>
+          <button type="button" class="btn btn-default upsell-no-btn">{{ settings.no_button_text3 }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
